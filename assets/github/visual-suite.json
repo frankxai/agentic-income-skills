@@ -1,0 +1,26 @@
+{
+  "version": "2026.06-premium",
+  "generatedAt": "2026-06-22",
+  "repo": "agentic-income-skills",
+  "title": "Agentic Income Skills",
+  "layer": "L4",
+  "publicAssets": {
+    "header": "assets/github/header.svg",
+    "howItWorks": "assets/github/how-it-works.svg",
+    "buildDeployVerify": "assets/github/build-deploy-verify.svg",
+    "visualSuite": "assets/github/visual-suite.json"
+  },
+  "mapping": {
+    "headerVisual": "income-engine-flow",
+    "howItWorksVisual": "website-growth-loop",
+    "buildDeployVerifyVisual": "build-deploy-verify"
+  },
+  "method": "Built-in image_gen created text-free backplates. All labels, repo names, paths, and captions are deterministic SVG text.",
+  "sources": [
+    "C:/Users/frank/.codex/skills/.system/imagegen/SKILL.md",
+    "C:/Users/frank/starlight/repos/DESIGN_TASTE.md",
+    "C:/Users/frank/starlight/repos/WEB_EXPERIENCE_STANDARD.md",
+    "C:/Users/frank/starlight/repos/VISUAL_QA_GATE.md",
+    "Motion Design Studio designer-thinking.md"
+  ]
+}

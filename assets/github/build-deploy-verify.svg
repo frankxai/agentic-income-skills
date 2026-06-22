@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif">
+  <title id="title">Agentic Income Skills build deploy verify path</title>
+  <desc id="desc">Branch, local gates, PR, CI, preview, main, and live verification for Agentic Income Skills.</desc>
+  <defs>
+    <linearGradient id="shade" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#02040a" stop-opacity="0.86"/>
+      <stop offset="45%" stop-color="#02040a" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#02040a" stop-opacity="0.82"/>
+    </linearGradient>
+    <linearGradient id="topFade" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#02040a" stop-opacity="0.88"/>
+      <stop offset="100%" stop-color="#02040a" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#000000" flood-opacity="0.42"/>
+    </filter>
+  </defs>
+  <rect width="1280" height="720" fill="#05070d"/>
+  <image href="visual-suite/backplates/build-deploy-verify.png" x="0" y="0" width="1280" height="720" preserveAspectRatio="xMidYMid slice" opacity="0.88"/>
+  <rect width="1280" height="720" fill="url(#shade)"/>
+  <rect x="28" y="28" width="1224" height="664" rx="32" fill="none" stroke="rgba(255,255,255,0.18)"/>
+  <text x="56" y="82" font-size="15" font-weight="900" fill="#10b981" letter-spacing="3">L4 / SHIPPING PATH</text>
+  <text x="56" y="156" font-size="52" font-weight="900" fill="#f8fafc" opacity="1"><tspan x="56" dy="0">Agentic Income Skills: build, deploy,</tspan><tspan x="56" dy="53.04">verify</tspan></text>
+  <text x="58" y="246" font-size="23" font-weight="650" fill="#d7e2f3" opacity="1"><tspan x="58" dy="0">Every visual and site change moves through a concrete evidence path before</tspan><tspan x="58" dy="28.52">it is treated as live.</tspan></text>
+  <line x1="70" y1="382" x2="1190" y2="382" stroke="#10b981" stroke-width="2" opacity="0.66"/>
+  <g>
+      <rect x="58" y="430" width="146" height="112" rx="18" fill="rgba(3,7,18,0.76)" stroke="rgba(255,255,255,0.18)"/>
+      <text x="76" y="464" font-size="12" font-weight="900" fill="#10b981">01</text>
+      <text x="76" y="496" font-size="18" font-weight="850" fill="#f8fafc" opacity="1"><tspan x="76" dy="0">Branch</tspan></text>
+    </g><g>
+      <rect x="229" y="430" width="146" height="112" rx="18" fill="rgba(3,7,18,0.76)" stroke="rgba(255,255,255,0.18)"/>
+      <text x="247" y="464" font-size="12" font-weight="900" fill="#10b981">02</text>
+      <text x="247" y="496" font-size="18" font-weight="850" fill="#f8fafc" opacity="1"><tspan x="247" dy="0">Local gates</tspan></text>
+    </g><g>
+      <rect x="400" y="430" width="146" height="112" rx="18" fill="rgba(3,7,18,0.76)" stroke="rgba(255,255,255,0.18)"/>
+      <text x="418" y="464" font-size="12" font-weight="900" fill="#10b981">03</text>
+      <text x="418" y="496" font-size="18" font-weight="850" fill="#f8fafc" opacity="1"><tspan x="418" dy="0">PR</tspan></text>
+    </g><g>
+      <rect x="571" y="430" width="146" height="112" rx="18" fill="rgba(3,7,18,0.76)" stroke="rgba(255,255,255,0.18)"/>
+      <text x="589" y="464" font-size="12" font-weight="900" fill="#10b981">04</text>
+      <text x="589" y="496" font-size="18" font-weight="850" fill="#f8fafc" opacity="1"><tspan x="589" dy="0">CI</tspan></text>
+    </g><g>
+      <rect x="742" y="430" width="146" height="112" rx="18" fill="rgba(3,7,18,0.76)" stroke="rgba(255,255,255,0.18)"/>
+      <text x="760" y="464" font-size="12" font-weight="900" fill="#10b981">05</text>
+      <text x="760" y="496" font-size="18" font-weight="850" fill="#f8fafc" opacity="1"><tspan x="760" dy="0">Preview</tspan></text>
+    </g><g>
+      <rect x="913" y="430" width="146" height="112" rx="18" fill="rgba(3,7,18,0.76)" stroke="rgba(255,255,255,0.18)"/>
+      <text x="931" y="464" font-size="12" font-weight="900" fill="#10b981">06</text>
+      <text x="931" y="496" font-size="18" font-weight="850" fill="#f8fafc" opacity="1"><tspan x="931" dy="0">Main</tspan></text>
+    </g><g>
+      <rect x="1084" y="430" width="146" height="112" rx="18" fill="rgba(3,7,18,0.76)" stroke="rgba(255,255,255,0.18)"/>
+      <text x="1102" y="464" font-size="12" font-weight="900" fill="#10b981">07</text>
+      <text x="1102" y="496" font-size="18" font-weight="850" fill="#f8fafc" opacity="1"><tspan x="1102" dy="0">Live check</tspan></text>
+    </g>
+  <text x="58" y="652" font-size="13" font-weight="800" fill="#8ea3bd">Local fast gates -> PR evidence -> preview/live verification; no live claim without a verified URL.</text>
+</svg>
