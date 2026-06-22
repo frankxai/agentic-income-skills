@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#05070d"/>
+      <stop offset="0.48" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#fbbf24"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="72%" cy="38%" r="56%">
+      <stop offset="0" stop-color="#2dd4bf" stop-opacity="0.28"/>
+      <stop offset="0.5" stop-color="#fbbf24" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#05070d" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <style>
+      text { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: 0; }
+      .fine { stroke: rgba(219,234,254,0.16); stroke-width: 1; }
+      .panel { fill: rgba(15,23,42,0.72); stroke: rgba(219,234,254,0.16); }
+      .chip { fill: rgba(255,255,255,0.055); stroke: rgba(219,234,254,0.16); }
+    </style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <rect width="1280" height="720" fill="url(#glow)"/>
+  <g opacity="0.38">
+    <path class="fine" d="M -80 720 C 160 446.4, 420 230.4, 1360 70"/>
+<path class="fine" d="M 35 720 C 220 446.4, 452 230.4, 1360 88"/>
+<path class="fine" d="M 150 720 C 280 446.4, 484 230.4, 1360 106"/>
+<path class="fine" d="M 265 720 C 340 446.4, 516 230.4, 1360 124"/>
+<path class="fine" d="M 380 720 C 400 446.4, 548 230.4, 1360 142"/>
+<path class="fine" d="M 495 720 C 460 446.4, 580 230.4, 1360 160"/>
+<path class="fine" d="M 610 720 C 520 446.4, 612 230.4, 1360 178"/>
+<path class="fine" d="M 725 720 C 580 446.4, 644 230.4, 1360 196"/>
+<path class="fine" d="M 840 720 C 640 446.4, 676 230.4, 1360 214"/>
+<path class="fine" d="M 955 720 C 700 446.4, 708 230.4, 1360 232"/>
+<path class="fine" d="M 1070 720 C 760 446.4, 740 230.4, 1360 250"/>
+<path class="fine" d="M 1185 720 C 820 446.4, 772 230.4, 1360 268"/>
+<path class="fine" d="M 1300 720 C 880 446.4, 804 230.4, 1360 286"/>
+<path class="fine" d="M 1415 720 C 940 446.4, 836 230.4, 1360 304"/>
+    <path class="fine" d="M 1280 60 C 921.5999999999999 144, 576 561.6, 0 665"/>
+<path class="fine" d="M 1280 134 C 921.5999999999999 163, 576 539.6, 0 610"/>
+<path class="fine" d="M 1280 208 C 921.5999999999999 182, 576 517.6, 0 555"/>
+<path class="fine" d="M 1280 282 C 921.5999999999999 201, 576 495.6, 0 500"/>
+<path class="fine" d="M 1280 356 C 921.5999999999999 220, 576 473.6, 0 445"/>
+<path class="fine" d="M 1280 430 C 921.5999999999999 239, 576 451.6, 0 390"/>
+<path class="fine" d="M 1280 504 C 921.5999999999999 258, 576 429.6, 0 335"/>
+<path class="fine" d="M 1280 578 C 921.5999999999999 277, 576 407.6, 0 280"/>
+<path class="fine" d="M 1280 652 C 921.5999999999999 296, 576 385.6, 0 225"/>
+  </g>
+  
+  <title>Agentic Income Skills how it works map</title>
+  <desc>Decide: What should be built next?. Audit: Catalog times content times traffic. Prioritize: Join programs and link gaps. Repeat: Improve the money loop on cadence</desc>
+  <g transform="translate(66 58)">
+    <text x="0" y="30" font-size="18" font-weight="800" fill="#2dd4bf">L4 SYSTEM MAP</text>
+    <text x="0" y="86" font-size="46" font-weight="860" fill="#f8fafc">How Agentic Income Skills works</text>
+    <text x="0" y="126" text-anchor="start" font-size="20" font-weight="520" fill="#94a3b8" opacity="1">Makes the money loop portable without hiding the ethics.</text>
+  </g>
+  <g transform="translate(70 214)">
+    <g>
+        <rect x="0" y="0" width="240" height="230" rx="28" class="panel"/>
+        <circle cx="58" cy="62" r="28" fill="url(#accent)" filter="url(#softGlow)"/>
+        <text x="58" y="72" text-anchor="middle" font-size="22" font-weight="850" fill="#06111f">1</text>
+        <text x="34" y="126" font-size="24" font-weight="820" fill="#f8fafc">Decide</text>
+        <text x="34" y="162" text-anchor="start" font-size="16" font-weight="520" fill="#a8b3c7" opacity="1">What should be built</text>
+<text x="34" y="185" text-anchor="start" font-size="16" font-weight="520" fill="#a8b3c7" opacity="1">next?</text>
+        <path d="M 222 112 C 246 112, 256 112, 278 112" stroke="#2dd4bf" stroke-width="3" opacity="0.45"/>
+      </g>
+<g>
+        <rect x="286" y="0" width="240" height="230" rx="28" class="panel"/>
+        <circle cx="344" cy="62" r="28" fill="url(#accent)" filter="url(#softGlow)"/>
+        <text x="344" y="72" text-anchor="middle" font-size="22" font-weight="850" fill="#06111f">2</text>
+        <text x="320" y="126" font-size="24" font-weight="820" fill="#f8fafc">Audit</text>
+        <text x="320" y="162" text-anchor="start" font-size="16" font-weight="520" fill="#a8b3c7" opacity="1">Catalog times content</text>
+<text x="320" y="185" text-anchor="start" font-size="16" font-weight="520" fill="#a8b3c7" opacity="1">times traffic</text>
+        <path d="M 508 112 C 532 112, 542 112, 564 112" stroke="#2dd4bf" stroke-width="3" opacity="0.45"/>
+      </g>
+<g>
+        <rect x="572" y="0" width="240" height="230" rx="28" class="panel"/>
+        <circle cx="630" cy="62" r="28" fill="url(#accent)" filter="url(#softGlow)"/>
+        <text x="630" y="72" text-anchor="middle" font-size="22" font-weight="850" fill="#06111f">3</text>
+        <text x="606" y="126" font-size="24" font-weight="820" fill="#f8fafc">Prioritize</text>
+        <text x="606" y="162" text-anchor="start" font-size="16" font-weight="520" fill="#a8b3c7" opacity="1">Join programs and link</text>
+<text x="606" y="185" text-anchor="start" font-size="16" font-weight="520" fill="#a8b3c7" opacity="1">gaps</text>
+        <path d="M 794 112 C 818 112, 828 112, 850 112" stroke="#2dd4bf" stroke-width="3" opacity="0.45"/>
+      </g>
+<g>
+        <rect x="858" y="0" width="240" height="230" rx="28" class="panel"/>
+        <circle cx="916" cy="62" r="28" fill="url(#accent)" filter="url(#softGlow)"/>
+        <text x="916" y="72" text-anchor="middle" font-size="22" font-weight="850" fill="#06111f">4</text>
+        <text x="892" y="126" font-size="24" font-weight="820" fill="#f8fafc">Repeat</text>
+        <text x="892" y="162" text-anchor="start" font-size="16" font-weight="520" fill="#a8b3c7" opacity="1">Improve the money loop</text>
+<text x="892" y="185" text-anchor="start" font-size="16" font-weight="520" fill="#a8b3c7" opacity="1">on cadence</text>
+        
+      </g>
+  </g>
+  <g transform="translate(90 504)">
+    <rect x="0" y="0" width="1100" height="108" rx="26" fill="rgba(255,255,255,0.045)" stroke="rgba(219,234,254,0.14)"/>
+    <text x="36" y="44" font-size="15" font-weight="800" fill="#fbbf24">OPERATING INVARIANT</text>
+    <text x="36" y="76" text-anchor="start" font-size="20" font-weight="680" fill="#e2e8f0" opacity="1">Makes the money loop portable without hiding the ethics.</text>
+  </g>
+</svg>
