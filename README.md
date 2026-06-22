@@ -1,3 +1,17 @@
+<!-- GITHUB_VISUALS_START -->
+<p align="center">
+  <img src="assets/github/header.svg" alt="Agentic Income Skills - Portable operating brain for income systems" width="100%">
+</p>
+
+<details open>
+<summary><strong>How this repo works</strong></summary>
+<p align="center">
+  <img src="assets/github/how-it-works.svg" alt="Agentic Income Skills operating map" width="100%">
+</p>
+</details>
+
+<!-- GITHUB_VISUALS_END -->
+
 # Agentic Income Skills
 
 Two portable agent skills that give any AI coding agent (Claude Code, Cursor, etc.) the brain to build and run honest AI-tool income systems. Drop them into your agent and ask "what should I build next?"
