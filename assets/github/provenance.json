@@ -2,21 +2,40 @@
   "repo": "agentic-income-skills",
   "title": "Agentic Income Skills",
   "layer": "L4",
-  "visualSystemVersion": "2026.06",
+  "visualSystemVersion": "2026.06-premium",
   "generatedAt": "2026-06-22",
-  "assetStrategy": "Deterministic SVG for exact GitHub text and diagrams; imagegen used for a text-free style backplate only.",
-  "sources": [
-    "C:/Users/frank/starlight/repos/DESIGN_TASTE.md",
-    "C:/Users/frank/starlight/repos/WEB_EXPERIENCE_STANDARD.md",
-    "C:/Users/frank/starlight/repos/VISUAL_QA_GATE.md",
-    "C:/Users/frank/.codex/skills/.system/imagegen/SKILL.md",
-    "Motion Design Studio designer-thinking rubric",
-    "agentic-ops-hub/ECOSYSTEM.md"
-  ],
+  "assetStrategy": "Imagegen provides text-free backplates; deterministic SVG overlays provide exact GitHub and website infographic text.",
+  "headerVisual": "income-engine-flow",
+  "howItWorksVisual": "website-growth-loop",
   "imagegen": {
     "mode": "built-in image_gen",
-    "sourcePath": "C:/Users/frank/.codex/generated_images/019eee93-7525-7c43-bb1f-836e174dd5cb/ig_060220fbd7fa9f0f016a38fd05b6148191b3e3170d09599c13.png",
-    "prompt": "Use case: stylized-concept\nAsset type: GitHub README visual system backplate, no text\nPrimary request: A premium abstract technical backplate for an AI agent income ecosystem: layered constellation map, luminous operational grid, subtle nodes connected through capability, config, income, payments, swarm, and assurance layers.\nStyle/medium: high-end editorial 3D illustration, precise luminous systems design, glass-and-metal depth, dark but not murky.\nComposition/framing: ultra-wide landscape composition with strong negative space in the center-left for deterministic SVG overlays later; no central text, no logos.\nLighting/mood: intelligent, trustworthy, operational, high-agency; luminous cyan, emerald, amber, and restrained violet accents on a charcoal base.\nColor palette: charcoal black, deep graphite, cool cyan, emerald, amber, small violet accents; avoid one-note purple-blue gradient dominance.\nMaterials/textures: fine grid lines, subtle translucent planes, precise particle trails, clean glass highlights, no blur haze.\nText (verbatim): none.\nConstraints: no words, no letters, no numbers, no logos, no watermarks, no UI screenshots, no humans, no finance symbols, no coins, no generic bokeh or decorative orbs.\nAvoid: unreadable labels, fake text, stock-photo style, clutter, heavy gradients, dark cropped mystery.",
-    "use": "Referenced by provenance; exact repo visuals are SVG."
+    "backplates": [
+      {
+        "slug": "income-engine-flow",
+        "title": "Income Engine Flow",
+        "sourcePath": "C:/Users/frank/.codex/generated_images/019eee93-7525-7c43-bb1f-836e174dd5cb/ig_0f176f3eb23cee4f016a390e47a234819391be0dc38f04abc0.png",
+        "promptFile": null
+      },
+      {
+        "slug": "website-growth-loop",
+        "title": "Website Growth Loop",
+        "sourcePath": "C:/Users/frank/.codex/generated_images/019eee93-7525-7c43-bb1f-836e174dd5cb/ig_0f176f3eb23cee4f016a390e8bba608193875b5f77080c6ffe.png",
+        "promptFile": null
+      },
+      {
+        "slug": "build-deploy-verify",
+        "title": "Build / Deploy / Verify",
+        "sourcePath": "C:/Users/frank/.codex/generated_images/019eee93-7525-7c43-bb1f-836e174dd5cb/ig_0f176f3eb23cee4f016a390fc49668819383d2eb7e46e4969d.png",
+        "promptFile": null
+      }
+    ]
+  },
+  "deterministicText": {
+    "reason": "Exact labels and workflow copy are not rendered by the image model.",
+    "files": [
+      "assets/github/header.svg",
+      "assets/github/how-it-works.svg",
+      "assets/github/visual-suite.json"
+    ]
   }
 }
