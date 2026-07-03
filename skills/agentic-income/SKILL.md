@@ -26,7 +26,7 @@ One thesis, five principles, four loops. Everything else is execution.
 affiliate-agent-skills   ← the engine: catalog + audit + this brain (OSS — the lead-gen)
    │
    ├─► agenticincome.ai            ← HUB. The authority brand. Spokes link up to it.
-   ├─► agenticpassiveincome.ai     ← spoke: the "set it and forget it" angle
+   ├─► agenticpassiveincome.com    ← spoke: the "set it and forget it" angle
    └─► disruptivepassiveincome.com ← spoke: the "tools replacing job functions" angle
 ```
 
