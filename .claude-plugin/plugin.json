@@ -1,0 +1,13 @@
+{
+  "name": "agentic-income",
+  "version": "0.2.0",
+  "description": "The Income Architect. Install into Claude Code, Codex, or any agent and run /income to research what's earning right now, design the highest-margin income system aligned to you, and build it deploy-ready on Vercel. Three lenses — build, passive, disrupt — one superintelligence.",
+  "author": "FrankX / Starlight",
+  "license": "MIT",
+  "homepage": "https://agenticincome.ai",
+  "repository": "https://github.com/frankxai/agentic-income-skills",
+  "keywords": ["income", "affiliate", "agentic", "creator", "vercel", "nextjs", "x402", "market-intelligence", "mcp", "openclaw", "hermes", "agent-wallet", "always-on"],
+  "commands": "./commands",
+  "agents": "./agents",
+  "skills": "./skills"
+}
