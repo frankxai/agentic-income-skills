@@ -16,53 +16,85 @@
   <img src="assets/github/build-deploy-verify.svg" alt="Agentic Income Skills build deploy verify path" width="100%">
 </p>
 </details>
-
 <!-- GITHUB_VISUALS_END -->
 
 # Agentic Income Skills
 
-Two portable agent skills that give any AI coding agent (Claude Code, Cursor, etc.) the brain to build and run honest AI-tool income systems. Drop them into your agent and ask "what should I build next?"
+Open contracts, portable skills, and reference systems for principal-owned agents that perform paid work.
 
-**MIT.** These are the operating skills extracted from the [`affiliate-agent-skills`](https://github.com/frankxai/affiliate-agent-skills) engine — install them standalone, or use the full engine for the catalog + audit pipeline + business plan.
+Agentic Income does not pretend an agent is a company, bank-account holder, or unrestricted wallet owner. A human or legal entity owns the service, accounts, credentials, obligations, and money. Agents operate inside declared capabilities, budgets, approvals, evals, and revocation.
 
-## The skills
+The product unit is an Outcome Pack:
 
-| Skill | What it does |
-|---|---|
-| **`agentic-income`** | The operating brain — the thesis (frontier tools rank, adjacents pay), five principles, the "what to build next" decision logic, and the four self-improving loops. Use it to plan, build, or scale an income network. |
-| **`affiliate-audit`** | The money loop — joins a program catalog × your content × traffic to surface (a) which programs to join next and (b) which existing posts mention a payer with no link. Includes `scripts/affiliate-audit.mjs`. |
+- buyer, problem, outcome, and acceptance criteria;
+- offer and legal principal;
+- agent skills, workflow, interfaces, and customer-owned connectors;
+- authority, approval, budget, and revocation policy;
+- eval suite, operations, economics, and evidence.
 
-## Install
+MIT licensed. No account, hosted runtime, customer data, paid payload, or private credential is required.
 
-**Claude Code** — copy the skills into your skills directory:
+## What ships
 
-```bash
-git clone https://github.com/frankxai/agentic-income-skills
-cp -r agentic-income-skills/skills/* ~/.claude/skills/
-```
+| Surface | Purpose |
+| --- | --- |
+| skills/agentic-income | Discover, validate, build, sell, deliver, operate, publish, prove, and improve an income system |
+| schemas/income-system.v1.schema.json | Open system, authority, evaluation, economics, and proof contract |
+| scripts/validate-income-system.mjs | JSON Schema plus non-negotiable policy validation |
+| scripts/scaffold-income-system.mjs | Creates an owned copy of the reference Outcome Pack |
+| examples/request-to-quote-desk | First governed vertical system |
+| skills/affiliate-audit | Legacy-compatible adjunct for honest affiliate opportunity audits |
 
-Then invoke `agentic-income` when planning an income system, or `affiliate-audit` to find monetization gaps. They work in any repo.
+Affiliate and income-asset automation belongs to the Agentic Passive Income discipline. It remains here temporarily for compatibility while the public passive-income core is consolidated.
 
-**Any agent** — point your agent at `skills/agentic-income/SKILL.md` as a system/context file. It's plain Markdown with YAML frontmatter; no runtime required.
+## Quick start
 
-## Run the audit
+Install dependencies and validate the reference system:
 
-```bash
-node scripts/affiliate-audit.mjs --content=<your-site>/content --write
-```
+    npm install
+    npm test
+    npm run income:validate -- examples/request-to-quote-desk/income-system.json
 
-Reads `data/programs.json` (the starter catalog) × your content → ranks programs to join and posts to link, writes `AUDIT.md`.
+Create an owned working copy:
 
-## The five principles (the whole philosophy)
+    npm run income:init -- --output=../my-quote-desk
 
-1. **Honest pick always wins** — never let a commission override the truth.
-2. **Recurring > one-time** — passive income compounds on subscriptions.
-3. **Own the audience** — capture the email; it's the asset no algorithm can take.
-4. **Build the engine once, fork the sites** — effort goes into the substrate.
-5. **Compounding over spikes** — optimize for what still earns in 12 months.
+Then ask an agent:
 
-## See also
+    /agentic-income build a request-to-quote desk for Amsterdam renovation
+    businesses, with human approval before pricing or outbound commitments.
 
-- [affiliate-agent-skills](https://github.com/frankxai/affiliate-agent-skills) — the full engine (catalog + audit + business plan).
-- [agentic-income-template](https://github.com/frankxai/agentic-income-template) — clone-and-deploy site that consumes these skills.
-- [awesome-agentic-income](https://github.com/frankxai/awesome-agentic-income) — the curated resource list.
+## Discipline boundary
+
+Agentic Income covers accepted paid work:
+
+- productized agent services;
+- websites and AI systems for local or vertical businesses;
+- data, evaluation, and research services sold to people or agents;
+- governed remote capabilities exposed through Skills, MCP, or A2A.
+
+Agentic Passive Income covers owned assets that continue selling with bounded maintenance: affiliate systems, products, reports, skills, software, datasets, licensing, and recurring knowledge.
+
+DPI covers simulation-first protocol, crypto, capital, yield, and frontier mechanisms.
+
+All three may share one private economic graph. They do not share unrestricted financial authority.
+
+## Trust rules
+
+1. The service always names the legal principal.
+2. The customer owns production accounts, credentials, domains, and data.
+3. Default authority is deny.
+4. Prices, contracts, transfers, permission increases, and public income claims are human-gated.
+5. Secrets never enter the manifest, Git, or model context.
+6. Every claimed outcome is tied to acceptance criteria, eval version, system hash, economic events, and evidence.
+7. No guaranteed income, hidden affiliate routing, pooled funds, custody, or autonomous investment execution.
+
+## Related repositories
+
+- Agentic Income platform: https://github.com/frankxai/agenticincome
+- Agentic Passive Income app: https://github.com/frankxai/agenticpassiveincome
+- Public passive-income engine: https://github.com/frankxai/affiliate-agent-skills
+- DPI substrate: https://github.com/frankxai/dpi
+- Curated ecosystem list: https://github.com/frankxai/awesome-agentic-income
+
+See docs/income-system-v1.md for the contract and examples/request-to-quote-desk for the reference Outcome Pack.

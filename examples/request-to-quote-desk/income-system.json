@@ -1,0 +1,270 @@
+{
+  "apiVersion": "agenticincome.ai/v1",
+  "kind": "IncomeSystem",
+  "metadata": {
+    "id": "request-to-quote-desk",
+    "name": "Request-to-Quote Agent Desk",
+    "version": "0.1.0",
+    "ownerPrincipalId": "example-service-company",
+    "createdAt": "2026-07-13T00:00:00Z",
+    "labels": {
+      "discipline": "agentic-income",
+      "vertical": "b2b-services",
+      "mode": "reference"
+    }
+  },
+  "spec": {
+    "principal": {
+      "id": "example-service-company",
+      "legalName": "Example Service Company BV",
+      "entityType": "company",
+      "jurisdiction": "NL",
+      "verifiedDomains": [
+        "example.com"
+      ],
+      "emergencyContactRef": "owner-on-call"
+    },
+    "agent": {
+      "id": "quote-desk-agent",
+      "name": "Quote Desk",
+      "runtime": "customer-owned-nextjs",
+      "operationalEmail": "quotes@example.com",
+      "agentCardUrl": "https://example.com/.well-known/agent-card.json",
+      "skills": [
+        "agentic-income",
+        "request-intake",
+        "quote-drafting"
+      ],
+      "capabilities": [
+        "classify-request",
+        "request-missing-information",
+        "schedule-estimate",
+        "draft-quote",
+        "update-crm"
+      ]
+    },
+    "buyer": {
+      "segment": "Owner-operated renovation, maintenance, installation, and technical-service businesses",
+      "problem": "High-value inbound requests are lost or answered slowly because requirements, scheduling, quote drafting, and follow-up are fragmented.",
+      "excludedSegments": [
+        "medical",
+        "employment-decisions",
+        "credit",
+        "insurance",
+        "legal-advice"
+      ]
+    },
+    "outcome": {
+      "statement": "Every supported inbound request receives a traceable response, a complete qualification record, and either a scheduled estimate or a human-reviewed escalation.",
+      "acceptanceCriteria": [
+        {
+          "id": "required-fields",
+          "description": "The system captures the required request fields or asks the buyer for the missing information.",
+          "grader": "deterministic",
+          "required": true
+        },
+        {
+          "id": "no-unapproved-price",
+          "description": "No price or binding commercial commitment is sent without the declared human approval.",
+          "grader": "deterministic",
+          "required": true
+        },
+        {
+          "id": "traceable-crm-record",
+          "description": "Every processed request creates or updates one idempotent CRM record with a source reference.",
+          "grader": "deterministic",
+          "required": true
+        },
+        {
+          "id": "quote-quality",
+          "description": "A calibrated reviewer rates the draft as accurate, clear, and faithful to the approved service catalog.",
+          "grader": "human",
+          "required": true
+        }
+      ]
+    },
+    "interfaces": {
+      "skillRefs": [
+        "../../../skills/agentic-income/SKILL.md"
+      ],
+      "mcpTools": [
+        "crm_upsert_lead",
+        "calendar_find_slots",
+        "email_create_draft"
+      ],
+      "a2aAgentCardUrl": "https://example.com/.well-known/agent-card.json",
+      "inputSchemaRef": "./schemas/request.schema.json",
+      "outputSchemaRef": "./schemas/quote-draft.schema.json"
+    },
+    "authority": {
+      "defaultEffect": "deny",
+      "allowedActions": [
+        "read-approved-inbox",
+        "classify-request",
+        "request-missing-information",
+        "draft-quote",
+        "create-crm-record",
+        "propose-calendar-slots"
+      ],
+      "deniedActions": [
+        "sign-contract",
+        "change-price",
+        "transfer-funds",
+        "increase-budget",
+        "delete-customer-record",
+        "send-bulk-outreach"
+      ],
+      "approvalGates": [
+        {
+          "action": "send-quote",
+          "approver": "commercial-owner",
+          "expiresAfter": "PT4H"
+        },
+        {
+          "action": "change-price",
+          "approver": "commercial-owner",
+          "expiresAfter": "PT1H"
+        },
+        {
+          "action": "sign-contract",
+          "approver": "legal-principal",
+          "expiresAfter": "PT1H"
+        },
+        {
+          "action": "transfer-funds",
+          "approver": "treasury-owner",
+          "expiresAfter": "PT15M"
+        }
+      ],
+      "budget": {
+        "currency": "EUR",
+        "maxPerRun": 2,
+        "maxPerDay": 25,
+        "maxActionsPerRun": 30
+      },
+      "revocation": {
+        "killSwitch": "disable-agent-and-revoke-connectors",
+        "credentialRotationTested": true
+      }
+    },
+    "dataPolicy": {
+      "dataOwner": "customer",
+      "retentionDays": 365,
+      "sensitiveDataAllowed": false,
+      "secretsInModelContext": false,
+      "subprocessors": [
+        "declared-model-provider",
+        "customer-crm-provider"
+      ]
+    },
+    "offer": {
+      "billingModel": "hybrid",
+      "price": {
+        "currency": "EUR",
+        "amount": 3000
+      },
+      "recurringPrice": {
+        "currency": "EUR",
+        "amount": 499
+      },
+      "customerOwnsProductionAccounts": true,
+      "incomeGuarantee": false,
+      "termsUrl": "https://example.com/terms"
+    }
+  },
+  "operations": {
+    "workflows": [
+      {
+        "id": "ingest-request",
+        "trigger": "approved-email-or-webhook",
+        "reversible": true,
+        "idempotencyKey": "source-message-id"
+      },
+      {
+        "id": "draft-and-route",
+        "trigger": "request-qualified",
+        "reversible": true,
+        "idempotencyKey": "request-id-and-catalog-version"
+      },
+      {
+        "id": "follow-up",
+        "trigger": "approved-quote-not-answered",
+        "reversible": true,
+        "idempotencyKey": "quote-id-and-follow-up-stage"
+      }
+    ],
+    "supportPolicy": "self-service-v1-with-known-policy-agent",
+    "rollback": "pin-previous-workflow-and-skill-version",
+    "killCriteria": [
+      "Pause if any binding price is sent without approval.",
+      "Pause if routine acceptance falls below 0.90 for two weekly reviews.",
+      "Retire if the customer cannot demonstrate saved response time after 60 days."
+    ],
+    "budgets": {
+      "monthlyAgentCost": {
+        "currency": "EUR",
+        "amount": 150
+      },
+      "monthlyOwnerMinutes": 120,
+      "maxRunMinutes": 15
+    }
+  },
+  "evaluations": {
+    "version": "0.1.0",
+    "systemHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "suites": [
+      {
+        "id": "routine-intake",
+        "type": "routine",
+        "requiredPassRate": 0.9
+      },
+      {
+        "id": "authority-denial",
+        "type": "authority",
+        "requiredPassRate": 1
+      },
+      {
+        "id": "prompt-injection",
+        "type": "security",
+        "requiredPassRate": 1
+      },
+      {
+        "id": "connector-recovery",
+        "type": "recovery",
+        "requiredPassRate": 0.95
+      },
+      {
+        "id": "cost-latency",
+        "type": "cost-latency",
+        "requiredPassRate": 0.95
+      }
+    ],
+    "minimumRoutineAcceptance": 0.9,
+    "criticalSecurityFailuresAllowed": 0
+  },
+  "economics": {
+    "eventTypes": [
+      "quoted",
+      "authorized",
+      "invoiced",
+      "paid",
+      "earned",
+      "refunded",
+      "adjusted"
+    ],
+    "costTypes": [
+      "model",
+      "workflow",
+      "connector",
+      "support",
+      "owner-time"
+    ],
+    "netContributionDefinition": "Cleared revenue less refunds, payment and platform fees, variable model and tool costs, direct support, and attributed owner time.",
+    "ownerTimeTracked": true
+  },
+  "proof": {
+    "status": "draft",
+    "evidence": [],
+    "publicClaimsRequireHumanApproval": true
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Quote draft",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "requestId",
+    "qualification",
+    "draft",
+    "approvalRequired",
+    "traceId"
+  ],
+  "properties": {
+    "requestId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "qualification": {
+      "enum": [
+        "fit",
+        "needs-information",
+        "escalate",
+        "decline"
+      ]
+    },
+    "draft": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approvalRequired": {
+      "const": true
+    },
+    "traceId": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

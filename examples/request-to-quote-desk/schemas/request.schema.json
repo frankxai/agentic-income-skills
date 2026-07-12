@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Quote request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "requestId",
+    "source",
+    "contact",
+    "summary",
+    "receivedAt"
+  ],
+  "properties": {
+    "requestId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "enum": [
+        "web",
+        "email",
+        "approved-api"
+      ]
+    },
+    "contact": {
+      "type": "object",
+      "required": [
+        "name",
+        "email"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        }
+      }
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 10
+    },
+    "receivedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

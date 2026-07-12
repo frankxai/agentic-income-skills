@@ -1,0 +1,813 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agenticincome.ai/schemas/income-system.v1.schema.json",
+  "title": "Agentic Income System v1",
+  "description": "A principal-bound contract for a governed agent service and its economic proof.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec",
+    "operations",
+    "evaluations",
+    "economics",
+    "proof"
+  ],
+  "properties": {
+    "apiVersion": {
+      "const": "agenticincome.ai/v1"
+    },
+    "kind": {
+      "const": "IncomeSystem"
+    },
+    "metadata": {
+      "$ref": "#/$defs/metadata"
+    },
+    "spec": {
+      "$ref": "#/$defs/spec"
+    },
+    "operations": {
+      "$ref": "#/$defs/operations"
+    },
+    "evaluations": {
+      "$ref": "#/$defs/evaluations"
+    },
+    "economics": {
+      "$ref": "#/$defs/economics"
+    },
+    "proof": {
+      "$ref": "#/$defs/proof"
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{2,63}$"
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?$"
+    },
+    "money": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "currency",
+        "amount"
+      ],
+      "properties": {
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "amount": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "version",
+        "ownerPrincipalId",
+        "createdAt"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 120
+        },
+        "version": {
+          "$ref": "#/$defs/semver"
+        },
+        "ownerPrincipalId": {
+          "$ref": "#/$defs/id"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "maxLength": 120
+          }
+        }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "principal",
+        "agent",
+        "buyer",
+        "outcome",
+        "interfaces",
+        "authority",
+        "dataPolicy",
+        "offer"
+      ],
+      "properties": {
+        "principal": {
+          "$ref": "#/$defs/principal"
+        },
+        "agent": {
+          "$ref": "#/$defs/agent"
+        },
+        "buyer": {
+          "$ref": "#/$defs/buyer"
+        },
+        "outcome": {
+          "$ref": "#/$defs/outcome"
+        },
+        "interfaces": {
+          "$ref": "#/$defs/interfaces"
+        },
+        "authority": {
+          "$ref": "#/$defs/authority"
+        },
+        "dataPolicy": {
+          "$ref": "#/$defs/dataPolicy"
+        },
+        "offer": {
+          "$ref": "#/$defs/offer"
+        }
+      }
+    },
+    "principal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "legalName",
+        "entityType",
+        "jurisdiction",
+        "verifiedDomains"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "legalName": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 160
+        },
+        "entityType": {
+          "enum": [
+            "natural-person",
+            "sole-proprietor",
+            "company",
+            "nonprofit",
+            "public-entity"
+          ]
+        },
+        "jurisdiction": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}(?:-[A-Z0-9]{1,3})?$"
+        },
+        "verifiedDomains": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "format": "hostname"
+          }
+        },
+        "emergencyContactRef": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "runtime",
+        "skills",
+        "capabilities"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 100
+        },
+        "runtime": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "operationalEmail": {
+          "type": "string",
+          "format": "email"
+        },
+        "agentCardUrl": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "skills": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "buyer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "segment",
+        "problem",
+        "excludedSegments"
+      ],
+      "properties": {
+        "segment": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 240
+        },
+        "problem": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 600
+        },
+        "excludedSegments": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 2
+          }
+        }
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "statement",
+        "acceptanceCriteria"
+      ],
+      "properties": {
+        "statement": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 600
+        },
+        "acceptanceCriteria": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/acceptanceCriterion"
+          }
+        }
+      }
+    },
+    "acceptanceCriterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "description",
+        "grader",
+        "required"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 500
+        },
+        "grader": {
+          "enum": [
+            "deterministic",
+            "model",
+            "human"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        }
+      }
+    },
+    "interfaces": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "skillRefs",
+        "mcpTools",
+        "inputSchemaRef",
+        "outputSchemaRef"
+      ],
+      "properties": {
+        "skillRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "mcpTools": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "a2aAgentCardUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "inputSchemaRef": {
+          "type": "string",
+          "minLength": 1
+        },
+        "outputSchemaRef": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "defaultEffect",
+        "allowedActions",
+        "deniedActions",
+        "approvalGates",
+        "budget",
+        "revocation"
+      ],
+      "properties": {
+        "defaultEffect": {
+          "const": "deny"
+        },
+        "allowedActions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 2
+          }
+        },
+        "deniedActions": {
+          "type": "array",
+          "minItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 2
+          }
+        },
+        "approvalGates": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/approvalGate"
+          }
+        },
+        "budget": {
+          "$ref": "#/$defs/budget"
+        },
+        "revocation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "killSwitch",
+            "credentialRotationTested"
+          ],
+          "properties": {
+            "killSwitch": {
+              "type": "string",
+              "minLength": 3
+            },
+            "credentialRotationTested": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "approvalGate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action",
+        "approver",
+        "expiresAfter"
+      ],
+      "properties": {
+        "action": {
+          "type": "string",
+          "minLength": 2
+        },
+        "approver": {
+          "type": "string",
+          "minLength": 2
+        },
+        "expiresAfter": {
+          "type": "string",
+          "pattern": "^P(?!$).+"
+        }
+      }
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "currency",
+        "maxPerRun",
+        "maxPerDay",
+        "maxActionsPerRun"
+      ],
+      "properties": {
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "maxPerRun": {
+          "type": "number",
+          "minimum": 0
+        },
+        "maxPerDay": {
+          "type": "number",
+          "minimum": 0
+        },
+        "maxActionsPerRun": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "dataPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dataOwner",
+        "retentionDays",
+        "sensitiveDataAllowed",
+        "secretsInModelContext"
+      ],
+      "properties": {
+        "dataOwner": {
+          "enum": [
+            "customer",
+            "principal",
+            "joint"
+          ]
+        },
+        "retentionDays": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sensitiveDataAllowed": {
+          "type": "boolean"
+        },
+        "secretsInModelContext": {
+          "const": false
+        },
+        "subprocessors": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 2
+          }
+        }
+      }
+    },
+    "offer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "billingModel",
+        "price",
+        "customerOwnsProductionAccounts",
+        "incomeGuarantee"
+      ],
+      "properties": {
+        "billingModel": {
+          "enum": [
+            "fixed",
+            "subscription",
+            "usage",
+            "hybrid"
+          ]
+        },
+        "price": {
+          "$ref": "#/$defs/money"
+        },
+        "recurringPrice": {
+          "$ref": "#/$defs/money"
+        },
+        "customerOwnsProductionAccounts": {
+          "const": true
+        },
+        "incomeGuarantee": {
+          "const": false
+        },
+        "termsUrl": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "operations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workflows",
+        "supportPolicy",
+        "rollback",
+        "killCriteria",
+        "budgets"
+      ],
+      "properties": {
+        "workflows": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/workflow"
+          }
+        },
+        "supportPolicy": {
+          "type": "string",
+          "minLength": 3
+        },
+        "rollback": {
+          "type": "string",
+          "minLength": 3
+        },
+        "killCriteria": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 10
+          }
+        },
+        "budgets": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "monthlyAgentCost",
+            "monthlyOwnerMinutes",
+            "maxRunMinutes"
+          ],
+          "properties": {
+            "monthlyAgentCost": {
+              "$ref": "#/$defs/money"
+            },
+            "monthlyOwnerMinutes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "maxRunMinutes": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        }
+      }
+    },
+    "workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "trigger",
+        "reversible",
+        "idempotencyKey"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "trigger": {
+          "type": "string",
+          "minLength": 3
+        },
+        "reversible": {
+          "type": "boolean"
+        },
+        "idempotencyKey": {
+          "type": "string",
+          "minLength": 3
+        }
+      }
+    },
+    "evaluations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "systemHash",
+        "suites",
+        "minimumRoutineAcceptance",
+        "criticalSecurityFailuresAllowed"
+      ],
+      "properties": {
+        "version": {
+          "$ref": "#/$defs/semver"
+        },
+        "systemHash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "suites": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/evalSuite"
+          }
+        },
+        "minimumRoutineAcceptance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "criticalSecurityFailuresAllowed": {
+          "const": 0
+        }
+      }
+    },
+    "evalSuite": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "requiredPassRate"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "type": {
+          "enum": [
+            "routine",
+            "authority",
+            "security",
+            "recovery",
+            "cost-latency"
+          ]
+        },
+        "requiredPassRate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "economics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eventTypes",
+        "costTypes",
+        "netContributionDefinition",
+        "ownerTimeTracked"
+      ],
+      "properties": {
+        "eventTypes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "quoted",
+              "authorized",
+              "invoiced",
+              "paid",
+              "earned",
+              "refunded",
+              "adjusted"
+            ]
+          }
+        },
+        "costTypes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 2
+          }
+        },
+        "netContributionDefinition": {
+          "type": "string",
+          "minLength": 20
+        },
+        "ownerTimeTracked": {
+          "const": true
+        }
+      }
+    },
+    "proof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "evidence",
+        "publicClaimsRequireHumanApproval"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "draft",
+            "validating",
+            "verified",
+            "suspended",
+            "retired"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          }
+        },
+        "publicClaimsRequireHumanApproval": {
+          "const": true
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "level",
+        "observedAt",
+        "sourceRef"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "level": {
+          "enum": [
+            "reported",
+            "document-reviewed",
+            "connector-observed",
+            "independently-attested"
+          ]
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sourceRef": {
+          "type": "string",
+          "minLength": 3
+        }
+      }
+    }
+  }
+}
