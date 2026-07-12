@@ -1,71 +1,138 @@
 ---
 name: agentic-income
-description: The operating brain for building income systems with AI agents. Use when planning, building, or scaling an affiliate/content/product income network — deciding what to build next, where money actually comes from, how to make it compound, and how the system improves itself. Composes affiliate-audit. Trigger phrases: build an income system, make money with agents, scale my content network, what should I build next, passive income with AI, monetize this site, agentic income.
+description: Build and operate principal-owned AI income systems that perform accepted paid work. Use when discovering an agent service opportunity, validating demand, creating an Outcome Pack, implementing a vertical AI system, defining agent authority, evaluating delivery, exposing a Skill/MCP/A2A service, or proving net economics. Active services belong here; affiliate and owned income assets belong to Agentic Passive Income; capital, crypto, lending, staking, trading, and yield experiments belong to DPI.
 ---
 
-# agentic-income
+# Agentic Income
 
-The brain that turns "make money with AI agents" into a system that scales itself.
-One thesis, five principles, four loops. Everything else is execution.
+Agentic Income turns a repeated professional workflow into a governed, sellable service.
 
-## The thesis
+The agent is an operator. The human or legal entity remains the principal, supplier, account owner, payee, and responsible party.
 
-**Honest AI-tool comparison content is the most scalable, lowest-cost income engine an AI architect can run.** Frontier tools (ChatGPT, Claude, Midjourney, Veo) drive enormous search volume but pay nothing. So you rank for them, tell the genuine truth, and route to the **adjacent tools that pay recurring** — the ones you actually use. The reader gets the real answer; the system earns when they act on it. Trust is the asset; the link is downstream.
+## Invocation
 
-## The five principles (non-negotiable)
+Use:
 
-1. **Honest pick always wins.** Recommend what's genuinely best, then link the payer you'd actually buy. A link that overrides the truth burns the only asset that compounds: trust.
-2. **Recurring > one-time.** Passive income compounds on subscriptions, not flat bounties. Build around recurring-payers (Higgsfield, Systeme.io, CapCut, ElevenLabs, Copy.ai); treat one-time bounties as bonus.
-3. **Own the audience.** Every reader is income *or* a future relationship. One email capture per page turns rented traffic (SEO/social) into an owned list you control.
-4. **Build the engine once, fork the sites.** One shared catalog + one template; each new site is a `lib/site.ts` swap. The second site is near-zero marginal cost. Effort goes into the substrate, not the Nth instance.
-5. **Compounding over spikes.** Content that ranks for years + recurring commissions + a growing list = income that runs without you. Optimize for the asset that's still earning in 12 months, not the post that spikes today.
+    /agentic-income MODE GOAL
 
-## The architecture (hub-and-spoke)
+Modes:
 
-```
-affiliate-agent-skills   ← the engine: catalog + audit + this brain (OSS — the lead-gen)
-   │
-   ├─► agenticincome.ai            ← HUB. The authority brand. Spokes link up to it.
-   ├─► agenticpassiveincome.com    ← spoke: the "set it and forget it" angle
-   └─► disruptivepassiveincome.com ← spoke: the "tools replacing job functions" angle
-```
+- discover — rank opportunities by buyer pain, access, evidence, risk, time to cash, repeatability, and support burden.
+- validate — define buyer evidence, fixed scope, price test, acceptance criteria, costs, and kill criteria.
+- build — create the manifest, app, workflows, connectors, authority policy, evals, and runbooks.
+- sell — create a demo, landing page, proposal, and reviewed outreach assets.
+- deliver — deploy into customer-owned accounts and run acceptance tests.
+- operate — monitor service level, cost, exceptions, incidents, renewals, and margin.
+- publish — expose a safe Skill, MCP tool, A2A Agent Card, or metered endpoint.
+- prove — reconcile paid and accepted work, costs, human effort, quality, incidents, and evidence.
+- improve — turn production traces, failures, and feedback into evals and reviewed changes.
 
-One engine, three brands, three search audiences, near-zero overlap. Cross-link spokes→hub for topical authority + referral flow. If one wins, double down; the losers cost almost nothing.
+If MODE is omitted, infer it from the request and state the inferred mode.
 
-## The four loops (this is what "agents that learn" means)
+## Outcome Pack contract
 
-The system improves itself because each loop feeds the next. An agent runs these on a cadence — no human strategy meeting required.
+Every build must produce or update:
 
-**1. Monetization loop** (weekly): `affiliate-audit` joins the catalog × every site's content × traffic → ranks (a) which programs to join next, (b) which existing posts are mentioning a payer with no link. Join → set `ourLink` in `data/programs.json` → `sync:catalog` → links go live network-wide → re-audit, gap clears.
+- income-system.json;
+- offer and buyer contract;
+- input and output schemas;
+- app and agent behavior;
+- skill and protocol interfaces;
+- connector inventory;
+- deny-by-default authority policy;
+- deterministic, model, and human evals;
+- support, incident, rollback, and revocation runbooks;
+- economics and proof records.
 
-**2. Content loop** (weekly): pull each site's top-traffic + highest-intent queries → `content-backlog.md` ranks the next post by *opportunity = authority × intent × monetization × low-competition*. Build the top one in the citable shape. The winners tell you what to write next.
+Validate against schemas/income-system.v1.schema.json.
 
-**3. Authority loop** (continuous): the OSS engine + public playbook earn GitHub stars and inbound links → that authority lifts the sites that consume the engine → more traffic → more audit signal. Giving the method away *is* the distribution.
+## Opportunity ranking
 
-**4. Learning loop** (monthly): every published post is a labeled example — query × shape × conversion. Feed outcomes back: which hooks/tables/answer-boxes converted, which programs actually paid. Bias the next batch toward what worked. The catalog's `status` + the backlog's ranking are the memory.
+Prefer:
 
-## What to build next (the decision)
+1. A painful workflow with existing budget and a short path to acceptance.
+2. A narrow buyer and repeatable input/output contract.
+3. Customer-owned systems and credentials.
+4. Fixed scope and transparent pricing.
+5. Deterministic acceptance, low support, and reusable implementation.
+6. Recurring assurance earned through monitoring, evals, and updates.
 
-When asked "what should I build/do next," rank candidate actions by leverage:
+Reject:
 
-1. **Set an `ourLink`** for a program already mentioned in a high-traffic post → instant revenue on existing traffic. (Run `affiliate-audit` to find these.) Highest ROI, do first.
-2. **Write the top backlog post** for the site with the most authority in that cluster.
-3. **Fork a spoke** only once the hub has ≥1 ranking post proving the shape works. Don't scale an unproven template.
-4. **Join the next recurring-payer** the audit flags as high-mention/no-link.
+- vague “AI transformation” without a buyer or accepted outcome;
+- regulated decisions in medical, employment, credit, insurance, or legal advice;
+- unrestricted wallet, bank, email, or production authority;
+- arbitrary bespoke integrations;
+- autonomous cold outreach;
+- revenue guarantees, custody, pooled payouts, or performance fees without clean attribution;
+- generic agent marketplace before verified supply and demand exist.
 
-Never: chase a one-time bounty over a recurring one, link a tool you haven't used, or build site N+1 while site N has un-linked payer mentions.
+## Authority model
 
-## The honest shape (every post)
+Bind every service to:
 
-Direct **answer box** up top (what AI search lifts) → **sortable comparison table** (the conversion surface; renders a CTA only when `ourLink` is set) → the genuine recommendation in prose → real **FAQ** with FAQPage JSON-LD → one **affiliate disclosure**. Recommend, don't sell. The shape ranks *and* converts.
+Legal principal → agent identity → capability → scoped credential → policy → auditable action.
 
-## Compose
+Agents may research, classify, draft, schedule, update approved records, run tests, and propose reversible changes.
 
-- `affiliate-audit` — the monetization-loop engine (catalog × content × traffic → gaps). This brain decides *what to do*; affiliate-audit *finds where the money is*.
+Human approval is mandatory for:
 
-## Guardrails
+- prices and binding quotes;
+- contracts and legal terms;
+- person-directed broadcasts;
+- refunds outside policy;
+- production credentials or wider permissions;
+- bank or wallet transfers;
+- budget increases;
+- destructive or irreversible actions;
+- public income claims.
 
-- One disclosure per page with links (FTC + trust).
-- Catalog `status` flags dead-ends (frontier LLMs) and closed programs — ignore them.
-- Re-verify affiliate terms before relying on them; they change often.
-- Null `ourLink` → plain text, never a dead link.
+An operational email is not legal identity. A delegated wallet signer is not wallet ownership. Wallet keys, bank credentials, and seed phrases never enter model context.
+
+## Build loop
+
+1. Observe the buyer workflow and collect payment evidence.
+2. Score opportunity, risk, repeatability, and support.
+3. Propose one Outcome Pack.
+4. Validate offer, acceptance, budget, authority, and stop conditions.
+5. Build in a branch or sandbox.
+6. Verify routine, authority, security, recovery, cost, and latency evals.
+7. Deploy into customer-owned accounts.
+8. Reconcile accepted outcomes, money, costs, incidents, and owner time.
+9. Improve or retire from evidence.
+
+## Proof contract
+
+Never use invoice screenshots as proof.
+
+Record:
+
+- quoted, authorized, invoiced, paid, earned, refunded, and adjusted events;
+- customer acceptance;
+- system and eval versions;
+- direct platform, model, tool, support, and owner-time costs;
+- completion, exception, and incident rates;
+- evidence level: reported, document-reviewed, connector-observed, or independently attested.
+
+Public claims require consent and human approval.
+
+## First reference system
+
+Use examples/request-to-quote-desk as the beachhead.
+
+It is for renovation, commercial maintenance, specialist installation, and B2B technical services. It qualifies inbound requests, asks for missing information, schedules estimates, drafts non-binding quotes, updates the CRM, and routes commercial commitments to a human.
+
+The recommended validation model is a fixed deployment plus recurring managed assurance. Do not charge a performance fee initially.
+
+## Protocol posture
+
+- Agent Skills carry operating knowledge.
+- MCP connects tools and data.
+- A2A exposes remote task services and signed Agent Cards.
+- AP2 can represent payment authority.
+- UCP and ACP can support commerce discovery and checkout.
+- x402 can meter capped machine endpoints.
+
+Compose these protocols. Do not fork them or create a new agent framework.
+
+The innovation is the service and proof contract binding principal, outcome, authority, system version, evaluation, economics, and evidence.

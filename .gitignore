@@ -11,3 +11,7 @@ link-checker-report.txt
 # Starlight/ACOS temporary files
 .starlight/
 .gemini/
+
+# Node dependencies and test artifacts
+node_modules/
+coverage/

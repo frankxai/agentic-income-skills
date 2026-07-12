@@ -1,0 +1,26 @@
+{
+  "name": "Request-to-Quote Agent Desk",
+  "description": "Reference principal-bound service that qualifies requests and drafts quotes with human approval before commercial commitments.",
+  "url": "https://example.com/a2a",
+  "version": "0.1.0",
+  "provider": {
+    "organization": "Example Service Company BV",
+    "url": "https://example.com"
+  },
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false
+  },
+  "skills": [
+    {
+      "id": "request-to-quote",
+      "name": "Request to quote",
+      "description": "Qualify an inbound request and produce a non-binding quote draft for human review.",
+      "tags": [
+        "quote",
+        "b2b-services",
+        "human-approval"
+      ]
+    }
+  ]
+}
