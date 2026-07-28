@@ -98,3 +98,9 @@ All three may share one private economic graph. They do not share unrestricted f
 - Curated ecosystem list: https://github.com/frankxai/awesome-agentic-income
 
 See docs/income-system-v1.md for the contract and examples/request-to-quote-desk for the reference Outcome Pack.
+
+---
+
+[![Built on SIP](https://img.shields.io/badge/Built%20on-SIP-blue.svg)](https://github.com/frankxai/Starlight-Intelligence-System)
+
+**Built on SIP** — this repo composes the [Starlight Intelligence Protocol](https://github.com/frankxai/Starlight-Intelligence-System) (substrate for memory, attestation, and sovereignty). Attribution per the SIP sovereignty clause; vertical canon declined.
