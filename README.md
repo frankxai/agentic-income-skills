@@ -49,6 +49,12 @@ Affiliate and income-asset automation belongs to the Agentic Passive Income disc
 
 ## Quick start
 
+```sh
+npx skills add frankxai/agentic-income-skills --skill agentic-income
+```
+
+Pack contract: [`SKILLPACK.md`](./SKILLPACK.md). Affiliate skills belong in the Agentic Passive Income pack.
+
 Install dependencies and validate the reference system:
 
     npm install
