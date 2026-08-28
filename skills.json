@@ -1,0 +1,10 @@
+{
+  "name": "agentic-income",
+  "description": "Governed paid-work income systems. Human principal. No affiliate/passive-asset skills.",
+  "skills": [
+    {
+      "source": "frankxai/agentic-income-skills",
+      "skills": ["agentic-income"]
+    }
+  ]
+}
