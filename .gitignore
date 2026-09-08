@@ -15,3 +15,6 @@ link-checker-report.txt
 # Node dependencies and test artifacts
 node_modules/
 coverage/
+
+.asph-wip/
+
