@@ -1,0 +1,28 @@
+name: Agentic Funnel Builder
+on:
+  pull_request:
+    paths:
+      - 'plugins/agentic-funnel-builder/**'
+      - '.github/workflows/agentic-funnel-builder.yml'
+  push:
+    branches: ['feat/agentic-funnel-builder-20260909']
+    paths:
+      - 'plugins/agentic-funnel-builder/**'
+      - '.github/workflows/agentic-funnel-builder.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    defaults:
+      run:
+        working-directory: plugins/agentic-funnel-builder
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - run: npm test
+      - run: npm run demo

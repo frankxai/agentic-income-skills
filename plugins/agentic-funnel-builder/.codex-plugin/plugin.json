@@ -1,0 +1,25 @@
+{
+  "name": "agentic-funnel-builder",
+  "version": "0.1.0",
+  "description": "Product evidence, funnel planning, fulfillment review and economics with portable skills and a local advisory MCP server.",
+  "author": {
+    "name": "FrankX",
+    "url": "https://github.com/frankxai"
+  },
+  "repository": "https://github.com/frankxai/agentic-income-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Agentic Funnel Builder",
+    "shortDescription": "Product evidence, funnels and delivery",
+    "longDescription": "Four portable skills and five deterministic advisory MCP tools. Source prototype; no hosted service or production actions.",
+    "developerName": "FrankX",
+    "category": "Productivity",
+    "defaultPrompt": [
+      "Turn my product evidence into a useful funnel.",
+      "Review what blocks checkout and delivery.",
+      "Model costs, human effort and contribution."
+    ]
+  }
+}

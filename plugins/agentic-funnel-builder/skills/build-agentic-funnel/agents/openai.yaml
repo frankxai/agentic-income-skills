@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build Agentic Funnel"
+  short_description: "Connect product proof, offers and delivery"
+  default_prompt: "Use $build-agentic-funnel to turn my product evidence into a concrete decision."
