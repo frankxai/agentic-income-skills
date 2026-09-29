@@ -116,7 +116,8 @@ export function validateIncomeSystem(document) {
     ? []
     : (validateSchema.errors || []).map(formatSchemaError)
 
-  errors.push(...policyErrors(document))
+  // Policy checks read fields the schema guarantees; skip them on a malformed document.
+  if (schemaValid) errors.push(...policyErrors(document))
   errors.push(...findForbiddenSecrets(document))
 
   return {
