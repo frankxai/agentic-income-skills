@@ -59,3 +59,22 @@ test("per-run budget cannot exceed the daily budget", () => {
   assert.equal(result.valid, false)
   assert.ok(result.errors.some((error) => error.code === "budget-order"))
 })
+
+test("a document missing the budget reports schema errors instead of throwing", () => {
+  const document = structuredClone(fixture)
+  delete document.spec.authority.budget
+
+  const result = validateIncomeSystem(document)
+  assert.equal(result.valid, false)
+  assert.ok(result.errors.some((error) => error.code === "schema"))
+})
+
+test("wrong-typed policy fields report schema errors instead of throwing", () => {
+  const document = structuredClone(fixture)
+  document.spec.principal.verifiedDomains = "example.com"
+  document.spec.agent.operationalEmail = 5
+
+  const result = validateIncomeSystem(document)
+  assert.equal(result.valid, false)
+  assert.ok(result.errors.some((error) => error.code === "schema"))
+})

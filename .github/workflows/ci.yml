@@ -19,3 +19,12 @@ jobs:
 
       - name: Validate data/programs.json is valid JSON
         run: node -e "JSON.parse(require('fs').readFileSync('data/programs.json'))"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test
+        run: npm test
+
+      - name: Validate the reference income system
+        run: npm run income:validate -- examples/request-to-quote-desk/income-system.json
