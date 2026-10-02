@@ -1,0 +1,13 @@
+DRAFT - synthetic, nonbinding. Requires owner, source and price review before any use. Not sent.
+
+Hello Synthetic buyer,
+
+Thank you for your request to inspect one unit at your workshop, with proposed timing next week.
+
+From the owner's catalogue, the matching service is "Equipment inspection": 1 visit at a declared draft price of EUR 120.00, for a draft subtotal of EUR 120.00. This is a catalogue draft figure only and has not been approved as a quote.
+
+Tax treatment, timing (next week is only your proposal; nothing is booked) and the final scope remain unconfirmed and subject to the owner's review.
+
+Internal status note for the owner: no CRM connector is configured. This draft exists only as a local file. Nothing was recorded in a CRM and nothing was delivered. Saving or repeating the local intake does not send anything.
+
+This message is a draft, not a binding commitment.

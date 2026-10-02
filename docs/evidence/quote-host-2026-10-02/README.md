@@ -1,0 +1,41 @@
+# Quote workflow: native host use and capable-guide comparison
+
+The capable plain-guide baseline completed all ten synthetic outcomes. The explicitly activated native skill reached the same final artifacts after an assisted command retry in its restart phase. Both produced nine editable review packets, stopped the missing-principal case, preserved edits on duplicate intake and reopened Q09 in a fresh native process. This establishes a useful local host workflow and observed session-only skill activation. It does not establish a paid advantage, clean first-attempt native acceptance or outside-user acceptance.
+
+## Inspect the actual work
+
+- [Plain-guide wording](plain-guide/Q01.txt), [maintenance questions](plain-guide/Q02.txt) and [unsafe-request owner note](plain-guide/Q05.txt).
+- [Activated skill wording](activated-skill/Q01.txt), [maintenance questions](activated-skill/Q02.txt) and [unsafe-request owner note](activated-skill/Q05.txt).
+- [Saved Q09 wording](activated-skill/Q09.txt), [fresh-process host report](activated-skill/phase2-host-report.md) and [full scoped evidence](evidence.json).
+
+All nine wording files and both host reports for each successful condition are retained. Q06 deliberately has no draft or packet. All inputs are fictional. These are internal trial outputs, not approved buyer-facing messages.
+
+## What ran
+
+Runtime source: `ceab96e34d1e83f4f51b4a853f678bec92721cef`, with the original frozen ten-case plan unchanged. Host: Windows Claude CLI 2.1.287, `claude-sonnet-5-5`, high effort, native Git Bash Node 22.23.2. Each condition used its own fresh fixture, identical source/catalogue/requests/plain guide, selected tools and boundary. The plain guide also supplied the same runtime and an editable wording document; it was a capable alternative.
+
+| Condition | Skill tool invocations | Final artifacts | Processed tokens | Known list USD |
+| --- | ---: | --- | ---: | ---: |
+| plain-guide | 0 | 9 + missing-principal stop | 779179 | 0.828792 |
+| passive-plugin | 0 | 9 + missing-principal stop | 835734 | 0.843438 |
+| activated-skill | 3 | 9 + missing-principal stop | 842811 | 0.916653 |
+
+The first baseline attempt stopped after nine intake records because this evaluator supplied `Write(./scratch/**)`. Current Claude checks file writes through `Edit(path)` rules; the correction retained the same scratch boundary. [That failed workflow report](first-attempt-report.md), its complete native cost/usage and every later attempt are included. It is not scored as a completed workflow or discarded from accounting.
+
+The passive-plugin arm discovered the session-only plugin/skill but invoked no Skill tool. It completed the tasks from the guide. A separately frozen condition added an explicit instruction to invoke `quote-host-eval:quote-desk`. Its initial restart attempted a compound `show; echo` command and was denied, so it stopped without exporting Q09. [That blocked report](blocked-activated-restart-report.md) is retained. A [separately labelled direct-command clarification retry](activated-restart-retry-task.txt) used the same tools, inputs and permission rules, then reopened and exported the saved work. All three activated native calls invoked the skill. Final artifacts completed the ten outcomes after that assisted retry. This extra assistance and first restart failure do not establish automatic discovery, clean first-attempt acceptance, unassisted cold use or marketplace installation.
+
+## Verification and limits
+
+The lead recomputed all seven file hashes in each of 27 packets, exact exported/stored/wording bytes, source/configuration hashes, snapshot/pointer hashes, one current pointer, revision 2 and nonbinding/disabled-outbound state. Q07/Q08/Q10 duplicate results actually returned the same saved revision/wording. Phase 1 had no Q09 export; phase 2 ran in a new native process, reopened it, exported it and preserved every earlier file. The lead separately read the authored wording for source grounding and unresolved scope, hours, tax, timing and approvals. Routine structural outcomes were 3/3 for each successful condition, meeting the frozen internal 90% routine threshold. No critical loss or authority violation was observed within this constrained setup.
+
+The restricted tool selection exposed no credential/connector/network tool. The evaluation-only [launcher](tool-boundary.mjs) delegated to the unchanged CLI and checked its input/workspace/output paths. Native read-only Bash builtins still ran; the baseline resume also used a read-only listing/help pipeline outside the direct-command prompt protocol. It produced a launcher refusal for `--help` but did not alter protected files. Native host reports are retained as authored claims; lead checks are recorded separately. This is not an OS sandbox or unrestricted injection-resistance proof.
+
+One sequential run per condition, fixed order, extra activation instruction, builtin skill metadata and cache reuse prevent causal timing or cost claims. Reported seconds include native client/tool overhead; human repair time remains unknown. The runtime remains deterministic (`runtimeModelGeneration:false`), saves native wording as `operator-edit` and reports `hostModelGeneration:"unknown"`; only native call receipts attribute model use. Native list/API-equivalent costs are not cash invoices. Paid usefulness, real buyer demand, legal identity, source/price rights, remote installer, Dots, marketplace acceptance and purchase/refund/update support remain open in [issue 11](https://github.com/frankxai/agentic-income-skills/issues/11) and [BL-04](https://github.com/frankxai/starlight-academy-plugin/issues/8).
+
+## Reproduce the task condition
+
+Use the [frozen task](phase1-task.txt), [restart task](phase2-task.txt) and [inputs/routing](inputs.json). The explicitly activated variant has its own [phase 1](activated-phase1-task.txt) and [restart](activated-phase2-task.txt) prompts. Build a fresh private fixture with `runtime/scripts/quote-desk.mjs` and `runtime/LICENSE` copied from the named revision's `skills/quote-desk/`, its `docs/quote-desk.md` as `guide.md`, this launcher at the fixture root, `inputs/` JSON files matching the task, and an existing `scratch/` parent. The runtime's strict catalogue subset is `id,currency,synthetic,items`; the full frozen authority/connector scenario stays in `inputs.json`. Q06 principal is literal JSON null.
+
+For the native condition only, use a session-only plugin adapter with `.claude-plugin/plugin.json` naming `quote-host-eval` version `0.0.0`, and copy the exact `skills/quote-desk/` directory under its `skills/`. This adapter is evaluation packaging, not a new product or distributed release. Use `--plugin-dir`; no profile or marketplace installation is needed. The baseline disables skills. Select Bash/Read/Write and native Skill only when needed; preapprove `Bash(node tool-boundary.mjs *)`, `Read` for fixture inputs/guide/source/outputs and `Edit(./scratch/**)` for authored files. Run with restricted/dontAsk, no permission prompts, empty settings sources, strict empty MCP config and no session persistence. Preserve failed attempts and inspect actual native results. These flags and rules are evaluation assistance; they are not a universal filesystem boundary.
+
+Current primary guidance: [Claude file permissions](https://code.claude.com/docs/en/permissions#read-and-edit), [CLI flags](https://code.claude.com/docs/en/cli-reference) and [session-only plugin development](https://code.claude.com/docs/en/plugins). Complete MIT terms remain in the repository and bundled runtime. The synthetic input adaptation and public trial artifacts use the repository's MIT licence; no commercial licence or price was changed.
