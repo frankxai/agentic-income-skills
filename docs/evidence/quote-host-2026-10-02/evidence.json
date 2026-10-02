@@ -3724,7 +3724,7 @@
     "native-receipts/quote-host-activated-with-phase1.json": "2ff735e746e119bc0aa6fcc89a38a2b402fa33c4f16e50255ee5fa96322b5a48",
     "native-receipts/quote-host-activated-with-phase2.json": "28bac9131c068c2fe7fc718dc4dd14a8932da7fb7dc25851743ac10123f3b19b",
     "native-receipts/quote-host-activated-with-phase2-retry2.json": "591d96a343b8fbdb0855e79bb9d6476ed44f13f3dd4974cb7e504559a0d1503b",
-    "selected-runtime-results.json": "ad6a76a4dfc7c5fda64534a6f4f3793170336ec886548dc7b4b5b1e38302f5db"
+    "selected-runtime-results.json": "f5864772f665e427103c61d529e2477fa0b618452ed3e7724c63e4da1637e99d"
   },
   "exact_runtime_guide_skill_license_sha256": {
     "docs/quote-desk.md": "8cc2be76568155e26effd78100bbb387c7201d6732ce95625c4addf88f51634f",
