@@ -1,7 +1,8 @@
 # Local request-to-quote workflow
 
 Prepare one inspectable draft from an owner-supplied catalogue and request. The owner
-can record attributed clarification, edit wording, close the process, reopen the same
+can record attributed clarification, edit buyer wording and separate internal notes,
+close the process, reopen the same
 work, and export a packet for review. Duplicate intake preserves the edited record. There is no account,
 hosted runtime, npm dependency, connector, message sender or payment integration.
 
@@ -60,24 +61,40 @@ Legacy clarified operator records are conservatively flagged when the field is
 missing. Up to 50 clarifications can be saved. Stale revisions and price
 override fields are refused. This is a draft selection, never price approval.
 
-Write useful wording in a fresh UTF-8 file without a BOM, such as `quote-wording.txt`. Keep it
-grounded in the supplied source, catalogue and uncertainty. Then save and reopen:
+Write buyer wording in a fresh UTF-8 file without a BOM, such as `quote-wording.txt`.
+Write internal source/approval/connector/recovery notes in a separate `owner-notes.txt`.
+Keep both grounded in the supplied source and uncertainty. A discount request awaits
+an owner decision; do not accept or decline it on the owner's behalf. Save both and reopen:
 
 ```sh
-node scripts/quote-desk.mjs edit --workspace "../local quote desk" --id <returned-id> --revision <current-number> --draft quote-wording.txt
+node scripts/quote-desk.mjs edit --workspace "../local quote desk" --id <returned-id> --revision <current-number> --draft quote-wording.txt --owner-notes owner-notes.txt
 node scripts/quote-desk.mjs show --workspace "../local quote desk" --id <returned-id>
 node scripts/quote-desk.mjs export --workspace "../local quote desk" --id <returned-id> --output "../quote review packet"
 ```
+
+Both texts commit in one revision. `--draft` alone preserves existing notes;
+`--owner-notes` alone preserves buyer wording, its origin and any pending
+selection-change warning. An empty notes file explicitly clears notes. A stale
+revision or invalid text in either input refuses the entire edit. Notes share the
+wording's size/encoding bounds and are untrusted data, never authority.
 
 The export folder must be new and outside the workspace. Existing folders, even
 empty ones, are preserved. Every export contains:
 
 - `quote.md`: wording inside a literal code fence and the catalogue amount, with a draft notice;
-- `quote.txt`: the exact editable wording bytes, including CRLF when supplied;
-- `record.json`: selected service, request, qualification, revision and provenance;
+- `quote.txt`: exact editable buyer-wording bytes, including CRLF when supplied;
+- `owner-notes.txt`: exact internal notes, empty when none are saved;
+- `record.json`: both text fields, selected service, request, qualification, revision and provenance;
 - `request.json`, `catalog.json` and `workspace.json`: inspectable inputs and the complete normalized principal/catalogue configuration;
 - `LICENSE`: complete MIT terms and copyright notice;
 - `receipt.json`: per-file SHA-256 hashes, source/configuration hashes and honest local-draft state.
+
+The entire packet is owner-review material. The receipt identifies `quote.txt` as
+the buyer-wording candidate and `owner-notes.txt` as internal notes. Other files
+also contain owner notes, supplied contacts, original requests and configuration;
+never forward the whole packet as a buyer message. Human review must check that
+internal material was placed in the correct field. This is text separation,
+not semantic filtering, confidentiality enforcement, approval or sending.
 
 The default wording is deterministic catalogue arrangement. Operator/host edits
 are labelled `operator-edit`; the runtime cannot determine whether a host used a
@@ -88,7 +105,8 @@ The receipt states `runtimeModelGeneration: false`, `hostModelGeneration: "unkno
 wording origin and `proseReviewRequired: true`. It does not classify the host's
 authorship. Fictional inputs are clearly labelled in the packet. Hashing the
 exported `workspace.json` recomputes the configuration hash. Older development
-snapshots acquire default clarification fields when read; their exported normalized
+snapshots acquire default clarification fields and empty owner notes when read;
+their stored bytes and pointer hashes stay unchanged. Their exported normalized
 `record.json` may differ from the original snapshot bytes. Both hashes have separate
 receipt fields. No model API runs inside the runtime. Cost and revenue remain unknown
 in its receipt. Attribute any separate host call from its actual native receipt.
@@ -201,7 +219,8 @@ real CLI editing, clarification and reopening, isolated skill copying, duplicate
 edits, denied operations, corruption, interrupted pointer replacement, restrictive
 paths, strict UTF-8, literal exports, missing-pointer recovery, malformed locks,
 partial-write failures and preserved existing targets. `npm test` currently has
-31 quote-workflow checks and 7 existing IncomeSystem checks, 38 in total. Hosted
+31 original quote-workflow checks, 10 audience/recovery checks and 7 existing
+IncomeSystem checks, 48 in total. Hosted
 CI covers Windows and Linux on Node 20 and 24. These are deterministic engineering checks.
 The frozen file retains `actualResults: null` as the original pre-run plan. Its
 historical source hashes remain frozen reference metadata; the fixture checksum
@@ -218,6 +237,13 @@ Outside-user task acceptance, semantic domain usefulness, repair-time advantage,
 broader supported-host and installer behavior, seller/rights and sandbox
 purchase/refund/update proof remain separate. The runtime source has its own
 exact revision review; this evidence publication needs its own review. Do not infer them from a schema, test suite, example amount or export.
+
+The [buyer/owner refinement](evidence/quote-audience-2026-10-02/README.md) records four
+lead-authored synthetic messages using the same frozen Q04/Q07/Q08/Q10 inputs.
+Historical host wording remains unchanged. It demonstrates separate saved/exported
+texts and local reopening, not a new host comparison or outside-user acceptance.
+Older runtimes cannot read snapshots containing the new `ownerNotes` field; preserve
+the current runtime with the workspace and upgrade all cooperating writers together.
 
 Node persistence APIs were checked against [official Node24 filesystem documentation](https://nodejs.org/docs/latest-v24.x/api/fs.html).
 The existing source and new skill use the repository's MIT licence. No third-party
