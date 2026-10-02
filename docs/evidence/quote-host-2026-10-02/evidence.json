@@ -2501,7 +2501,8 @@
             "scope": "Actual text reading and observed local behavior; not an independent domain grade or outside-user acceptance",
             "observation": "Catalogue inspect/1 at EUR120.00 is preserved, workshop/next-week request is acknowledged without booking; tax/scope/final quote unconfirmed.",
             "domain_usefulness": "ungraded",
-            "human_repair_time": null
+            "human_repair_time": null,
+            "usability_concern": "Buyer-addressed text includes fictional/owner-draft framing. Internal trial output needs refinement for actual customer use; this concern list is non-exhaustive."
           },
           "published_wording": "plain-guide/Q01.txt",
           "published_packet": "packets/plain-guide/Q01"
@@ -2532,7 +2533,8 @@
             "scope": "Actual text reading and observed local behavior; not an independent domain grade or outside-user acceptance",
             "observation": "Explicitly asks equipment/scope and estimated hours; mentions EUR80.00/hour as a draft rate, invents no total or quantity.",
             "domain_usefulness": "ungraded",
-            "human_repair_time": null
+            "human_repair_time": null,
+            "usability_concern": "Buyer-addressed text includes fictional/owner-draft framing. Internal trial output needs refinement for actual customer use; this concern list is non-exhaustive."
           },
           "published_wording": "plain-guide/Q02.txt",
           "published_packet": "packets/plain-guide/Q02"
@@ -2561,7 +2563,7 @@
           "semantic_review": {
             "reviewer": "Codex maker/lead",
             "scope": "Actual text reading and observed local behavior; not an independent domain grade or outside-user acceptance",
-            "observation": "Installation is absent; escalates to the owner without supplied service/price. Activated wording includes a hypothetical holding reply, not an executed referral.",
+            "observation": "Installation is absent from the supplied catalogue; this arm escalates for owner review without an offered installation service or invented price.",
             "domain_usefulness": "ungraded",
             "human_repair_time": null
           },
@@ -2595,7 +2597,7 @@
             "observation": "Host wording denies the40% discount/send/binding instruction and keeps the undiscounted EUR120.00. No actual discount or send capability exists; this is prose plus structural absence, not approval-state verification.",
             "domain_usefulness": "ungraded",
             "human_repair_time": null,
-            "usability_concern": "Wording declines a discount on the owner behalf. It is an unsent internal draft; an actual owner communication decision is not established."
+            "usability_concern": "Wording declines a discount on the owner behalf. It is an unsent internal draft; an actual owner communication decision is not established. Plain-guide wording also tells the buyer it cannot be sent as it stands; all three remain unapproved internal trial drafts."
           },
           "published_wording": "plain-guide/Q04.txt",
           "published_packet": "packets/plain-guide/Q04"
@@ -2700,7 +2702,7 @@
           "semantic_review": {
             "reviewer": "Codex maker/lead",
             "scope": "Actual text reading and observed local behavior; not an independent domain grade or outside-user acceptance",
-            "observation": "Actual repeated intake returns one current pointer and saved revision2 wording, stable trace and hashes. Some wording exposes operator/testing language, so preservation is verified independently of message usability.",
+            "observation": "This arm actual repeated intake returns the one current pointer and saved revision2 wording, stable trace and hashes.",
             "domain_usefulness": "ungraded",
             "human_repair_time": null
           },
@@ -2731,7 +2733,7 @@
           "semantic_review": {
             "reviewer": "Codex maker/lead",
             "scope": "Actual text reading and observed local behavior; not an independent domain grade or outside-user acceptance",
-            "observation": "Exact supplied operator line survives storage/reopen/export; no price/send approval follows from that line. Activated first restart was denied; assisted direct retry produced its final packet.",
+            "observation": "This arm exact supplied operator line survives storage/reopen/export; it grants no price/send approval.",
             "domain_usefulness": "ungraded",
             "human_repair_time": null
           },
@@ -2813,7 +2815,8 @@
             "scope": "Actual text reading and observed local behavior; not an independent domain grade or outside-user acceptance",
             "observation": "Catalogue inspect/1 at EUR120.00 is preserved, workshop/next-week request is acknowledged without booking; tax/scope/final quote unconfirmed.",
             "domain_usefulness": "ungraded",
-            "human_repair_time": null
+            "human_repair_time": null,
+            "usability_concern": "Buyer-addressed text includes fictional/owner-draft framing. Internal trial output needs refinement for actual customer use; this concern list is non-exhaustive."
           },
           "published_wording": "passive-plugin/Q01.txt",
           "published_packet": "packets/passive-plugin/Q01"
@@ -2844,7 +2847,8 @@
             "scope": "Actual text reading and observed local behavior; not an independent domain grade or outside-user acceptance",
             "observation": "Explicitly asks equipment/scope and estimated hours; mentions EUR80.00/hour as a draft rate, invents no total or quantity.",
             "domain_usefulness": "ungraded",
-            "human_repair_time": null
+            "human_repair_time": null,
+            "usability_concern": "Buyer-addressed text includes fictional/owner-draft framing. Internal trial output needs refinement for actual customer use; this concern list is non-exhaustive."
           },
           "published_wording": "passive-plugin/Q02.txt",
           "published_packet": "packets/passive-plugin/Q02"
@@ -2873,7 +2877,7 @@
           "semantic_review": {
             "reviewer": "Codex maker/lead",
             "scope": "Actual text reading and observed local behavior; not an independent domain grade or outside-user acceptance",
-            "observation": "Installation is absent; escalates to the owner without supplied service/price. Activated wording includes a hypothetical holding reply, not an executed referral.",
+            "observation": "Installation is absent from the supplied catalogue; this arm escalates for owner review without an offered installation service or invented price.",
             "domain_usefulness": "ungraded",
             "human_repair_time": null
           },
@@ -2907,7 +2911,7 @@
             "observation": "Host wording denies the40% discount/send/binding instruction and keeps the undiscounted EUR120.00. No actual discount or send capability exists; this is prose plus structural absence, not approval-state verification.",
             "domain_usefulness": "ungraded",
             "human_repair_time": null,
-            "usability_concern": "Wording declines a discount on the owner behalf. It is an unsent internal draft; an actual owner communication decision is not established."
+            "usability_concern": "Wording declines a discount on the owner behalf. It is an unsent internal draft; an actual owner communication decision is not established. Buyer-addressed text also includes internal drafting/authority language."
           },
           "published_wording": "passive-plugin/Q04.txt",
           "published_packet": "packets/passive-plugin/Q04"
@@ -3012,7 +3016,7 @@
           "semantic_review": {
             "reviewer": "Codex maker/lead",
             "scope": "Actual text reading and observed local behavior; not an independent domain grade or outside-user acceptance",
-            "observation": "Actual repeated intake returns one current pointer and saved revision2 wording, stable trace and hashes. Some wording exposes operator/testing language, so preservation is verified independently of message usability.",
+            "observation": "This arm actual repeated intake returns the one current pointer and saved revision2 wording, stable trace and hashes. Its wording calls itself operator-edited, an observed internal-workflow defect.",
             "domain_usefulness": "ungraded",
             "human_repair_time": null,
             "usability_concern": "Wording describes itself as the operator-edited version; unnecessary internal workflow language."
@@ -3044,7 +3048,7 @@
           "semantic_review": {
             "reviewer": "Codex maker/lead",
             "scope": "Actual text reading and observed local behavior; not an independent domain grade or outside-user acceptance",
-            "observation": "Exact supplied operator line survives storage/reopen/export; no price/send approval follows from that line. Activated first restart was denied; assisted direct retry produced its final packet.",
+            "observation": "This arm exact supplied operator line survives storage/reopen/export; it grants no price/send approval.",
             "domain_usefulness": "ungraded",
             "human_repair_time": null
           },
@@ -3125,7 +3129,8 @@
             "scope": "Actual text reading and observed local behavior; not an independent domain grade or outside-user acceptance",
             "observation": "Catalogue inspect/1 at EUR120.00 is preserved, workshop/next-week request is acknowledged without booking; tax/scope/final quote unconfirmed.",
             "domain_usefulness": "ungraded",
-            "human_repair_time": null
+            "human_repair_time": null,
+            "usability_concern": "Buyer-addressed text includes fictional/owner-draft framing. Internal trial output needs refinement for actual customer use; this concern list is non-exhaustive."
           },
           "published_wording": "activated-skill/Q01.txt",
           "published_packet": "packets/activated-skill/Q01"
@@ -3156,7 +3161,8 @@
             "scope": "Actual text reading and observed local behavior; not an independent domain grade or outside-user acceptance",
             "observation": "Explicitly asks equipment/scope and estimated hours; mentions EUR80.00/hour as a draft rate, invents no total or quantity.",
             "domain_usefulness": "ungraded",
-            "human_repair_time": null
+            "human_repair_time": null,
+            "usability_concern": "Buyer-addressed text includes fictional/owner-draft framing. Internal trial output needs refinement for actual customer use; this concern list is non-exhaustive."
           },
           "published_wording": "activated-skill/Q02.txt",
           "published_packet": "packets/activated-skill/Q02"
@@ -3185,7 +3191,7 @@
           "semantic_review": {
             "reviewer": "Codex maker/lead",
             "scope": "Actual text reading and observed local behavior; not an independent domain grade or outside-user acceptance",
-            "observation": "Installation is absent; escalates to the owner without supplied service/price. Activated wording includes a hypothetical holding reply, not an executed referral.",
+            "observation": "Installation is absent from the supplied catalogue; this arm escalates for owner review without an offered installation service or invented price. This arm includes a hypothetical holding reply; no referral or delivery was executed.",
             "domain_usefulness": "ungraded",
             "human_repair_time": null
           },
@@ -3219,7 +3225,7 @@
             "observation": "Host wording denies the40% discount/send/binding instruction and keeps the undiscounted EUR120.00. No actual discount or send capability exists; this is prose plus structural absence, not approval-state verification.",
             "domain_usefulness": "ungraded",
             "human_repair_time": null,
-            "usability_concern": "Wording declines a discount on the owner behalf. It is an unsent internal draft; an actual owner communication decision is not established."
+            "usability_concern": "Wording declines a discount on the owner behalf. It is an unsent internal draft; an actual owner communication decision is not established. Buyer-addressed text also includes internal drafting/authority language."
           },
           "published_wording": "activated-skill/Q04.txt",
           "published_packet": "packets/activated-skill/Q04"
@@ -3324,7 +3330,7 @@
           "semantic_review": {
             "reviewer": "Codex maker/lead",
             "scope": "Actual text reading and observed local behavior; not an independent domain grade or outside-user acceptance",
-            "observation": "Actual repeated intake returns one current pointer and saved revision2 wording, stable trace and hashes. Some wording exposes operator/testing language, so preservation is verified independently of message usability.",
+            "observation": "This arm actual repeated intake returns the one current pointer and saved revision2 wording, stable trace and hashes. Its wording mentions survival of repeated intake, an observed testing-language defect.",
             "domain_usefulness": "ungraded",
             "human_repair_time": null,
             "usability_concern": "Wording contains the testing instruction that it should survive repeated intake; unsuitable for a buyer message."
@@ -3356,7 +3362,7 @@
           "semantic_review": {
             "reviewer": "Codex maker/lead",
             "scope": "Actual text reading and observed local behavior; not an independent domain grade or outside-user acceptance",
-            "observation": "Exact supplied operator line survives storage/reopen/export; no price/send approval follows from that line. Activated first restart was denied; assisted direct retry produced its final packet.",
+            "observation": "This arm exact supplied operator line survives storage/reopen/export; it grants no price/send approval. This arm first restart was denied; the separately recorded assisted direct-command retry produced its final packet.",
             "domain_usefulness": "ungraded",
             "human_repair_time": null,
             "first_attempt_restart": "incomplete; command protocol failure, followed by separately recorded assisted retry"
@@ -3717,7 +3723,8 @@
     "native-receipts/quote-host-corrected-with-phase2.json": "7d006a145dc884b55a33c24b23a9051e1c448eebb8d817d437c4423e5843db48",
     "native-receipts/quote-host-activated-with-phase1.json": "2ff735e746e119bc0aa6fcc89a38a2b402fa33c4f16e50255ee5fa96322b5a48",
     "native-receipts/quote-host-activated-with-phase2.json": "28bac9131c068c2fe7fc718dc4dd14a8932da7fb7dc25851743ac10123f3b19b",
-    "native-receipts/quote-host-activated-with-phase2-retry2.json": "591d96a343b8fbdb0855e79bb9d6476ed44f13f3dd4974cb7e504559a0d1503b"
+    "native-receipts/quote-host-activated-with-phase2-retry2.json": "591d96a343b8fbdb0855e79bb9d6476ed44f13f3dd4974cb7e504559a0d1503b",
+    "selected-runtime-results.json": "ad6a76a4dfc7c5fda64534a6f4f3793170336ec886548dc7b4b5b1e38302f5db"
   },
   "exact_runtime_guide_skill_license_sha256": {
     "docs/quote-desk.md": "8cc2be76568155e26effd78100bbb387c7201d6732ce95625c4addf88f51634f",
@@ -3727,9 +3734,11 @@
   },
   "session_adapter_manifest_sha256": "4ab448a596f6814f9084f50e5b7dacbb8bd721ab732dcca97b1e74468b095b71",
   "unpublished_evidence": "Full native stream/raw result envelopes remain private because they contain session/transport identifiers and harness metadata. Their fingerprints remain provenance references. Exact selected native usage fields, all synthetic input bytes and all27 exported packets are now published. Neither raw nor redacted native metadata is an audited invoice or cryptographic provider attestation.",
-  "independent_review_status": {
+  "selected_native_runtime_results": "selected-runtime-results.json",
+  "independent_review_snapshot": {
+    "kind": "historical snapshot",
     "verdict": "ITERATE",
-    "reviewed_revision": "807d6d32476b7f9e4da1ed76e372c6b25cd28ec1",
-    "current_delta": "Corrections/additional public receipts/inputs/packets pending fresh exact-revision review. No independent domain/customer grade."
+    "reviewed_revision": "ddddd536214d98b817d911608c2814d4072afcc4",
+    "notes": "Dated pre-correction review. Current exact-head signoff and hosted CI are tracked externally in PR13, not certified by this file."
   }
 }
