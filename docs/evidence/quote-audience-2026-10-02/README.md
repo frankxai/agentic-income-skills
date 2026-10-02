@@ -30,6 +30,16 @@ paths. The producer is a local Node process; it does not call a model API. Root
 Codex authoring costs, invoices, revenue and ROI are unknown. No zero-cost claim
 follows from the absence of a model API in the runtime.
 
+The packets were executed with source bfad656, whose runtime and skill hashes are
+recorded in the proof. Subsequent review hardening adds a pre-save byte limit and
+standalone compatibility guidance; it does not rewrite these earlier packets or
+claim they were executed with the later revision. Current tests exercise the same
+four text pairs against the later runtime. The exact originating scenario entries
+are Q04/Q07/Q08/Q10 in the [frozen fixture](../../../tests/fixtures/quote-desk-ten.json);
+its source-relative path from the repository is tests/fixtures/quote-desk-ten.json
+and its byte hash is recorded in both cases.json and proof.json. Connector/approval
+scenario assertions originate there, independently of the shared request wording.
+
 The serious alternative remains the prior capable plain-guide host, which completed
 the same outcome set. These four refinements were deliberately authored after
 inspection of the earlier defects. They are an internal regression demonstration,
@@ -45,9 +55,10 @@ Runtime outbound actions remain disabled. Historical snapshots reopen with empty
 notes without rewriting them; older runtimes cannot read new snapshots containing
 ownerNotes, so all cooperating writers must upgrade together.
 
-Ten added deterministic checks cover atomic text-pair saves, notes-only edits,
+Eleven added deterministic checks cover atomic text-pair saves, notes-only edits,
 clarification warnings, invalid/stale input, byte-preserved legacy reopening,
-interrupted commit recovery and these four exact messages. They establish those
+interrupted commit recovery, a refusal before an oversized multibyte snapshot is
+written, and these four exact messages. They establish those
 engineering behaviors only. Permissioned domain/outside-user cold use with repair
 effort and advantage evidence remains due 10 October; the paid quality, rights and
 support gate remains open for 15 October under [issue 11](https://github.com/frankxai/agentic-income-skills/issues/11).

@@ -29,6 +29,12 @@ are bundled, so it can run from a copied skill directory without the parent repo
 npm dependencies. Quote paths with spaces. Choose a fresh workspace inside the
 user-authorized working area; never delete or reuse an existing folder.
 
+Keep this runtime with its workspace. Older runtimes cannot read new snapshots
+containing ownerNotes; upgrade all cooperating writers together. Existing snapshots
+reopen with empty notes without rewriting their original bytes. Each saved record
+must fit 512 KiB in UTF-8; large multibyte texts and clarification histories can
+reach that bound before either individual text limit. A refused edit preserves work.
+
 1. Run `node scripts/quote-desk.mjs init --workspace <fresh-path> --principal <owner-file> --catalog <approved-file>`.
 2. The owner chooses a catalogue service and known integer quantity. Run
    `node scripts/quote-desk.mjs intake --workspace <path> --request <request-file> --service <id> --quantity <integer>`.
@@ -79,6 +85,8 @@ The reply is owner-attributed through its free-text reference and is not stored,
 hashed or verified. Never describe clarification as
 approval. Up to 50 clarifications are supported. CLI numbers must be plain positive
 decimal integers; no exponent or hexadecimal notation.
+Also review owner notes against the current selection: the buyer-wording warning
+does not classify or reconcile the notes' content.
 
 ## Recovery
 

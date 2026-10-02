@@ -37,7 +37,7 @@ function id(value, label) {
 
 function notes(value) {
   invariant(typeof value === "string", "Owner notes must be text")
-  if (value !== "") text(value, "Owner notes", 32768)
+  if (value !== "") text(value, "Owner notes (use a truly empty file to clear)", 32768)
   return value
 }
 
@@ -238,6 +238,8 @@ function commit(ws, record, expectedPointerHash) {
   invariant((previous ? digest(previous) : null) === expectedPointerHash, "Record changed; reload before writing")
   const file = record.id + "." + randomUUID() + ".json"
   const bytes = json(record)
+  invariant(Buffer.byteLength(bytes, "utf8") <= MAX_JSON,
+    "Saved record would exceed 512 KiB; shorten the supplied wording or notes. Current work is preserved")
   exclusive(join(ws.root, "history", file), bytes)
   const pointer = json({ schemaVersion: VERSION, id: record.id, revision: record.revision, file, sha256: digest(bytes) })
   const pending = join(ws.root, "records", record.id + "." + randomUUID() + ".pending")

@@ -126,7 +126,11 @@ name/email, and summary has at least 10 characters after trimming outer whitespa
 characters. receivedAt requires a valid calendar date-time with seconds and an
 explicit timezone; leap seconds are unsupported. This hand-written local subset is
 not the full reference JSON Schema validator. No additional properties are accepted.
-Each input file is bounded to 512 KiB; wording to 32768 characters. Files require
+Each input file is bounded to 512 KiB; wording and owner notes to 32768 characters each.
+The complete serialized saved record must also fit 512 KiB. Large multibyte wording,
+notes and accumulated clarifications can reach that bound before individual text
+limits. An oversized write refuses before creating a snapshot and preserves the
+current pointer and all prior work. Files require
 valid UTF-8 without a BOM; invalid bytes, lone Unicode surrogates, C0/C1 controls
 except tab/CR/LF, U+202A-202E, U+2066-2069 and U+FEFF are refused while the supplied
 file is preserved. Other Unicode shaping/invisible characters are allowed and
@@ -219,8 +223,8 @@ real CLI editing, clarification and reopening, isolated skill copying, duplicate
 edits, denied operations, corruption, interrupted pointer replacement, restrictive
 paths, strict UTF-8, literal exports, missing-pointer recovery, malformed locks,
 partial-write failures and preserved existing targets. `npm test` currently has
-31 original quote-workflow checks, 10 audience/recovery checks and 7 existing
-IncomeSystem checks, 48 in total. Hosted
+31 original quote-workflow checks, 11 audience/recovery checks and 7 existing
+IncomeSystem checks, 49 in total. Hosted
 CI covers Windows and Linux on Node 20 and 24. These are deterministic engineering checks.
 The frozen file retains `actualResults: null` as the original pre-run plan. Its
 historical source hashes remain frozen reference metadata; the fixture checksum
