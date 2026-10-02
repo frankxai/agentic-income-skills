@@ -1,0 +1,1 @@
+Synthetic demonstration. Duplicate-source handling is an internal workflow concern. Retry the identical request with its original inspect/1 selection; confirm that the same trace, saved buyer wording and owner notes are returned. Do not mention test scaffolding or operator edits in the buyer message. No delivery or approval is implied. Review source and buyer wording before use.

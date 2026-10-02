@@ -1,0 +1,275 @@
+{
+  "observed_at": "2026-10-02T17:17:41.411598+00:00",
+  "source_revision": "bfad6568d77b80bfe5dd09841d99f81f8b4cfccc",
+  "source_tree": "8a7c8d54d62814b38380d8bc6a57f198ba2a81c7",
+  "runtime_sha256": "6c23138eb557dca564644595808efba832d74d4dca35b5fcf005d5c8e96f9514",
+  "skill_sha256": "ae4bf28ecc0fa88497b2699fbc6abd3c8b8b6a5bfca35452b551337d52e64bb7",
+  "cases_sha256": "5c922788873ea92c403135260ef1f348d1c6169d9f5b514c95763ce8b0c77eac",
+  "plan_sha256": "2d40023d98461caf1c812f9ad0ea0f6eedc0f03fba7d89de8127ac3313d2de07",
+  "node_version": "v24.16.0",
+  "authorship": "Codex lead authored four refinements from observed defects; root native usage/allocation unknown",
+  "execution": "Each init/intake/edit/show/duplicate/export is a separate local Node process; no model API or remote connector call in runtime",
+  "worker_state": "All 24 synchronous CLI processes completed; no persistent worker",
+  "cases": [
+    {
+      "case": "Q04",
+      "id": "55aa53b187f7e1025855ff742baf40a083fec7004ced87f33b89ebe2bc9f685d",
+      "saved_revision": 2,
+      "reopened_revision": 2,
+      "saved_snapshot_hash": "012c3ea6206b8801a3fdecd1de17faff90cc3251f1da38802a5d12ad15be324a",
+      "reopened_snapshot_hash": "012c3ea6206b8801a3fdecd1de17faff90cc3251f1da38802a5d12ad15be324a",
+      "duplicate_snapshot_hash": "012c3ea6206b8801a3fdecd1de17faff90cc3251f1da38802a5d12ad15be324a",
+      "duplicate": true,
+      "request_hash": "25ae299a9ea94671eae9426ff703220cd5fc432de12cea21e2b3119e6199c662",
+      "config_hash": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+      "buyer_wording_sha256": "3e70d1def170bb491c7fbdb06b6270814a0a62a5455351f2cb1a91ee48cd3a62",
+      "owner_notes_sha256": "abf286ed25169e44cb00dd7a0ff60c028bc58fa4f2dc28c98cb373b6a4818c8e",
+      "export_files": {
+        "quote.md": "64b8d09400a97c321e35dbab77872d13e66f296c50a9c86dd582b62b0c9a374f",
+        "quote.txt": "3e70d1def170bb491c7fbdb06b6270814a0a62a5455351f2cb1a91ee48cd3a62",
+        "owner-notes.txt": "abf286ed25169e44cb00dd7a0ff60c028bc58fa4f2dc28c98cb373b6a4818c8e",
+        "record.json": "012c3ea6206b8801a3fdecd1de17faff90cc3251f1da38802a5d12ad15be324a",
+        "request.json": "25ae299a9ea94671eae9426ff703220cd5fc432de12cea21e2b3119e6199c662",
+        "catalog.json": "150c86581ed8e4a523efbbbb0f9d0135599112e2325c97f07748d5380a4e7dc2",
+        "workspace.json": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+        "LICENSE": "32f9d0c9c6c843b615cd318b1b56bdca5e5adc79dba9ec5cf405102dcb557079",
+        "receipt.json": "a37be3f2d8dccaed27e943e0835d195f5f1d07b461bceb54364ddf4c9a66a916"
+      },
+      "outbound": "disabled",
+      "approvals_verified": false
+    },
+    {
+      "case": "Q07",
+      "id": "76add3a9f3b4b19f4852c452d40cc6cb2ba5b3cf9e09925b2c76c98047d65682",
+      "saved_revision": 2,
+      "reopened_revision": 2,
+      "saved_snapshot_hash": "1b264e2327a3a4667b4474091825941569f604cc901bd6b834536d91ddc5b47d",
+      "reopened_snapshot_hash": "1b264e2327a3a4667b4474091825941569f604cc901bd6b834536d91ddc5b47d",
+      "duplicate_snapshot_hash": "1b264e2327a3a4667b4474091825941569f604cc901bd6b834536d91ddc5b47d",
+      "duplicate": true,
+      "request_hash": "910de81ce5888c211515e5f2fcb04c46462ee2719198d10dead9bcf129b5262b",
+      "config_hash": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+      "buyer_wording_sha256": "b15bb591d59edb7ee61bc717323762d8c997769875017a1f8fbcb64e45d97975",
+      "owner_notes_sha256": "03faaa5d813f14e55d06d5bf2d1e698480e9f36a7e638da095eb6d4263a60891",
+      "export_files": {
+        "quote.md": "7930c9b307b8aed8cf243e98a93f5e709db703fbe470f91499009ba976aa7f98",
+        "quote.txt": "b15bb591d59edb7ee61bc717323762d8c997769875017a1f8fbcb64e45d97975",
+        "owner-notes.txt": "03faaa5d813f14e55d06d5bf2d1e698480e9f36a7e638da095eb6d4263a60891",
+        "record.json": "1b264e2327a3a4667b4474091825941569f604cc901bd6b834536d91ddc5b47d",
+        "request.json": "910de81ce5888c211515e5f2fcb04c46462ee2719198d10dead9bcf129b5262b",
+        "catalog.json": "150c86581ed8e4a523efbbbb0f9d0135599112e2325c97f07748d5380a4e7dc2",
+        "workspace.json": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+        "LICENSE": "32f9d0c9c6c843b615cd318b1b56bdca5e5adc79dba9ec5cf405102dcb557079",
+        "receipt.json": "4178e2100485c7f4e1e275729827db34adb90cc3501b02757b3c2562a7eaf995"
+      },
+      "outbound": "disabled",
+      "approvals_verified": false
+    },
+    {
+      "case": "Q08",
+      "id": "456274433f10c2fc6395afbd9f48a7a9bf8a1941f4f1d218bf056a831687d059",
+      "saved_revision": 2,
+      "reopened_revision": 2,
+      "saved_snapshot_hash": "501bc0b4327dfa2ff6a28674cf370c6c743c19d4dc6a324f46ecf9b2b1d65a4d",
+      "reopened_snapshot_hash": "501bc0b4327dfa2ff6a28674cf370c6c743c19d4dc6a324f46ecf9b2b1d65a4d",
+      "duplicate_snapshot_hash": "501bc0b4327dfa2ff6a28674cf370c6c743c19d4dc6a324f46ecf9b2b1d65a4d",
+      "duplicate": true,
+      "request_hash": "50579f12ef53763b110a5ba8561391f6efc0cfc8ba720d0e3c9aaa10656fece6",
+      "config_hash": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+      "buyer_wording_sha256": "eea82a29ea16b1d183cfbcbeafdb3f61ec9f16c7e99b6ca8d4d4e25c386d4ab1",
+      "owner_notes_sha256": "7690145db4140454594358e9ec5e502d4b3cfaae63bb4cfbbb69ed3431b9cdf2",
+      "export_files": {
+        "quote.md": "80ce26d66288dad01ea7f59f62715b420bad782ba858e2e2ae13decacdb442e2",
+        "quote.txt": "eea82a29ea16b1d183cfbcbeafdb3f61ec9f16c7e99b6ca8d4d4e25c386d4ab1",
+        "owner-notes.txt": "7690145db4140454594358e9ec5e502d4b3cfaae63bb4cfbbb69ed3431b9cdf2",
+        "record.json": "501bc0b4327dfa2ff6a28674cf370c6c743c19d4dc6a324f46ecf9b2b1d65a4d",
+        "request.json": "50579f12ef53763b110a5ba8561391f6efc0cfc8ba720d0e3c9aaa10656fece6",
+        "catalog.json": "150c86581ed8e4a523efbbbb0f9d0135599112e2325c97f07748d5380a4e7dc2",
+        "workspace.json": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+        "LICENSE": "32f9d0c9c6c843b615cd318b1b56bdca5e5adc79dba9ec5cf405102dcb557079",
+        "receipt.json": "e5a61bbed1aab8a5452f76e1570d7b12d3a7bfc480ee11df9a55472a3eb5dc4d"
+      },
+      "outbound": "disabled",
+      "approvals_verified": false
+    },
+    {
+      "case": "Q10",
+      "id": "9f653082f14360a53df50269457ba6fca02c410aa53c99aada997881a6753bd9",
+      "saved_revision": 2,
+      "reopened_revision": 2,
+      "saved_snapshot_hash": "e20b3ce756dbfe7a3d58e78084eeb3437f249390306c6f8fc6b7f454acdad181",
+      "reopened_snapshot_hash": "e20b3ce756dbfe7a3d58e78084eeb3437f249390306c6f8fc6b7f454acdad181",
+      "duplicate_snapshot_hash": "e20b3ce756dbfe7a3d58e78084eeb3437f249390306c6f8fc6b7f454acdad181",
+      "duplicate": true,
+      "request_hash": "afda965b25d0f61a834eca5d5caa89a72328941f0ca6ea3c90ab07894de90825",
+      "config_hash": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+      "buyer_wording_sha256": "57c51592f9363bc467c99f6d61ee7d1b662918a000c858cb543ffe036a2750e6",
+      "owner_notes_sha256": "a7cd3a626f9c42ac74fadb7576cf6081eee3576b8e6dd6fb6cae67c1c7a37380",
+      "export_files": {
+        "quote.md": "f5572f95efd29cf55c09642fdc7538d4487686ecc566facda833710e053d8966",
+        "quote.txt": "57c51592f9363bc467c99f6d61ee7d1b662918a000c858cb543ffe036a2750e6",
+        "owner-notes.txt": "a7cd3a626f9c42ac74fadb7576cf6081eee3576b8e6dd6fb6cae67c1c7a37380",
+        "record.json": "e20b3ce756dbfe7a3d58e78084eeb3437f249390306c6f8fc6b7f454acdad181",
+        "request.json": "afda965b25d0f61a834eca5d5caa89a72328941f0ca6ea3c90ab07894de90825",
+        "catalog.json": "150c86581ed8e4a523efbbbb0f9d0135599112e2325c97f07748d5380a4e7dc2",
+        "workspace.json": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+        "LICENSE": "32f9d0c9c6c843b615cd318b1b56bdca5e5adc79dba9ec5cf405102dcb557079",
+        "receipt.json": "62c778e05e410015c2cf87ad3f5dceed75b225c0e7aa276c30ca98538d360fd7"
+      },
+      "outbound": "disabled",
+      "approvals_verified": false
+    }
+  ],
+  "calls": [
+    {
+      "case": "Q04",
+      "command": "init",
+      "receipt_sha256": "38469a6cf6414ede0b5997835506feb73b2ac0dcc371bbfe87a5f7d62355e1c4",
+      "exit_code": 0
+    },
+    {
+      "case": "Q04",
+      "command": "intake",
+      "receipt_sha256": "d0ff428480dd50e693c401b0a273fb1e576af489c3db9607e3b4ba0fcbc35f40",
+      "exit_code": 0
+    },
+    {
+      "case": "Q04",
+      "command": "edit",
+      "receipt_sha256": "3e341539e84696b84c187683dfa3ac974356feea5f4bf49f980e03b8088605a6",
+      "exit_code": 0
+    },
+    {
+      "case": "Q04",
+      "command": "show",
+      "receipt_sha256": "cd637060122a976959193906720e203332fb2df8fbc8c6d83d43865de93016d6",
+      "exit_code": 0
+    },
+    {
+      "case": "Q04",
+      "command": "intake",
+      "receipt_sha256": "1fd8a22d5b72468f5ace250a0a4dca08545db3941e35b0b44b2ce9b6d1321852",
+      "exit_code": 0
+    },
+    {
+      "case": "Q04",
+      "command": "export",
+      "receipt_sha256": "04c1187c631056ff98437aab120ae4263c3f29813c82da2d7d432a6048066908",
+      "exit_code": 0
+    },
+    {
+      "case": "Q07",
+      "command": "init",
+      "receipt_sha256": "86ee6ea23fa7d0ad69ac361d30009e86a1e14f27e80a12b6a5ce4087bf9c0332",
+      "exit_code": 0
+    },
+    {
+      "case": "Q07",
+      "command": "intake",
+      "receipt_sha256": "2a7e9aa68dabd70a99863d85f78af2e3ff9c4e8cf5de3052e70b7286f944a6d6",
+      "exit_code": 0
+    },
+    {
+      "case": "Q07",
+      "command": "edit",
+      "receipt_sha256": "500b6ce8eec73a52aa75f7f681c9e7b30b106c0a7f1cbe78696fd9c3e1a11720",
+      "exit_code": 0
+    },
+    {
+      "case": "Q07",
+      "command": "show",
+      "receipt_sha256": "5e2090e58958d7e6982aadef29a9f66a672ea9af6d417df4228e6ff91cbce95b",
+      "exit_code": 0
+    },
+    {
+      "case": "Q07",
+      "command": "intake",
+      "receipt_sha256": "214d01d74e5cafcf6e783fcd9d135ed819014cd3ea874e4d64e193798f804f5c",
+      "exit_code": 0
+    },
+    {
+      "case": "Q07",
+      "command": "export",
+      "receipt_sha256": "76aa6fb66ef5502e4d511de077ea38609755a3f8a481ebfda91d8d12d201420f",
+      "exit_code": 0
+    },
+    {
+      "case": "Q08",
+      "command": "init",
+      "receipt_sha256": "af91351eacb37d5c194995ceb037fa6e0a5d06b9d2b4150354be30aefe4a89fb",
+      "exit_code": 0
+    },
+    {
+      "case": "Q08",
+      "command": "intake",
+      "receipt_sha256": "96a9434edd23bd2bfb477f935e1b0c01e53e720581b0ad5ff7a43642f2e7b239",
+      "exit_code": 0
+    },
+    {
+      "case": "Q08",
+      "command": "edit",
+      "receipt_sha256": "078b5f7810662c5a64e2ec31527dcce9c22b9ffc6fa316c07b2a9db462657c23",
+      "exit_code": 0
+    },
+    {
+      "case": "Q08",
+      "command": "show",
+      "receipt_sha256": "6a745a66155be53028db0a5ccfd97d1cce181b095c68f5b067fc3027603e8fb5",
+      "exit_code": 0
+    },
+    {
+      "case": "Q08",
+      "command": "intake",
+      "receipt_sha256": "31619797ad72396f74d411f0f1b66dfa08fe3b9faf4e1a3d6a2b3ba618c3ff91",
+      "exit_code": 0
+    },
+    {
+      "case": "Q08",
+      "command": "export",
+      "receipt_sha256": "ac8aea73c31aeae945f5254a3ef64c5f8041453192ea7e18b353d23bb53da82a",
+      "exit_code": 0
+    },
+    {
+      "case": "Q10",
+      "command": "init",
+      "receipt_sha256": "c3002cef6a79f293a7a8b60389467cd9c5babf6fd640d60fa45b9f44c08ece0e",
+      "exit_code": 0
+    },
+    {
+      "case": "Q10",
+      "command": "intake",
+      "receipt_sha256": "e0469b8c03d70f86ae6ddb66dde9b537e8cc8a6cf22efd43252deec03771265a",
+      "exit_code": 0
+    },
+    {
+      "case": "Q10",
+      "command": "edit",
+      "receipt_sha256": "c2a8a829dd14c5d0091efa99f024205e4a729877632853ea83d74d25f74b1f09",
+      "exit_code": 0
+    },
+    {
+      "case": "Q10",
+      "command": "show",
+      "receipt_sha256": "043dfd65ed01be65012fe003a9b3e2c5afe5312d533eebfc5d88bcde7d05f346",
+      "exit_code": 0
+    },
+    {
+      "case": "Q10",
+      "command": "intake",
+      "receipt_sha256": "b62e4bd0fcd78a17c80d131cbb6caee52162902b9bae1ddc924c7fd3394e8ae2",
+      "exit_code": 0
+    },
+    {
+      "case": "Q10",
+      "command": "export",
+      "receipt_sha256": "125423cc9929208808d1816a61ea6e67b579e5d6e7f985f1b1ead89f8c6adf48",
+      "exit_code": 0
+    }
+  ],
+  "limits": [
+    "Synthetic inputs; no domain/customer grade or paid advantage.",
+    "No new native-host generation comparison, measured human repair time or provider invoice.",
+    "Owner declarations and semantic audience separation require human review.",
+    "Private full CLI receipts retained; public proof hashes are local fingerprints, not signed attestations."
+  ]
+}
