@@ -1,7 +1,7 @@
 # Local request-to-quote workflow
 
-Prepare one inspectable draft from an approved catalogue and request. The owner
-can record sourced clarification, edit wording, close the process, reopen the same
+Prepare one inspectable draft from an owner-supplied catalogue and request. The owner
+can record attributed clarification, edit wording, close the process, reopen the same
 work, and export a packet for review. Duplicate intake preserves the edited record. There is no account,
 hosted runtime, npm dependency, connector, message sender or payment integration.
 
@@ -47,17 +47,24 @@ node scripts/quote-desk.mjs clarify --workspace "../local quote desk" --id <retu
 
 Use the actual approved reply; the example above is fictional. Clarification
 recomputes the structured amount from the pinned catalogue and saves its source
-reference, without changing the original request or trace. An unedited catalogue
+reference, without changing the original request or trace. Attribution is the
+owner's declaration: the underlying reply is not stored, hashed or verified.
+An unedited catalogue
 message is regenerated. Operator wording is preserved, even if it now describes an
-old quantity or amount: `wordingReviewRequired: true` requires explicit review and
-an edit before use. Up to 50 clarifications can be saved. Stale revisions and price
+old quantity or amount. The saved `wordingReviewRequired: true` flag survives show,
+reopen, duplicate intake and export; a prominent packet banner and receipt carry it.
+Review and save wording before use. Any saved wording edit clears this specific
+warning; it does not verify semantic accuracy or remove the general human-review
+requirement. Explicit recovery restores the chosen snapshot's review state.
+Legacy clarified operator records are conservatively flagged when the field is
+missing. Up to 50 clarifications can be saved. Stale revisions and price
 override fields are refused. This is a draft selection, never price approval.
 
 Write useful wording in a fresh UTF-8 file without a BOM, such as `quote-wording.txt`. Keep it
 grounded in the supplied source, catalogue and uncertainty. Then save and reopen:
 
 ```sh
-node scripts/quote-desk.mjs edit --workspace "../local quote desk" --id <returned-id> --revision 1 --draft quote-wording.txt
+node scripts/quote-desk.mjs edit --workspace "../local quote desk" --id <returned-id> --revision <current-number> --draft quote-wording.txt
 node scripts/quote-desk.mjs show --workspace "../local quote desk" --id <returned-id>
 node scripts/quote-desk.mjs export --workspace "../local quote desk" --id <returned-id> --output "../quote review packet"
 ```
@@ -90,7 +97,8 @@ in its receipt. Attribute any separate host call from its actual native receipt.
 
 `principal.json` requires a plain `id`, name, explicit `localDraftingAllowed` and
 `sourceUseAllowed` true, and explicit `synthetic` true/false. Those are local
-declarations, not legal verification. A catalogue requires an ID, EUR currency,
+declarations, not legal verification. "Approved catalogue" means the owner's
+external declaration, not a runtime-verified approval. A catalogue requires an ID, EUR currency,
 synthetic declaration and 1-100 unique service items with ID/name/unit and two-place
 decimal `draftUnitPrice`. Zero is allowed as an explicit catalogue declaration and
 does not establish a free-price approval. The local request format uses the reference
@@ -101,8 +109,10 @@ characters. receivedAt requires a valid calendar date-time with seconds and an
 explicit timezone; leap seconds are unsupported. This hand-written local subset is
 not the full reference JSON Schema validator. No additional properties are accepted.
 Each input file is bounded to 512 KiB; wording to 32768 characters. Files require
-valid UTF-8 without a BOM; invalid bytes, control characters and directional-override
-characters are refused while the supplied file is preserved. Ordinary Unicode and
+valid UTF-8 without a BOM; invalid bytes, lone Unicode surrogates, C0/C1 controls
+except tab/CR/LF, U+202A-202E, U+2066-2069 and U+FEFF are refused while the supplied
+file is preserved. Other Unicode shaping/invisible characters are allowed and
+need human prose review. Ordinary Unicode and
 CRLF are retained. CLI quantity, revision and PID values use plain positive decimal
 integers, never hexadecimal, exponent notation or fractional strings. Secrets are
 never needed.
@@ -124,11 +134,16 @@ installer and host discovery still require their own compatibility proof.
 Run `show` in a new process to reopen committed work. Repeating identical intake
 returns the latest record, including edits and clarifications. Its original intake
 selection must be repeated; clarify is the explicit path for later scope changes.
+If the pointer is missing but any prior snapshot or pending record exists, intake
+refuses to fork a new revision. Inspect history and explicitly recover the chosen
+work before retrying.
 Reusing a source ID with changed content or a different initial selection stops.
 A stale edit revision also stops; reopen and reconcile instead
 of overwriting the newer work.
 
-Immutable JSON snapshots are flushed before an atomic current-pointer replacement.
+The runtime appends JSON snapshots, flushes them before an atomic current-pointer
+replacement and never overwrites a snapshot. They remain writable by the filesystem
+owner; checksums detect accidental changes and are not signatures or immutable storage.
 A stopped process or failed replacement can leave an uncommitted snapshot and
 pending file. Neither becomes current automatically. File corruption is detected
 by checksums and source/catalogue validation. This is local process-restart
@@ -143,8 +158,10 @@ node scripts/quote-desk.mjs recover --workspace "../local quote desk" --id <retu
 
 History lists valid committed and uncommitted history snapshots; it does not list
 `records/*.pending` files. Timestamps and
-revision numbers alone do not establish which one was committed. Check the current
-record's snapshot when available. For a missing pointer only, use the literal
+revision numbers alone do not establish which one was committed. `pointerState`
+and `currentSnapshot` identify a readable current pointer, and entries mark
+`selectedByCurrentPointer`; corrupt or missing pointers do not select a candidate.
+For a missing pointer only, use the literal
 `missing` value when history reports `pointerHash: null`. Recovery verifies both
 checksums, preserves previous pointer bytes and creates a new revision. It never
 renews approvals or reconnects tools.
@@ -158,7 +175,9 @@ writer, use `unlock --workspace <path> --owner-token <token> --owner-pid <pid>`.
 The token is not permission. The runtime checks both fields and requires that the
 PID is absent on the same host; a foreign host, present/reused PID or permission
 error leaves the lock intact. Use an owner-controlled local disk, never a shared
-network or cloud-synchronized directory for concurrent writers.
+network or cloud-synchronized directory for concurrent writers. All cooperating
+writers must use one OS and one PID namespace. Do not share a workspace across
+Windows/WSL, containers or PID namespaces; the hostname check does not isolate them.
 It sends only the process-existence probe, never a termination signal. Another
 task's lock still requires that owner's handoff. A legacy lock without a host, an
 empty/partial lock, or PID reuse needs manual owner reconciliation; this runtime
@@ -182,7 +201,7 @@ real CLI editing, clarification and reopening, isolated skill copying, duplicate
 edits, denied operations, corruption, interrupted pointer replacement, restrictive
 paths, strict UTF-8, literal exports, missing-pointer recovery, malformed locks,
 partial-write failures and preserved existing targets. `npm test` currently has
-28 quote-workflow checks and 7 existing IncomeSystem checks, 35 in total. Hosted
+31 quote-workflow checks and 7 existing IncomeSystem checks, 38 in total. Hosted
 CI covers Windows and Linux on Node 20 and 24. These are deterministic engineering checks.
 The frozen file retains `actualResults: null` as the original pre-run plan. Its
 historical source hashes remain frozen reference metadata; the fixture checksum

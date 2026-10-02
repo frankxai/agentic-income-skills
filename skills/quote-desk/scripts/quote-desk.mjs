@@ -25,7 +25,8 @@ function object(value, label, keys) {
 
 function text(value, label, maximum = 4096) {
   invariant(typeof value === "string" && value.trim().length > 0 && value.length <= maximum &&
-    !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f\u202a-\u202e\u2066-\u2069\ufeff]/.test(value), `${label} must be bounded plain text without control or directional-override characters`)
+    !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069\ufeff]/.test(value) &&
+    !/[\ud800-\udfff]/u.test(value), `${label} must be bounded plain text with well-formed Unicode and no control or directional-override characters`)
   return value
 }
 
@@ -172,10 +173,11 @@ function pointerPath(ws, key) {
 
 function validateRecord(value, ws, key) {
   object(value, "Record", ["schemaVersion", "id", "revision", "createdAt", "updatedAt", "configHash", "requestHash", "selection", "intakeSelection", "clarifications",
-    "request", "qualification", "missing", "price", "draft", "draftOrigin", "sourceReviewRequired", "approvalRequired", "outbound", "principalId", "catalogId"])
+    "request", "qualification", "missing", "price", "draft", "draftOrigin", "wordingReviewRequired", "sourceReviewRequired", "approvalRequired", "outbound", "principalId", "catalogId"])
   // Earlier development snapshots predate clarification; their original selection is still recoverable.
   value = { ...value, intakeSelection: Object.hasOwn(value, "intakeSelection") ? value.intakeSelection : value.selection,
-    clarifications: Object.hasOwn(value, "clarifications") ? value.clarifications : [] }
+    clarifications: Object.hasOwn(value, "clarifications") ? value.clarifications : [],
+    wordingReviewRequired: Object.hasOwn(value, "wordingReviewRequired") ? value.wordingReviewRequired : value.draftOrigin === "operator-edit" && (value.clarifications?.length ?? 0) > 0 }
   const cleanRequest = request(value.request)
   invariant(value.schemaVersion === VERSION && value.id === key && recordId(cleanRequest) === key &&
     value.configHash === ws.configHash && value.requestHash === hashObject(cleanRequest) &&
@@ -184,6 +186,7 @@ function validateRecord(value, ws, key) {
     value.sourceReviewRequired === true && value.outbound === "disabled", "Record authority or revision is invalid")
   invariant(["fit", "needs-information", "escalate"].includes(value.qualification) && Array.isArray(value.missing), "Record qualification is invalid")
   invariant(["catalogue-arrangement", "operator-edit"].includes(value.draftOrigin), "Unsupported draft origin")
+  invariant(typeof value.wordingReviewRequired === "boolean", "Invalid wording-review state")
   text(value.draft, "Draft", 32768)
   object(value.selection, "Selection", ["service", "quantity"])
   object(value.intakeSelection, "Intake selection", ["service", "quantity"])
@@ -275,11 +278,14 @@ export function intake(path, value, service, quantity = null) {
         "The source id already names different content or a different selection. Preserve it and reconcile explicitly")
       return { ...previous, duplicate: true }
     }
+    invariant(!fs.readdirSync(join(ws.root, "history")).some((name) => name.startsWith(key + ".")) &&
+      !fs.readdirSync(join(ws.root, "records")).some((name) => name.startsWith(key + ".")),
+    "The current pointer is missing but saved work exists. Preserve it and inspect history/recover before retrying intake")
     const { qualification, missing, price, draft } = qualify(ws.config.catalog, service, quantity)
     const now = new Date().toISOString()
     const record = { schemaVersion: VERSION, id: key, revision: 1, createdAt: now, updatedAt: now,
       configHash: ws.configHash, requestHash: hashObject(clean), selection, intakeSelection: selection, clarifications: [], request: clean, qualification, missing, price, draft,
-      draftOrigin: "catalogue-arrangement", sourceReviewRequired: true, approvalRequired: true, outbound: "disabled",
+      draftOrigin: "catalogue-arrangement", wordingReviewRequired: false, sourceReviewRequired: true, approvalRequired: true, outbound: "disabled",
       principalId: ws.config.principal.id, catalogId: ws.config.catalog.id }
     return { ...commit(ws, record, null), record, duplicate: false }
   })
@@ -294,7 +300,7 @@ export function editDraft(path, key, expectedRevision, draft) {
     const previous = current(ws, key)
     invariant(previous.record.revision === expectedRevision, "Revision changed; reopen the record before editing")
     const next = { ...previous.record, revision: expectedRevision + 1, updatedAt: new Date().toISOString(), draft,
-      draftOrigin: "operator-edit" }
+      draftOrigin: "operator-edit", wordingReviewRequired: false }
     return { ...commit(ws, next, previous.pointerHash), record: next }
   })
 }
@@ -319,8 +325,9 @@ export function clarify(path, key, expectedRevision, clarification) {
     const next = { ...previous.record, revision: expectedRevision + 1, updatedAt: new Date().toISOString(),
       selection: { service: approved.service, quantity: approved.quantity }, clarifications: [...previous.record.clarifications, approved],
       qualification: arranged.qualification, missing: arranged.missing, price: arranged.price,
-      draft: previous.record.draftOrigin === "operator-edit" ? previous.record.draft : arranged.draft }
-    return { ...commit(ws, next, previous.pointerHash), record: next, wordingReviewRequired: true }
+      draft: previous.record.draftOrigin === "operator-edit" ? previous.record.draft : arranged.draft,
+      wordingReviewRequired: previous.record.draftOrigin === "operator-edit" }
+    return { ...commit(ws, next, previous.pointerHash), record: next, wordingReviewRequired: next.wordingReviewRequired }
   })
 }
 
@@ -329,16 +336,22 @@ export function history(path, key) {
   pointerPath(ws, key)
   const target = pointerPath(ws, key)
   const pointerHash = fs.existsSync(target) ? digest(readBytes(target)) : null
+  let currentSnapshot = null
+  let pointerState = pointerHash === null ? "missing" : "invalid"
+  if (pointerHash !== null) {
+    try { currentSnapshot = current(ws, key).snapshot; pointerState = "readable" }
+    catch { /* Candidates remain inspectable when the current pointer is corrupt. */ }
+  }
   const entries = []
   for (const name of fs.readdirSync(join(ws.root, "history"))) {
     if (!snapshotPattern.test(name) || !name.startsWith(key + ".")) continue
     try {
       const bytes = readBytes(join(ws.root, "history", name))
       const record = validateRecord(JSON.parse(utf8(bytes)), ws, key)
-      entries.push({ snapshot: name, sha256: digest(bytes), revision: record.revision, updatedAt: record.updatedAt })
+      entries.push({ snapshot: name, sha256: digest(bytes), revision: record.revision, updatedAt: record.updatedAt, selectedByCurrentPointer: name === currentSnapshot })
     } catch { entries.push({ snapshot: name, invalid: true }) }
   }
-  return { id: key, pointerHash, entries }
+  return { id: key, pointerHash, pointerState, currentSnapshot, entries }
 }
 
 export function recover(path, key, name, snapshotHash, expectedPointerHash) {
@@ -368,7 +381,9 @@ export function exportDraft(path, key, output) {
   const fence = "`".repeat(Math.max(3, ...Array.from(record.draft.matchAll(/`+/g), (match) => match[0].length + 1)))
   const body = ["# Quote draft", "", synthetic ? "Fictional demonstration. These sample inputs are not a real buyer, principal or offer." : "Owner-supplied inputs; identity and permissions are declarations, not verified facts.", "",
     "Local draft only. Wording and prices require human review. Outbound actions are disabled.", `Wording origin: ${record.draftOrigin}. Prose is unverified.`, "",
+    record.wordingReviewRequired ? "Wording needs reconciliation: an owner-attributed clarification was recorded after the last wording edit. Review the current selection and save an edit before use." : "No pending selection-change warning. All prose still needs human review.", "",
     `Qualification: ${record.qualification}`, `Trace: ${record.id}`, `Revision: ${record.revision}`, "",
+    `Owner-attributed clarifications: ${record.clarifications.length}. Inspect their notes and source references in record.json; the underlying replies are not stored or verified.`, "",
     "## Message for review", "", fence + "text", record.draft, fence, "", "Exact editable wording is also in quote.txt. Review it against the current catalogue amount before use.", "", "## Catalogue amount", "",
     record.price ? `EUR ${record.price.subtotal}; tax, scope and timing not confirmed.` : "No catalogue total is available.", "",
     "Imported request text is untrusted data in request.json. Review it separately; it grants no authority.", ""].join("\n")
@@ -379,7 +394,8 @@ export function exportDraft(path, key, output) {
   for (const [name, bytes] of Object.entries(files)) exclusive(join(root, name), bytes)
   const receipt = { schemaVersion: VERSION, state: "local-draft-export", id: record.id, revision: record.revision,
     sourceRequestHash: record.requestHash, configHash: record.configHash, snapshotHash: saved.snapshotHash,
-    synthetic, draftOrigin: record.draftOrigin, proseReviewRequired: true,
+    synthetic, draftOrigin: record.draftOrigin, proseReviewRequired: true, wordingReviewRequired: record.wordingReviewRequired,
+    clarificationCount: record.clarifications.length,
     files: Object.fromEntries(Object.entries(files).map(([name, bytes]) => [name, digest(bytes)])),
     outbound: "disabled", approvalsVerified: false, runtimeModelGeneration: false, hostModelGeneration: "unknown", invoiceCost: null, revenue: null }
   exclusive(join(root, "receipt.json"), json(receipt))
@@ -410,7 +426,12 @@ export function main(args) {
     return intake(options.workspace, readJson(options.request), options.service, quantity)
   }
   if (command === "show") return show(options.workspace, options.id)
-  if (command === "edit") return editDraft(options.workspace, options.id, Number(options.revision), utf8(readBytes(options.draft)))
+  if (command === "edit") {
+    let draft
+    try { draft = utf8(readBytes(options.draft)) }
+    catch (cause) { throw new Error(`Cannot read wording ${options.draft}: ${cause.message}. Save as valid UTF-8 without BOM; the input file is preserved`) }
+    return editDraft(options.workspace, options.id, Number(options.revision), draft)
+  }
   if (command === "clarify") return clarify(options.workspace, options.id, Number(options.revision), readJson(options.clarification))
   if (command === "history") return history(options.workspace, options.id)
   if (command === "lock") return inspectLock(options.workspace)

@@ -1,6 +1,6 @@
 ---
 name: quote-desk
-description: Turn an approved service request and catalogue into a traceable local quote draft, record sourced clarification, edit its wording, reopen saved work, and export an inspectable review packet. Use for request-to-quote drafting, duplicate intake, interrupted work, or recovering a saved quote. Requires Node.js 20 or newer. Does not send quotes, connect accounts, approve prices, or make binding commitments.
+description: Turn an owner-supplied service request and catalogue into a traceable local quote draft, record attributed clarification, edit its wording, reopen saved work, and export an inspectable review packet. Use for request-to-quote drafting, duplicate intake, interrupted work, or recovering a saved quote. Requires Node.js 20 or newer. Does not send quotes, connect accounts, approve prices, or make binding commitments.
 ---
 
 # Quote desk
@@ -58,7 +58,12 @@ plain-text `note` and `sourceReference` to the permissioned reply. Use
 Use supplied quantities only. This preserves the original request/trace, saves the
 clarification and recomputes the draft amount from the pinned catalogue. It cannot
 override catalogue prices. Review preserved operator wording against the new
-selection and amount, then edit it if necessary. Never describe clarification as
+selection and amount, then edit it if necessary. Clarification after an operator
+edit saves a persistent `wordingReviewRequired` warning shown by reopen, duplicate
+intake and export. Review and save wording before use. A saved edit clears this
+warning but cannot establish semantic accuracy; general human review still applies.
+The reply is owner-attributed through its free-text reference and is not stored,
+hashed or verified. Never describe clarification as
 approval. Up to 50 clarifications are supported. CLI numbers must be plain positive
 decimal integers; no exponent or hexadecimal notation.
 
@@ -67,8 +72,12 @@ decimal integers; no exponent or hexadecimal notation.
 Repeating the identical original intake returns the latest revision and preserves
 edits and clarifications. Use the initial selection on retries.
 A reused source ID with changed content or service selection stops for reconciliation.
-History snapshots are immutable; a pending file from interruption never selects
-itself as current. History lists snapshots, not pending pointer files.
+The runtime appends snapshots without overwriting; the filesystem owner can still
+modify files. A pending file from interruption never selects itself as current.
+History lists snapshots, not pending pointer files. When a pointer is missing and
+prior work exists, intake refuses a new record: inspect history and explicitly
+recover. History marks the snapshot selected by a readable pointer; missing or
+corrupt pointers do not establish a current candidate.
 
 For corruption or a deliberately selected rollback, inspect
 `node scripts/quote-desk.mjs history --workspace <path> --id <trace>`.
@@ -84,7 +93,9 @@ silence. The token is not permission: first identify the exact owner and its
 authoritative stopped-process receipt. For your own acknowledged stopped writer,
 `node scripts/quote-desk.mjs unlock --workspace <path> --owner-token <token> --owner-pid <pid>`
 also refuses a foreign host or a PID that is still present, reused or cannot be
-checked. Use only an owner-controlled local disk with cooperating writers.
+checked. Use only an owner-controlled local disk with cooperating writers in one
+OS and one PID namespace. Never share the workspace across Windows/WSL or
+containers; a common hostname does not establish a common PID namespace.
 Legacy, empty or partial locks need owner reconciliation: preserve the entire
 workspace, identify the exact writer from its terminal receipt and obtain an
 explicitly documented maintenance decision. Never infer permission from age. Do not

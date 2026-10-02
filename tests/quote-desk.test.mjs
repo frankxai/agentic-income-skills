@@ -21,6 +21,10 @@ function setup(t) {
   t.after(() => {
     const target = resolve(root)
     assert.ok(target.startsWith(resolve(tmpdir()) + (process.platform === "win32" ? "\\" : "/") + "starlight-quote-test-"))
+    for (const entry of fs.readdirSync(target)) {
+      const path = join(target, entry)
+      if (fs.lstatSync(path).isSymbolicLink()) fs.unlinkSync(path)
+    }
     fs.rmSync(target, { recursive: true })
   })
   const workspace = join(root, "local workspace")
@@ -78,6 +82,7 @@ test("explicit sourced clarification fills missing hours without inventing anoth
   assert.equal(revised.record.price.subtotal, "320.00")
   assert.equal(revised.record.draft, "An owner sentence which must survive another clarification.")
   assert.equal(revised.wordingReviewRequired, true)
+  assert.equal(show(workspace, initial.id).record.wordingReviewRequired, true)
   assert.equal(intake(workspace, sample("Q02"), "maintain").revision, 4)
   assert.throws(() => clarify(workspace, initial.id, 3, answer), /Revision changed/)
   assert.equal(history(workspace, initial.id).entries.length, 4)
@@ -377,6 +382,58 @@ test("missing-pointer recovery and CLI history/lock commands preserve identity a
   assert.ok(fs.existsSync(join(workspace, ".writer.lock")))
   for (const bad of ["0x10", "1e2", "1.0", " 7 "]) assert.throws(() => main(["intake", "--workspace", workspace, "--request", join(SKILL, "examples", "request.json"), "--service", "inspect", "--quantity", bad]), /plain positive integer/)
   assert.equal(fs.existsSync(join(root, "outside")), false)
+})
+
+test("missing-pointer duplicate intake refuses to fork saved edits and history identifies the valid current snapshot", (t) => {
+  const { workspace } = setup(t)
+  const initial = intake(workspace, sample("Q08"), "inspect", 1)
+  const edited = editDraft(workspace, initial.id, 1, "An edit retained through missing-pointer recovery.")
+  const listed = history(workspace, initial.id)
+  assert.equal(listed.pointerState, "readable")
+  assert.equal(listed.currentSnapshot, edited.snapshot)
+  assert.equal(listed.entries.find((entry) => entry.selectedByCurrentPointer).snapshot, edited.snapshot)
+  fs.unlinkSync(join(workspace, "records", initial.id + ".json"))
+  assert.throws(() => intake(workspace, sample("Q08"), "inspect", 1), /pointer is missing but saved work exists/)
+  assert.equal(fs.existsSync(join(workspace, "records", initial.id + ".json")), false)
+  const candidates = history(workspace, initial.id)
+  assert.equal(candidates.pointerState, "missing")
+  assert.equal(candidates.currentSnapshot, null)
+  assert.equal(candidates.entries.length, 2)
+  recover(workspace, initial.id, edited.snapshot, edited.snapshotHash, null)
+  assert.equal(intake(workspace, sample("Q08"), "inspect", 1).record.draft, edited.record.draft)
+  assert.throws(() => editDraft(workspace, initial.id, 1, "Stale pre-recovery edit"), /Revision changed/)
+})
+
+test("clarification warning survives reopen, duplicate and export, and only a saved wording edit clears it", (t) => {
+  const { root, workspace } = setup(t)
+  const initial = intake(workspace, sample("Q01"), "inspect", 1)
+  editDraft(workspace, initial.id, 1, "Draft subtotal EUR 120.00; review before use.")
+  clarify(workspace, initial.id, 2, { service: "maintain", quantity: 3, note: "Owner selects three hours.", sourceReference: "permissioned-reply" })
+  const reopened = show(workspace, initial.id)
+  assert.equal(reopened.record.wordingReviewRequired, true)
+  assert.equal(reopened.record.price.subtotal, "240.00")
+  assert.match(reopened.record.draft, /120\.00/)
+  assert.equal(intake(workspace, sample("Q01"), "inspect", 1).record.wordingReviewRequired, true)
+  const packet = exportDraft(workspace, initial.id, join(root, "needs wording reconciliation"))
+  assert.equal(packet.receipt.wordingReviewRequired, true)
+  assert.equal(packet.receipt.clarificationCount, 1)
+  assert.match(fs.readFileSync(join(packet.directory, "quote.md"), "utf8"), /Wording needs reconciliation/)
+  assert.equal(JSON.parse(fs.readFileSync(join(packet.directory, "record.json"))).wordingReviewRequired, true)
+  editDraft(workspace, initial.id, 3, "Reconciled draft subtotal EUR 240.00; owner review still required.")
+  assert.equal(show(workspace, initial.id).record.wordingReviewRequired, false)
+  assert.equal(exportDraft(workspace, initial.id, join(root, "reconciled wording")).receipt.wordingReviewRequired, false)
+})
+
+test("lone surrogates and C1 controls are refused while well-formed Unicode exports byte-exactly", (t) => {
+  const { root, workspace } = setup(t)
+  const initial = intake(workspace, sample("Q01"), "inspect", 1)
+  for (const invalid of ["A lone high \ud800", "A lone low \udfff", "NEL\u0085control"]) {
+    assert.throws(() => editDraft(workspace, initial.id, 1, invalid), /well-formed Unicode/)
+  }
+  const wording = "Owner wording: café, العربية, 👩‍💻.\r\n"
+  editDraft(workspace, initial.id, 1, wording)
+  const packet = exportDraft(workspace, initial.id, join(root, "unicode wording"))
+  assert.deepEqual(fs.readFileSync(join(packet.directory, "quote.txt")), Buffer.from(wording))
 })
 
 test("CLI clarification keeps the original trace and exact source while recomputing only pinned amounts", (t) => {

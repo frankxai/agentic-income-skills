@@ -75,14 +75,15 @@ Then ask an agent:
 
 The `quote-desk` skill produces a saved, editable qualification and quote draft from
 an explicitly supplied principal, service catalogue and request. It preserves
-operator wording across duplicate intake and process restarts, records sourced
+operator wording across duplicate intake and process restarts, records owner-attributed
 scope clarifications, keeps immutable history, rejects stale edits, and exports a
 review packet with exact wording, inspectable configuration, checksums and the
 complete MIT licence. Node.js 20 or newer is sufficient for this runtime; no npm
 install, account or connector is required.
 
-Install it with `npx skills add frankxai/agentic-income-skills --skill quote-desk`,
-or run `node scripts/quote-desk.mjs` from this checkout. Follow
+Run `node scripts/quote-desk.mjs` from this checkout or copy the complete skill
+directory. The intended remote command is `npx skills add frankxai/agentic-income-skills --skill quote-desk`;
+that installer path has not been verified for this skill. Follow
 [the end-to-end commands and recovery guide](docs/quote-desk.md).
 
 Catalogue arrangement is deterministic. A host or operator can improve the draft
