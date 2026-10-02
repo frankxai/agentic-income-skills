@@ -88,8 +88,18 @@ The four files are exact quote.txt, README.md, the helper's MIT LICENSE and
 receipt.json. Separate notes, contacts, request, catalogue and configuration are
 not copied. Trace/revision/source fingerprints remain in the owner's command
 result, outside this folder. Read the entire wording for misplaced internal
-material; no semantic filtering or sending occurs. Parse the receipt and compare
-its hashes with all three payload files before treating the folder as complete.
+material; no semantic filtering or sending occurs. Retain `receiptHash` from the
+owner's export command separately from this folder. Run:
+
+```text
+node scripts/quote-desk.mjs verify-buyer --directory <export-directory> --receipt-sha256 <retained-receiptHash>
+```
+
+The verifier hashes the same bounded receipt bytes it parses, checks the four-file
+layout and draft metadata, and verifies all three bounded plain-text payloads.
+Use the independently retained export hash; computing a received folder's own
+hash cannot establish that it is the selected export. A pass establishes integrity
+against that supplied hash, not publisher identity, prose, rights or approval.
 Missing, invalid or mismatched receipts require preservation and a fresh-sibling
 retry. Keep the internal packet for source and price review. Manual copying of
 reviewed quote.txt remains a capable alternative; no paid advantage is established.

@@ -135,8 +135,23 @@ it cannot detect material the author put in the wording or establish confidentia
 Review the complete message, source, structured amount and rights before use.
 The helper licence does not establish rights to owner-supplied text.
 
-The receipt must parse and its hashes must match all three payload files. Existence
-of a receipt alone is insufficient. A missing, invalid or mismatched receipt marks
+Record `receiptHash` from the owner's export result separately from the folder.
+Verify the received or reopened export with that retained hash:
+
+```sh
+node scripts/quote-desk.mjs verify-buyer --directory "../buyer wording draft" --receipt-sha256 <retained-receiptHash>
+```
+
+The verifier reads the same bounded receipt bytes for hashing and parsing, checks
+the exact four-file layout and draft metadata, and checks all three bounded UTF-8
+plain-text payloads against the receipt. It refuses missing/extra or nonordinary
+files, invalid metadata and mismatched payloads without changing the folder.
+Changing both wording and receipt cannot pass an unchanged retained receipt hash.
+If the caller trusts a replacement hash, only those new bytes' integrity is checked.
+Do not compute a received folder's own hash and present it as independent evidence.
+The expected hash does not itself authenticate an owner, merchant or publisher.
+
+Existence of a receipt alone is insufficient. A missing, invalid or mismatched receipt marks
 unfinished or changed output. Preserve it and retry into a fresh sibling; an existing
 folder is always refused. A failed export leaves saved work unchanged. The folder
 remains a draft requiring human review; no approval, price change or delivery occurs.
@@ -262,11 +277,12 @@ edits, denied operations, corruption, interrupted pointer replacement, restricti
 paths, strict UTF-8, literal exports, missing-pointer recovery, malformed locks,
 partial-write failures and preserved existing targets. `npm test` currently has
 31 original quote-workflow checks, 11 audience/recovery checks and 7 existing
-IncomeSystem checks, plus 10 buyer-export checks, 59 in total. Hosted
+IncomeSystem checks, plus 14 buyer-export checks, 63 in total. Hosted
 CI covers Windows and Linux on Node 20 and 24. These are deterministic engineering checks.
 The buyer-export tests cover exact output/internal-payload separation, stale/current
 selection, unreconciled/default wording, foreign locks, interrupted writes,
-fresh-sibling recovery, copied-skill use and the semantic-review boundary.
+fresh-sibling recovery, copied-skill export/verification, checksum-bound verification
+and the semantic-review boundary.
 The frozen file retains `actualResults: null` as the original pre-run plan. Its
 historical source hashes remain frozen reference metadata; the fixture checksum
 binds the plan and inputs, without attesting current platform-dependent source bytes.

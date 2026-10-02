@@ -6,7 +6,7 @@ import { join, resolve } from "node:path"
 import { spawnSync } from "node:child_process"
 import { fileURLToPath } from "node:url"
 import test from "node:test"
-import { initDesk, intake, show, editDraft, clarify, exportDraft, exportBuyerDraft, main } from "../scripts/quote-desk.mjs"
+import { initDesk, intake, show, editDraft, clarify, exportDraft, exportBuyerDraft, verifyBuyerDraft, main } from "../scripts/quote-desk.mjs"
 
 const repo = fileURLToPath(new URL("../", import.meta.url))
 const load = (name) => JSON.parse(fs.readFileSync(join(repo, name), "utf8"))
@@ -121,19 +121,24 @@ test("mid-export failure leaves a partial packet without receipt; fresh sibling 
   assert.deepEqual(fs.readFileSync(join(complete.directory, "quote.txt")), Buffer.from(s.draft))
 })
 
-test("export holds the cooperating-writer lock until its receipt is written", (t) => {
+test("export holds the cooperating-writer lock during payload and receipt writes", (t) => {
   const s = setup(t), output = join(s.root, "locked export")
-  const write = fs.writeFileSync; let observed = false
+  const write = fs.writeFileSync; let observed = false, receiptObserved = false
   fs.writeFileSync = (...args) => {
     if (!observed && typeof args[1] === "string" && args[1].startsWith("# Buyer wording draft")) {
       observed = true
       assert.throws(() => editDraft(s.workspace, s.saved.id, 2, "Concurrent edit"), /writer lock/)
+    }
+    if (!receiptObserved && typeof args[1] === "string" && args[1].includes('"state": "local-buyer-wording-draft"')) {
+      receiptObserved = true
+      assert.throws(() => editDraft(s.workspace, s.saved.id, 2, "Receipt-time concurrent edit"), /writer lock/)
     }
     return write(...args)
   }
   try { exportSelected(s, output) }
   finally { fs.writeFileSync = write }
   assert.equal(observed, true)
+  assert.equal(receiptObserved, true)
   assert.equal(show(s.workspace, s.saved.id).snapshotHash, s.saved.snapshotHash)
   assert.equal(fs.existsSync(join(s.workspace, ".writer.lock")), false)
 })
@@ -158,7 +163,7 @@ test("CLI refuses missing hash, wrong numeric format and unauthorized send optio
   assert.equal(fs.existsSync(join(s.root, "cli")), false)
 })
 
-test("copied skill exports without the repository wrapper or npm dependencies", (t) => {
+test("copied skill exports and verifies without the repository wrapper or npm dependencies", (t) => {
   const s = setup(t), copy = join(s.root, "copied skill"), output = join(s.root, "copied output")
   fs.mkdirSync(join(copy, "scripts"), { recursive: true })
   fs.copyFileSync(join(repo, "skills/quote-desk/scripts/quote-desk.mjs"), join(copy, "scripts/quote-desk.mjs"))
@@ -168,6 +173,10 @@ test("copied skill exports without the repository wrapper or npm dependencies", 
   assert.equal(result.status, 0, result.stderr)
   assert.deepEqual(fs.readFileSync(join(output, "quote.txt")), Buffer.from(s.draft))
   assert.equal(JSON.parse(result.stdout).receipt.outbound, "disabled")
+  const verified = spawnSync(process.execPath, [join(copy, "scripts/quote-desk.mjs"), "verify-buyer", "--directory", output,
+    "--receipt-sha256", JSON.parse(result.stdout).receiptHash], { cwd: copy, encoding: "utf8", timeout: 10000 })
+  assert.equal(verified.status, 0, verified.stderr)
+  assert.equal(JSON.parse(verified.stdout).state, "buyer-export-integrity-pass")
 })
 
 test("a receipt write failure retains invalid output and source; mere receipt presence proves nothing", (t) => {
@@ -186,7 +195,64 @@ test("a receipt write failure retains invalid output and source; mere receipt pr
   assert.equal(show(s.workspace, s.saved.id).snapshotHash, s.saved.snapshotHash)
   assert.throws(() => exportSelected(s, output), /EEXIST/)
   assert.equal(fs.existsSync(join(s.workspace, ".writer.lock")), false)
-  assert.match(fs.readFileSync(join(output, "README.md"), "utf8"), /unreadable or mismatched receipt/)
+  assert.match(fs.readFileSync(join(output, "README.md"), "utf8"), /unreadable or mismatched receipt or payload/)
   const recovered = exportSelected(s, join(s.root, "after receipt failure"))
   for (const [name, expected] of Object.entries(recovered.receipt.files)) assert.equal(hash(fs.readFileSync(join(recovered.directory, name))), expected)
+})
+
+test("verifier accepts a complete draft with its separately retained export receipt hash", (t) => {
+  const s = setup(t), out = exportSelected(s, join(s.root, "verified"))
+  assert.equal(out.receiptHash, hash(fs.readFileSync(join(out.directory, "receipt.json"))))
+  const result = main(["verify-buyer", "--directory", out.directory, "--receipt-sha256", out.receiptHash])
+  assert.equal(result.state, "buyer-export-integrity-pass")
+  assert.equal(result.proseReviewRequired, true)
+  assert.equal(result.publisherIdentity, "not-verified")
+  assert.equal(result.rights, "not-verified")
+  assert.equal(result.approvalsVerified, false)
+})
+
+test("verifier refuses missing, changed, oversized or invalid files without changing the packet", (t) => {
+  const s = setup(t)
+  for (const name of ["quote.txt", "README.md", "LICENSE", "receipt.json"]) {
+    const out = exportSelected(s, join(s.root, "changed-" + name))
+    fs.writeFileSync(join(out.directory, name), "Changed file bytes.")
+    assert.throws(() => verifyBuyerDraft(out.directory, out.receiptHash), /checksum mismatch/)
+    assert.equal(fs.readFileSync(join(out.directory, name), "utf8"), "Changed file bytes.")
+  }
+  const missing = exportSelected(s, join(s.root, "missing")); fs.unlinkSync(join(missing.directory, "LICENSE"))
+  assert.throws(() => verifyBuyerDraft(missing.directory, missing.receiptHash), /exactly the four/)
+  const oversized = exportSelected(s, join(s.root, "oversized")); fs.writeFileSync(join(oversized.directory, "quote.txt"), "x".repeat(512 * 1024 + 1))
+  assert.throws(() => verifyBuyerDraft(oversized.directory, oversized.receiptHash), /exceeds 512 KiB/)
+  const invalid = exportSelected(s, join(s.root, "invalid")); fs.writeFileSync(join(invalid.directory, "receipt.json"), "{")
+  assert.throws(() => verifyBuyerDraft(invalid.directory, hash(Buffer.from("{"))))
+  const extra = exportSelected(s, join(s.root, "extra")); fs.writeFileSync(join(extra.directory, "owner-notes.txt"), "Unrelated private content.")
+  assert.throws(() => verifyBuyerDraft(extra.directory, extra.receiptHash), /exactly the four/)
+})
+
+test("updated payload and receipt cannot pass the separately retained prior receipt hash", (t) => {
+  const s = setup(t), out = exportSelected(s, join(s.root, "rewritten"))
+  const changed = "Different wording; source and prose still require review."
+  fs.writeFileSync(join(out.directory, "quote.txt"), changed)
+  const receipt = structuredClone(out.receipt); receipt.files["quote.txt"] = hash(changed)
+  fs.writeFileSync(join(out.directory, "receipt.json"), JSON.stringify(receipt, null, 2) + "\n")
+  assert.throws(() => verifyBuyerDraft(out.directory, out.receiptHash), /Receipt checksum mismatch/)
+  // If the caller deliberately trusts a new hash, only integrity of those bytes can be established.
+  const result = verifyBuyerDraft(out.directory, hash(fs.readFileSync(join(out.directory, "receipt.json"))))
+  assert.equal(result.proseReviewRequired, true)
+  assert.equal(result.publisherIdentity, "not-verified")
+})
+
+test("receipt shape, authority claims, payload map and invalid text fail even with a matching supplied hash", (t) => {
+  const s = setup(t)
+  const patches = [r => { r.approvalsVerified = true }, r => { r.outbound = "sent" }, r => { r.files = null }, r => { delete r.files.LICENSE }, r => { r.id = "Unexpected owner trace" }, r => { r.files["quote.txt"] = "bad-hash" }]
+  for (const [index, patch] of patches.entries()) {
+    const out = exportSelected(s, join(s.root, "shape-" + index)); const receipt = structuredClone(out.receipt);patch(receipt)
+    const raw = JSON.stringify(receipt, null, 2) + "\n";fs.writeFileSync(join(out.directory, "receipt.json"), raw)
+    assert.throws(() => verifyBuyerDraft(out.directory, hash(raw)))
+  }
+  const invalid = exportSelected(s, join(s.root, "invalid-utf8")); const bytes = Buffer.from([0xc3, 0x28]);fs.writeFileSync(join(invalid.directory, "quote.txt"), bytes)
+  const receipt = structuredClone(invalid.receipt);receipt.files["quote.txt"] = hash(bytes)
+  const raw = JSON.stringify(receipt, null, 2) + "\n";fs.writeFileSync(join(invalid.directory, "receipt.json"), raw)
+  assert.throws(() => verifyBuyerDraft(invalid.directory, hash(raw)))
+  assert.throws(() => verifyBuyerDraft(invalid.directory, "invalid expected value"), /Expected receipt/)
 })
