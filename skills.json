@@ -4,7 +4,7 @@
   "skills": [
     {
       "source": "frankxai/agentic-income-skills",
-      "skills": ["agentic-income"]
+      "skills": ["agentic-income", "quote-desk"]
     }
   ]
 }

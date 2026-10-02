@@ -43,6 +43,7 @@ MIT licensed. No account, hosted runtime, customer data, paid payload, or privat
 | scripts/validate-income-system.mjs | JSON Schema plus non-negotiable policy validation |
 | scripts/scaffold-income-system.mjs | Creates an owned copy of the reference Outcome Pack |
 | examples/request-to-quote-desk | First governed vertical system |
+| skills/quote-desk | Self-contained local drafting runtime, host guide, synthetic examples and MIT licence |
 | skills/affiliate-audit | Legacy-compatible adjunct for honest affiliate opportunity audits |
 
 Affiliate and income-asset automation belongs to the Agentic Passive Income discipline. It remains here temporarily for compatibility while the public passive-income core is consolidated.
@@ -69,6 +70,25 @@ Then ask an agent:
 
     /agentic-income build a request-to-quote desk for Amsterdam renovation
     businesses, with human approval before pricing or outbound commitments.
+
+## Local quote workflow
+
+The `quote-desk` skill produces a saved, editable qualification and quote draft from
+an explicitly supplied principal, service catalogue and request. It preserves
+operator wording across duplicate intake and process restarts, keeps immutable
+history, rejects stale edits, and exports a review packet with checksums and the
+complete MIT licence. Node.js 20 or newer is sufficient for this runtime; no npm
+install, account or connector is required.
+
+Install it with `npx skills add frankxai/agentic-income-skills --skill quote-desk`,
+or run `node scripts/quote-desk.mjs` from this checkout. Follow
+[the end-to-end commands and recovery guide](docs/quote-desk.md).
+
+Catalogue arrangement is deterministic. A host or operator can improve the draft
+wording; its accuracy still requires review. The runtime neither verifies legal
+identity nor approves prices, sends messages, connects a CRM or creates contracts.
+The supplied examples are fictional. This free MIT path has no demonstrated paid
+advantage, outside-user acceptance, Dots compatibility or paid-release approval.
 
 ## Discipline boundary
 
