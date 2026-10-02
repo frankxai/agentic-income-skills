@@ -1,0 +1,10 @@
+{
+  "requestId": "synthetic-request-003",
+  "source": "email",
+  "contact": {
+    "name": "Synthetic buyer",
+    "email": "buyer@example.com"
+  },
+  "summary": "Please install an item which is absent from the supplied catalogue.",
+  "receivedAt": "2026-10-02T00:00:00Z"
+}

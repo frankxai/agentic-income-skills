@@ -1,0 +1,62 @@
+{
+  "is_error": false,
+  "terminal_reason": "completed",
+  "subtype": "success",
+  "num_turns": 86,
+  "total_cost_usd": 0.681857,
+  "usage": {
+    "input_tokens": 28,
+    "cache_creation_input_tokens": 93210,
+    "cache_read_input_tokens": 579905,
+    "output_tokens": 19298,
+    "output_tokens_details": {
+      "thinking_tokens": 942
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 93210,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 1178,
+        "cache_read_input_tokens": 89129,
+        "cache_creation_input_tokens": 4081,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 4081
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 28,
+      "outputTokens": 19298,
+      "cacheReadInputTokens": 579905,
+      "cacheCreationInputTokens": 93210,
+      "webSearchRequests": 0,
+      "costUSD": 0.681857,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 942,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "schema": "starlight.redacted_native_usage_projection.v1",
+  "native_result_sha256": "6d29b165cccebe8311a1ad1ba501035f2ebbd3b96a5652e84cc59e24ac15b35d",
+  "source_revision": "ceab96e34d1e83f4f51b4a853f678bec92721cef",
+  "scope": "Exact selected fields from the retained native result. Session/transport identifiers, full native stream and response are omitted. Provider-reported list metadata, not independently reconciled cash invoice.",
+  "workflow_result": "completed; lead checks plus prose inspection retained"
+}

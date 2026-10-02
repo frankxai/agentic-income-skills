@@ -1,0 +1,62 @@
+{
+  "is_error": false,
+  "terminal_reason": "completed",
+  "subtype": "success",
+  "num_turns": 12,
+  "total_cost_usd": 0.16158119999999998,
+  "usage": {
+    "input_tokens": 12,
+    "cache_creation_input_tokens": 25780,
+    "cache_read_input_tokens": 113936,
+    "output_tokens": 3565,
+    "output_tokens_details": {
+      "thinking_tokens": 117
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 25780,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 576,
+        "cache_read_input_tokens": 28436,
+        "cache_creation_input_tokens": 1961,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1961
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 12,
+      "outputTokens": 3565,
+      "cacheReadInputTokens": 113936,
+      "cacheCreationInputTokens": 25780,
+      "webSearchRequests": 0,
+      "costUSD": 0.16158119999999998,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 117,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "schema": "starlight.redacted_native_usage_projection.v1",
+  "native_result_sha256": "ee6ff0ab9d38b061f12b7a2c651c939c9df5cd3cc9512b58a3ac532682b10ee0",
+  "source_revision": "ceab96e34d1e83f4f51b4a853f678bec92721cef",
+  "scope": "Exact selected fields from the retained native result. Session/transport identifiers, full native stream and response are omitted. Provider-reported list metadata, not independently reconciled cash invoice.",
+  "workflow_result": "completed; lead checks plus prose inspection retained"
+}

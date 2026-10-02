@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "1cd44ebe1da868f34c9448fd4af23868728d3d726314df7790b564946c68a121",
+  "revision": 2,
+  "createdAt": "2026-10-02T15:57:11.406Z",
+  "updatedAt": "2026-10-02T15:57:46.634Z",
+  "configHash": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+  "requestHash": "6fcac0cde6518c62c0a63f574722a979a3d02996eba9de7893564a359e2336f9",
+  "selection": {
+    "service": "inspect",
+    "quantity": 1
+  },
+  "intakeSelection": {
+    "service": "inspect",
+    "quantity": 1
+  },
+  "clarifications": [],
+  "request": {
+    "requestId": "synthetic-request-009",
+    "source": "email",
+    "contact": {
+      "name": "Synthetic buyer",
+      "email": "buyer@example.com"
+    },
+    "summary": "Please inspect one unit at our workshop; proposed timing next week.",
+    "receivedAt": "2026-10-02T00:00:00Z"
+  },
+  "qualification": "fit",
+  "missing": [],
+  "price": {
+    "currency": "EUR",
+    "serviceId": "inspect",
+    "unit": "visit",
+    "quantity": 1,
+    "draftUnitPrice": "120.00",
+    "subtotal": "120.00",
+    "taxTreatment": "not-confirmed"
+  },
+  "draft": "Subject: Your equipment inspection request (nonbinding draft)\n\nHello Synthetic buyer,\n\nThank you for your request to inspect one unit at your workshop. This is a fictional, nonbinding draft for owner review; it has not been sent.\n\nCatalogue draft: Equipment inspection, 1 visit, declared draft price EUR 120.00 per visit, draft subtotal EUR 120.00. This is a declared draft price, not an approved quote.\n\nKeep this exact approved sentence.\n\nThe timing you proposed (\"next week\") is not booked or confirmed. Tax treatment, timing and the final scope remain unconfirmed and subject to owner review. The line above is operator wording only; it does not approve any price or any sending.\n\nThis message is not a binding commitment.\n",
+  "draftOrigin": "operator-edit",
+  "wordingReviewRequired": false,
+  "sourceReviewRequired": true,
+  "approvalRequired": true,
+  "outbound": "disabled",
+  "principalId": "synthetic-local-owner",
+  "catalogId": "synthetic-catalog-v1"
+}

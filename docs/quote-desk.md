@@ -208,10 +208,16 @@ historical source hashes remain frozen reference metadata; the fixture checksum
 binds the plan and inputs, without attesting current platform-dependent source bytes.
 
 The request-to-quote product tracks [issue 11](https://github.com/frankxai/agentic-income-skills/issues/11).
-Outside-user task acceptance, a capable-host comparison, semantic draft quality,
-repair-time advantage, supported-host and installer behavior, independent exact
-revision review, seller/rights and sandbox purchase/refund/update proof remain
-separate. Do not infer them from a schema, test suite, example amount or export.
+The [2 October native-host study](evidence/quote-host-2026-10-02/README.md) retained
+real authored wording, packets, fresh-process reopening, failures and native
+receipts. The capable plain-guide baseline completed the same ten synthetic
+outcomes. The passive plugin was discovered but unused; a separately labelled
+explicit activation condition invoked the native skill. This is scoped Windows
+local-host evidence, not a paid advantage or unassisted outside-user acceptance.
+Outside-user task acceptance, semantic domain usefulness, repair-time advantage,
+broader supported-host and installer behavior, seller/rights and sandbox
+purchase/refund/update proof remain separate. The runtime source has its own
+exact revision review; this evidence publication needs its own review. Do not infer them from a schema, test suite, example amount or export.
 
 Node persistence APIs were checked against [official Node24 filesystem documentation](https://nodejs.org/docs/latest-v24.x/api/fs.html).
 The existing source and new skill use the repository's MIT licence. No third-party

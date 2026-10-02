@@ -1,0 +1,19 @@
+{
+  "id": "synthetic-catalog-v1",
+  "currency": "EUR",
+  "synthetic": true,
+  "items": [
+    {
+      "id": "inspect",
+      "name": "Equipment inspection",
+      "unit": "visit",
+      "draftUnitPrice": "120.00"
+    },
+    {
+      "id": "maintain",
+      "name": "Maintenance",
+      "unit": "hour",
+      "draftUnitPrice": "80.00"
+    }
+  ]
+}

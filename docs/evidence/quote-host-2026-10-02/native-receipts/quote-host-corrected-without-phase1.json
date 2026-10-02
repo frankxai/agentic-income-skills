@@ -1,0 +1,62 @@
+{
+  "is_error": false,
+  "terminal_reason": "completed",
+  "subtype": "success",
+  "num_turns": 87,
+  "total_cost_usd": 0.6566666,
+  "usage": {
+    "input_tokens": 26,
+    "cache_creation_input_tokens": 89209,
+    "cache_read_input_tokens": 513193,
+    "output_tokens": 19714,
+    "output_tokens_details": {
+      "thinking_tokens": 1626
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 89209,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 1059,
+        "cache_read_input_tokens": 88731,
+        "cache_creation_input_tokens": 4423,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 4423
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 26,
+      "outputTokens": 19714,
+      "cacheReadInputTokens": 513193,
+      "cacheCreationInputTokens": 89209,
+      "webSearchRequests": 0,
+      "costUSD": 0.6566666,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 1626,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "schema": "starlight.redacted_native_usage_projection.v1",
+  "native_result_sha256": "cc3807dda15256325b08c13c30cd834c48fa3e65283251e28e564f8663678c3f",
+  "source_revision": "ceab96e34d1e83f4f51b4a853f678bec92721cef",
+  "scope": "Exact selected fields from the retained native result. Session/transport identifiers, full native stream and response are omitted. Provider-reported list metadata, not independently reconciled cash invoice.",
+  "workflow_result": "completed; lead checks plus prose inspection retained"
+}

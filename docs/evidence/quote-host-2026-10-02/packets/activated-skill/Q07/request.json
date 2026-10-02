@@ -1,0 +1,10 @@
+{
+  "requestId": "synthetic-request-007",
+  "source": "email",
+  "contact": {
+    "name": "Synthetic buyer",
+    "email": "buyer@example.com"
+  },
+  "summary": "Please inspect one unit at our workshop; proposed timing next week.",
+  "receivedAt": "2026-10-02T00:00:00Z"
+}

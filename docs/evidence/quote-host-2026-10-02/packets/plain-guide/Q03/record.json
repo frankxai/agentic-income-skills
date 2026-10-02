@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "fab515e6f218926edf54561219df6819e34d6702086a83dd7736e9de65a4969f",
+  "revision": 2,
+  "createdAt": "2026-10-02T15:57:08.839Z",
+  "updatedAt": "2026-10-02T15:57:42.192Z",
+  "configHash": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+  "requestHash": "a7eda91b1b65fdcb0c865d1a9d87fd27d2abc262f9f68d2d7f10474f56cd8cc2",
+  "selection": {
+    "service": "install",
+    "quantity": 1
+  },
+  "intakeSelection": {
+    "service": "install",
+    "quantity": 1
+  },
+  "clarifications": [],
+  "request": {
+    "requestId": "synthetic-request-003",
+    "source": "email",
+    "contact": {
+      "name": "Synthetic buyer",
+      "email": "buyer@example.com"
+    },
+    "summary": "Please install an item which is absent from the supplied catalogue.",
+    "receivedAt": "2026-10-02T00:00:00Z"
+  },
+  "qualification": "escalate",
+  "missing": [
+    "approved-service"
+  ],
+  "price": null,
+  "draft": "Owner escalation note (internal, nonbinding draft)\n\nRequest synthetic-request-003 (Synthetic buyer) asks us to install an item. The supplied catalogue (synthetic-catalog-v1) lists only Equipment inspection and Maintenance. It has no installation service, and the request does not say which item is meant.\n\nOwner decision needed: whether installation is something you offer at all, and if so, what the item is, what scope applies, and what price and conditions you would approve.\n\nNothing has been offered or promised. No installation service, price, availability, tax treatment or timing is stated or implied, and no price has been invented. Any reply to the buyer must be written and approved by the owner. This draft has not been sent.\n\nSuggested neutral holding wording for the owner to consider: \"Thank you for your request. It needs the owner's review before we can say anything about it. This is not a quote or a commitment.\"\n",
+  "draftOrigin": "operator-edit",
+  "wordingReviewRequired": false,
+  "sourceReviewRequired": true,
+  "approvalRequired": true,
+  "outbound": "disabled",
+  "principalId": "synthetic-local-owner",
+  "catalogId": "synthetic-catalog-v1"
+}

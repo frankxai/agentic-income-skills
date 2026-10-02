@@ -1,0 +1,5 @@
+{
+  "name": "quote-host-eval",
+  "version": "0.0.0",
+  "description": "Session-only native-host evaluation adapter; no marketplace or distribution claim."
+}

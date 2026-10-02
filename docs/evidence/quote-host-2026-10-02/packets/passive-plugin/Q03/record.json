@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "fab515e6f218926edf54561219df6819e34d6702086a83dd7736e9de65a4969f",
+  "revision": 2,
+  "createdAt": "2026-10-02T16:00:48.649Z",
+  "updatedAt": "2026-10-02T16:01:24.526Z",
+  "configHash": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+  "requestHash": "a7eda91b1b65fdcb0c865d1a9d87fd27d2abc262f9f68d2d7f10474f56cd8cc2",
+  "selection": {
+    "service": "install",
+    "quantity": 1
+  },
+  "intakeSelection": {
+    "service": "install",
+    "quantity": 1
+  },
+  "clarifications": [],
+  "request": {
+    "requestId": "synthetic-request-003",
+    "source": "email",
+    "contact": {
+      "name": "Synthetic buyer",
+      "email": "buyer@example.com"
+    },
+    "summary": "Please install an item which is absent from the supplied catalogue.",
+    "receivedAt": "2026-10-02T00:00:00Z"
+  },
+  "qualification": "escalate",
+  "missing": [
+    "approved-service"
+  ],
+  "price": null,
+  "draft": "NONBINDING FICTIONAL DRAFT - ESCALATION TO OWNER. Not sent to the customer.\n\nOwner review note for request synthetic-request-003.\n\nThe customer asks us to install an item that is absent from the supplied catalogue. The catalogue contains only Equipment inspection and Maintenance. \"Install\" was the selection routed for this request and it matches no catalogue service.\n\nNeeded from the owner:\n- Decide whether installation is a service you want to offer at all.\n- If so, supply an approved catalogue entry, scope and price. None exists today.\n- Identify which item the customer means, since the request does not say.\n\nNothing has been promised to the customer. No installation service is offered, no price is quoted, and no availability, tax treatment, timing or scope is confirmed. Any reply to the customer must wait for the owner's decision and review.\n",
+  "draftOrigin": "operator-edit",
+  "wordingReviewRequired": false,
+  "sourceReviewRequired": true,
+  "approvalRequired": true,
+  "outbound": "disabled",
+  "principalId": "synthetic-local-owner",
+  "catalogId": "synthetic-catalog-v1"
+}
