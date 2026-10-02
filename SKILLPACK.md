@@ -10,6 +10,7 @@ npx skills add frankxai/agentic-income-skills --skill agentic-income
 ## Include
 
 - `agentic-income` — discover → validate → build → sell → deliver → prove
+- `quote-desk` — permissioned local request → editable draft → reopen/recover → inspectable export. Its Node runtime, examples and MIT licence are bundled inside the skill; no npm dependency or connector is needed. See [the working path](docs/quote-desk.md).
 
 ## Compatibility (not this pack)
 

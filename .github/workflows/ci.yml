@@ -1,5 +1,8 @@
 name: CI
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: ["**"]
@@ -7,7 +10,12 @@ on:
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [20, 24]
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -15,7 +23,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v5
         with:
-          node-version: "24"
+          node-version: ${{ matrix.node }}
 
       - name: Validate data/programs.json is valid JSON
         run: node -e "JSON.parse(require('fs').readFileSync('data/programs.json'))"
