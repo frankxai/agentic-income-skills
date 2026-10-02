@@ -421,15 +421,54 @@ export function exportDraft(path, key, output) {
   return { directory: root, receipt }
 }
 
+export function exportBuyerDraft(path, key, expectedRevision, expectedSnapshotHash, output) {
+  invariant(Number.isSafeInteger(expectedRevision) && expectedRevision > 0, "Expected revision must be a positive integer")
+  invariant(typeof expectedSnapshotHash === "string" && hashPattern.test(expectedSnapshotHash), "Expected snapshot SHA-256 required")
+  const ws = workspace(path)
+  return locked(ws, () => {
+    const saved = current(ws, key)
+    invariant(saved.revision === expectedRevision && saved.snapshotHash === expectedSnapshotHash,
+      "Selected snapshot changed; reopen and review before buyer export")
+    const record = saved.record
+    invariant(record.draftOrigin === "operator-edit", "Save authored buyer wording before buyer export; catalogue arrangement remains in the internal packet")
+    invariant(!record.wordingReviewRequired, "Buyer wording needs reconciliation; review the current selection and save wording before buyer export")
+    const requested = resolve(output)
+    ordinary(dirname(requested), "directory")
+    const root = join(fs.realpathSync(dirname(requested)), basename(requested))
+    const within = relative(ws.root, root)
+    invariant(within.startsWith(".." + sep) || within === ".." || isAbsolute(within), "Export into a new folder outside the workspace")
+    const synthetic = ws.config.principal.synthetic || ws.config.catalog.synthetic
+    const files = {
+      "quote.txt": record.draft,
+      "README.md": ["# Buyer wording draft", "", synthetic ? "Fictional demonstration; no real buyer, principal or offer is established." : "Owner-supplied wording; identity and permissions are declarations, not verified facts.", "",
+        "quote.txt contains the exact authored wording selected for this draft. Human review is still required before any use or delivery. No sending, approval or binding commitment is performed.", "",
+        "The tool does not copy separate owner notes, requests, contacts, catalogue or workspace configuration into this folder. It cannot detect internal material pasted into the wording, verify prose or establish confidentiality or rights. Review the complete text.", "",
+        "receipt.json must parse as JSON and its file hashes must match all three payload files. A missing, unreadable or mismatched receipt means a partial or changed export: preserve this folder and retry into a fresh sibling. Checksums are not signatures or publisher authentication.", "",
+        "LICENSE retains the helper's MIT notice; it does not establish rights to owner-supplied wording.", ""].join("\n"),
+      "LICENSE": fs.readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "LICENSE"), "utf8")
+    }
+    fs.mkdirSync(root, { mode: 0o700 })
+    for (const [name, bytes] of Object.entries(files)) exclusive(join(root, name), bytes)
+    const receipt = { schemaVersion: VERSION, state: "local-buyer-wording-draft", packetAudience: "buyer-wording-for-human-review",
+      buyerWordingFile: "quote.txt", synthetic, draftOrigin: record.draftOrigin, proseReviewRequired: true,
+      wordingReviewRequired: false, files: Object.fromEntries(Object.entries(files).map(([name, bytes]) => [name, digest(bytes)])),
+      outbound: "disabled", approvalsVerified: false, runtimeModelGeneration: false, hostModelGeneration: "unknown" }
+    exclusive(join(root, "receipt.json"), json(receipt))
+    // Trace and source fingerprints stay in the owner's command result, outside the buyer folder.
+    return { directory: root, id: saved.id, revision: saved.revision, snapshotHash: saved.snapshotHash, receipt }
+  })
+}
+
 const allowed = {
   init: ["workspace", "principal", "catalog"], intake: ["workspace", "request", "service", "quantity"],
   show: ["workspace", "id"], edit: ["workspace", "id", "revision", "draft", "owner-notes"], clarify: ["workspace", "id", "revision", "clarification"], history: ["workspace", "id"],
   lock: ["workspace"], unlock: ["workspace", "owner-token", "owner-pid"],
-  recover: ["workspace", "id", "snapshot", "sha256", "pointer-sha256"], export: ["workspace", "id", "output"] }
+  recover: ["workspace", "id", "snapshot", "sha256", "pointer-sha256"], export: ["workspace", "id", "output"],
+  "export-buyer": ["workspace", "id", "revision", "snapshot-sha256", "output"] }
 
 export function main(args) {
   const [command, ...rest] = args
-  invariant(Object.hasOwn(allowed, command), "Use init, intake, show, edit, clarify, history, recover, lock, unlock or export. Sending, pricing changes, connectors and commitments are disabled")
+  invariant(Object.hasOwn(allowed, command), "Use init, intake, show, edit, clarify, history, recover, lock, unlock, export or export-buyer. Sending, pricing changes, connectors and commitments are disabled")
   const options = {}
   for (let index = 0; index < rest.length; index += 2) {
     const key = rest[index]?.slice(2)
@@ -460,6 +499,7 @@ export function main(args) {
   if (command === "unlock") return unlockStoppedWriter(options.workspace, options["owner-token"], Number(options["owner-pid"]))
   if (command === "recover") return recover(options.workspace, options.id, options.snapshot, options.sha256,
     options["pointer-sha256"] === "missing" ? null : options["pointer-sha256"])
+  if (command === "export-buyer") return exportBuyerDraft(options.workspace, options.id, Number(options.revision), options["snapshot-sha256"], options.output)
   return exportDraft(options.workspace, options.id, options.output)
 }
 

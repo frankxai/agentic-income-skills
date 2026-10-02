@@ -111,6 +111,44 @@ their stored bytes and pointer hashes stay unchanged. Their exported normalized
 receipt fields. No model API runs inside the runtime. Cost and revenue remain unknown
 in its receipt. Attribute any separate host call from its actual native receipt.
 
+## Export selected buyer wording
+
+After authoring and reviewing the words, use `show` to read the current revision
+and `snapshotHash`. An explicit buyer export creates a separate folder:
+
+```sh
+node scripts/quote-desk.mjs export-buyer --workspace "../local quote desk" --id <returned-id> --revision <current-number> --snapshot-sha256 <snapshotHash> --output "../buyer wording draft"
+```
+
+The selected revision and hash must match the current saved snapshot. This avoids
+silently exporting a newer edit or an older source selection. The runtime requires
+operator wording and refuses the persistent selection-change warning; saving an
+edit clears that warning without certifying the prose. The existing workspace
+writer lock is held until the export finishes, so cooperating writers cannot
+change the selected record during export. A foreign lock stays untouched.
+
+The folder contains four files: exact `quote.txt`, `README.md`, the helper's MIT
+`LICENSE` and `receipt.json`. It omits separate notes, requests, contacts, catalogue
+and full workspace configuration. Trace/revision/source fingerprints are returned
+to the owner's command only. This reduces copying of unrelated internal files;
+it cannot detect material the author put in the wording or establish confidentiality.
+Review the complete message, source, structured amount and rights before use.
+The helper licence does not establish rights to owner-supplied text.
+
+The receipt must parse and its hashes must match all three payload files. Existence
+of a receipt alone is insufficient. A missing, invalid or mismatched receipt marks
+unfinished or changed output. Preserve it and retry into a fresh sibling; an existing
+folder is always refused. A failed export leaves saved work unchanged. The folder
+remains a draft requiring human review; no approval, price change or delivery occurs.
+For example, an authored clarification response may export with no catalogue amount;
+the runtime checks provenance and state, not whether a quoted amount appears in prose.
+
+Manual copying of the reviewed `quote.txt` is a capable alternative and produces
+the same wording. The explicit command additionally checks the selected snapshot,
+pending wording warning and cooperating-writer lock, and emits a bounded receipt.
+This is an engineering capability, without measured outside-user repair/time,
+demand or paid-benefit evidence. The original internal `export` remains available.
+
 ## Input and installation boundaries
 
 `principal.json` requires a plain `id`, name, explicit `localDraftingAllowed` and
@@ -224,8 +262,11 @@ edits, denied operations, corruption, interrupted pointer replacement, restricti
 paths, strict UTF-8, literal exports, missing-pointer recovery, malformed locks,
 partial-write failures and preserved existing targets. `npm test` currently has
 31 original quote-workflow checks, 11 audience/recovery checks and 7 existing
-IncomeSystem checks, 49 in total. Hosted
+IncomeSystem checks, plus 10 buyer-export checks, 59 in total. Hosted
 CI covers Windows and Linux on Node 20 and 24. These are deterministic engineering checks.
+The buyer-export tests cover exact output/internal-payload separation, stale/current
+selection, unreconciled/default wording, foreign locks, interrupted writes,
+fresh-sibling recovery, copied-skill use and the semantic-review boundary.
 The frozen file retains `actualResults: null` as the original pre-run plan. Its
 historical source hashes remain frozen reference metadata; the fixture checksum
 binds the plan and inputs, without attesting current platform-dependent source bytes.

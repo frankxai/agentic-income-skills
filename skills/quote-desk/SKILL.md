@@ -1,6 +1,6 @@
 ---
 name: quote-desk
-description: Turn an owner-supplied service request and catalogue into a traceable local quote draft, record attributed clarification, edit its wording, reopen saved work, and export an inspectable review packet. Use for request-to-quote drafting, duplicate intake, interrupted work, or recovering a saved quote. Requires Node.js 20 or newer. Does not send quotes, connect accounts, approve prices, or make binding commitments.
+description: Turn an owner-supplied service request and catalogue into a traceable local quote draft, record attributed clarification, edit its wording, reopen saved work, and export an internal review packet or selected buyer-wording draft. Use for request-to-quote drafting, duplicate intake, interrupted work, or recovering a saved quote. Requires Node.js 20 or newer. Does not send quotes, connect accounts, approve prices, or make binding commitments.
 ---
 
 # Quote desk
@@ -69,6 +69,30 @@ reach that bound before either individual text limit. A refused edit preserves w
    packet is internal owner-review material. Only quote.txt is a candidate for a
    buyer message after human review. Separate files cannot detect a misplaced
    internal note or make wording accurate. Export never authorizes sending.
+
+For a separate folder containing only the selected authored buyer wording and
+export metadata, first reopen and inspect the current record. Copy its exact
+`revision` and `snapshotHash` into:
+
+```text
+node scripts/quote-desk.mjs export-buyer --workspace <path> --id <trace> --revision <current-number> --snapshot-sha256 <snapshotHash> --output <fresh-directory>
+```
+
+This requires saved operator wording and no pending selection-change warning.
+The revision/hash must still name the current snapshot. The cooperating-writer
+lock stays held through the export. A changed source, catalogue arrangement or
+unreconciled wording stops before creating the output. It does not classify
+authorship or prove a human actually reviewed the words.
+
+The four files are exact quote.txt, README.md, the helper's MIT LICENSE and
+receipt.json. Separate notes, contacts, request, catalogue and configuration are
+not copied. Trace/revision/source fingerprints remain in the owner's command
+result, outside this folder. Read the entire wording for misplaced internal
+material; no semantic filtering or sending occurs. Parse the receipt and compare
+its hashes with all three payload files before treating the folder as complete.
+Missing, invalid or mismatched receipts require preservation and a fresh-sibling
+retry. Keep the internal packet for source and price review. Manual copying of
+reviewed quote.txt remains a capable alternative; no paid advantage is established.
 
 When the owner supplies missing scope or corrects the selected service/quantity,
 create a UTF-8 JSON clarification file with exactly `service`, integer `quantity`,
