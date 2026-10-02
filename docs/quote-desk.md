@@ -1,8 +1,8 @@
 # Local request-to-quote workflow
 
 Prepare one inspectable draft from an approved catalogue and request. The owner
-can edit its wording, close the process, reopen the same work, and export a packet
-for review. Duplicate intake preserves the edited record. There is no account,
+can record sourced clarification, edit wording, close the process, reopen the same
+work, and export a packet for review. Duplicate intake preserves the edited record. There is no account,
 hosted runtime, npm dependency, connector, message sender or payment integration.
 
 This is an original free MIT implementation of the existing request-to-quote
@@ -27,9 +27,33 @@ catalogue amount and nonbinding draft. Copy the returned `id` into subsequent
 commands. It is a SHA-256 trace identifier, not an authorization token. Omitting
 quantity asks for missing scope/units. Unsupported service IDs escalate without
 inventing a service or amount. Prices are exact two-place EUR decimals and
-quantities are known integers from1 through10000. Tax and timing remain unconfirmed.
+quantities are known integers from 1 through 10000. Tax and timing remain unconfirmed.
 
-Write useful wording in a fresh UTF-8 file such as `quote-wording.txt`. Keep it
+When missing scope is clarified, retain the original trace and request. Create an
+owner-supplied `clarification.json` containing only these fields:
+
+```json
+{
+  "service": "maintain",
+  "quantity": 3,
+  "note": "The owner confirms three hours and equipment details.",
+  "sourceReference": "reference-to-the-permissioned-reply"
+}
+```
+
+```sh
+node scripts/quote-desk.mjs clarify --workspace "../local quote desk" --id <returned-id> --revision <current-number> --clarification clarification.json
+```
+
+Use the actual approved reply; the example above is fictional. Clarification
+recomputes the structured amount from the pinned catalogue and saves its source
+reference, without changing the original request or trace. An unedited catalogue
+message is regenerated. Operator wording is preserved, even if it now describes an
+old quantity or amount: `wordingReviewRequired: true` requires explicit review and
+an edit before use. Up to 50 clarifications can be saved. Stale revisions and price
+override fields are refused. This is a draft selection, never price approval.
+
+Write useful wording in a fresh UTF-8 file without a BOM, such as `quote-wording.txt`. Keep it
 grounded in the supplied source, catalogue and uncertainty. Then save and reopen:
 
 ```sh
@@ -41,9 +65,10 @@ node scripts/quote-desk.mjs export --workspace "../local quote desk" --id <retur
 The export folder must be new and outside the workspace. Existing folders, even
 empty ones, are preserved. Every export contains:
 
-- `quote.md`: readable, editable wording and the catalogue amount, with a draft notice;
+- `quote.md`: wording inside a literal code fence and the catalogue amount, with a draft notice;
+- `quote.txt`: the exact editable wording bytes, including CRLF when supplied;
 - `record.json`: selected service, request, qualification, revision and provenance;
-- `request.json` and `catalog.json`: inspectable inputs;
+- `request.json`, `catalog.json` and `workspace.json`: inspectable inputs and the complete normalized principal/catalogue configuration;
 - `LICENSE`: complete MIT terms and copyright notice;
 - `receipt.json`: per-file SHA-256 hashes, source/configuration hashes and honest local-draft state.
 
@@ -52,19 +77,35 @@ are labelled `operator-edit`; the runtime cannot determine whether a host used a
 model or verify prose, claims, tax, timing, rights or price consistency in prose.
 The stored structured amount cannot be changed by editing wording. Every record
 still requires source and human review; exporting does not grant approval.
-No model API runs inside the runtime. Cost and revenue remain unknown in its
-receipt. Attribute any separate host call from its actual native receipt.
+The receipt states `runtimeModelGeneration: false`, `hostModelGeneration: "unknown"`,
+wording origin and `proseReviewRequired: true`. It does not classify the host's
+authorship. Fictional inputs are clearly labelled in the packet. Hashing the
+exported `workspace.json` recomputes the configuration hash. Older development
+snapshots acquire default clarification fields when read; their exported normalized
+`record.json` may differ from the original snapshot bytes. Both hashes have separate
+receipt fields. No model API runs inside the runtime. Cost and revenue remain unknown
+in its receipt. Attribute any separate host call from its actual native receipt.
 
 ## Input and installation boundaries
 
 `principal.json` requires a plain `id`, name, explicit `localDraftingAllowed` and
 `sourceUseAllowed` true, and explicit `synthetic` true/false. Those are local
 declarations, not legal verification. A catalogue requires an ID, EUR currency,
-synthetic declaration and1-100 unique service items with ID/name/unit and two-place
-decimal `draftUnitPrice`. The request follows the reference fields: requestId,
-web/email/approved-api source, name/email contact, summary of10-16384 characters
-and ISO receivedAt. No additional properties are accepted. Each input file is
-bounded to512KiB; wording to32768 characters. Secrets are never needed.
+synthetic declaration and 1-100 unique service items with ID/name/unit and two-place
+decimal `draftUnitPrice`. Zero is allowed as an explicit catalogue declaration and
+does not establish a free-price approval. The local request format uses the reference
+field names, with stricter bounds: requestId is plain text of 1-512 characters
+(including email Message-IDs), source is web/email/approved-api, contact has bounded
+name/email, and summary has at least 10 characters after trimming outer whitespace and at most 16384
+characters. receivedAt requires a valid calendar date-time with seconds and an
+explicit timezone; leap seconds are unsupported. This hand-written local subset is
+not the full reference JSON Schema validator. No additional properties are accepted.
+Each input file is bounded to 512 KiB; wording to 32768 characters. Files require
+valid UTF-8 without a BOM; invalid bytes, control characters and directional-override
+characters are refused while the supplied file is preserved. Ordinary Unicode and
+CRLF are retained. CLI quantity, revision and PID values use plain positive decimal
+integers, never hexadecimal, exponent notation or fractional strings. Secrets are
+never needed.
 
 The workspace pins its exact normalized principal and catalogue. Use a new
 workspace for a changed owner/catalogue; do not edit its internal files as a
@@ -81,8 +122,10 @@ installer and host discovery still require their own compatibility proof.
 ## Restart, conflicts and recovery
 
 Run `show` in a new process to reopen committed work. Repeating identical intake
-returns that record, including edits. Reusing a source ID with changed content or
-selection stops. A stale edit revision also stops; reopen and reconcile instead
+returns the latest record, including edits and clarifications. Its original intake
+selection must be repeated; clarify is the explicit path for later scope changes.
+Reusing a source ID with changed content or a different initial selection stops.
+A stale edit revision also stops; reopen and reconcile instead
 of overwriting the newer work.
 
 Immutable JSON snapshots are flushed before an atomic current-pointer replacement.
@@ -98,37 +141,54 @@ node scripts/quote-desk.mjs history --workspace "../local quote desk" --id <retu
 node scripts/quote-desk.mjs recover --workspace "../local quote desk" --id <returned-id> --snapshot <chosen-filename> --sha256 <chosen-checksum> --pointer-sha256 <current-pointer-checksum>
 ```
 
-History includes valid committed and uncommitted candidates; timestamps and
+History lists valid committed and uncommitted history snapshots; it does not list
+`records/*.pending` files. Timestamps and
 revision numbers alone do not establish which one was committed. Check the current
 record's snapshot when available. For a missing pointer only, use the literal
-`missing` value shown by history's null pointer hash. Recovery verifies both
+`missing` value when history reports `pointerHash: null`. Recovery verifies both
 checksums, preserves previous pointer bytes and creates a new revision. It never
 renews approvals or reconnects tools.
 
 A writer lock blocks concurrent writes. The runtime removes only its own exact
 lock bytes after completing a call. A crashed writer's lock remains, with its PID,
-token, start time and workspace hash. Use `lock --workspace <path>` to inspect it.
+token, host, start time and configuration hash. Use `lock --workspace <path>` to inspect it.
 Do not remove one by age or inferred inactivity. First identify the owner and
 its authoritative stopped-process receipt. For your own acknowledged stopped
 writer, use `unlock --workspace <path> --owner-token <token> --owner-pid <pid>`.
 The token is not permission. The runtime checks both fields and requires that the
-PID is absent; a present/reused PID or permission error leaves the lock intact.
+PID is absent on the same host; a foreign host, present/reused PID or permission
+error leaves the lock intact. Use an owner-controlled local disk, never a shared
+network or cloud-synchronized directory for concurrent writers.
 It sends only the process-existence probe, never a termination signal. Another
-task's lock still requires that owner's handoff. The abrupt-stop regression test
+task's lock still requires that owner's handoff. A legacy lock without a host, an
+empty/partial lock, or PID reuse needs manual owner reconciliation; this runtime
+cannot release it. Preserve the lock and workspace, identify the exact writer from
+its terminal receipt, and obtain the owner's explicitly documented maintenance
+decision. Age and apparent inactivity never authorize removal. The abrupt-stop regression test
 owns its child and confirms its terminal exit before testing this operation.
 This runtime assumes a trusted local filesystem and cooperating writers. Checks
 reject direct directory/file links and accidental tampering; they are not a
 sandbox against another process with authority to change that filesystem.
 
+A failed init or export can leave a partial folder. An export without `receipt.json`
+is incomplete. Preserve the original and use a fresh sibling path for retry after
+resolving the write error. Never reuse, delete or treat a partial folder as a
+completed packet. Failed exports do not modify the saved record.
+
 ## Verification and remaining gates
 
 `node --test tests/quote-desk.test.mjs` exercises the ten previously frozen inputs,
-real CLI reopening, isolated skill copying, duplicate/state preservation, stale
+real CLI editing, clarification and reopening, isolated skill copying, duplicate/state preservation, stale
 edits, denied operations, corruption, interrupted pointer replacement, restrictive
-paths and preserved existing targets. These are deterministic engineering checks.
-The frozen file retains `actualResults: null` as the original pre-run plan.
+paths, strict UTF-8, literal exports, missing-pointer recovery, malformed locks,
+partial-write failures and preserved existing targets. `npm test` currently has
+28 quote-workflow checks and 7 existing IncomeSystem checks, 35 in total. Hosted
+CI covers Windows and Linux on Node 20 and 24. These are deterministic engineering checks.
+The frozen file retains `actualResults: null` as the original pre-run plan. Its
+historical source hashes remain frozen reference metadata; the fixture checksum
+binds the plan and inputs, without attesting current platform-dependent source bytes.
 
-The request-to-quote product tracks [issue11](https://github.com/frankxai/agentic-income-skills/issues/11).
+The request-to-quote product tracks [issue 11](https://github.com/frankxai/agentic-income-skills/issues/11).
 Outside-user task acceptance, a capable-host comparison, semantic draft quality,
 repair-time advantage, supported-host and installer behavior, independent exact
 revision review, seller/rights and sandbox purchase/refund/update proof remain

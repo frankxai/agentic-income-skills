@@ -3,7 +3,8 @@
 import fs from "node:fs"
 import { createHash, randomUUID } from "node:crypto"
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from "node:path"
-import { fileURLToPath, pathToFileURL } from "node:url"
+import { fileURLToPath } from "node:url"
+import { hostname } from "node:os"
 
 const VERSION = "1.0.0"
 const MAX_JSON = 512 * 1024
@@ -24,7 +25,7 @@ function object(value, label, keys) {
 
 function text(value, label, maximum = 4096) {
   invariant(typeof value === "string" && value.trim().length > 0 && value.length <= maximum &&
-    !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(value), `${label} must be bounded plain text`)
+    !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f\u202a-\u202e\u2066-\u2069\ufeff]/.test(value), `${label} must be bounded plain text without control or directional-override characters`)
   return value
 }
 
@@ -47,8 +48,14 @@ function readBytes(path) {
 }
 
 export function readJson(path) {
-  try { return JSON.parse(readBytes(path).toString("utf8")) }
+  try { return JSON.parse(utf8(readBytes(path))) }
   catch (cause) { throw new Error(`Cannot read ${path}: ${cause.message}`) }
+}
+
+function utf8(bytes) {
+  const value = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes)
+  invariant(!value.startsWith("\ufeff"), "Save as UTF-8 without a byte-order mark (BOM); the input file is preserved")
+  return value
 }
 
 function principal(value) {
@@ -82,10 +89,14 @@ function request(value) {
   object(value.contact, "Contact", ["name", "email"])
   const email = text(value.contact.email, "Contact email", 254)
   invariant(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), "Contact email must be a plain address")
-  invariant(typeof value.receivedAt === "string" && /^\d{4}-\d{2}-\d{2}T/.test(value.receivedAt) &&
-    Number.isFinite(Date.parse(value.receivedAt)), "receivedAt must be an ISO date-time")
-  invariant(typeof value.summary === "string" && value.summary.length >= 10, "Request summary requires at least 10 characters")
-  return { requestId: id(value.requestId, "Request id"), source: value.source,
+  const date = typeof value.receivedAt === "string" && /^(\d{4})-(\d{2})-(\d{2})T([01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{1,9})?(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)$/.exec(value.receivedAt)
+  const year = date ? Number(date[1]) : 0
+  const days = [31, year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+  invariant(date && Number(date[2]) >= 1 && Number(date[2]) <= 12 && Number(date[3]) >= 1 &&
+    Number(date[3]) <= days[Number(date[2]) - 1] &&
+    Number.isFinite(Date.parse(value.receivedAt)), "receivedAt must be a valid calendar date-time with seconds and timezone")
+  invariant(typeof value.summary === "string" && value.summary.trim().length >= 10, "Request summary requires at least 10 substantive characters")
+  return { requestId: text(value.requestId, "Request id", 512), source: value.source,
     contact: { name: text(value.contact.name, "Contact name", 160), email },
     summary: text(value.summary, "Request summary", 16384), receivedAt: value.receivedAt }
 }
@@ -102,7 +113,7 @@ function workspace(path) {
   ordinary(join(root, "records"), "directory")
   ordinary(join(root, "history"), "directory")
   const raw = readBytes(join(root, "workspace.json"))
-  const value = JSON.parse(raw.toString("utf8"))
+  const value = JSON.parse(utf8(raw))
   object(value, "Workspace", ["schemaVersion", "principal", "catalog"])
   invariant(value.schemaVersion === VERSION, "Unsupported workspace version")
   const config = { schemaVersion: VERSION, principal: principal(value.principal), catalog: catalog(value.catalog) }
@@ -113,7 +124,7 @@ function workspace(path) {
 function locked(ws, action) {
   const lockPath = join(ws.root, ".writer.lock")
   const token = randomUUID()
-  const lock = json({ schemaVersion: VERSION, token, pid: process.pid, startedAt: new Date().toISOString(), configHash: ws.configHash })
+  const lock = json({ schemaVersion: VERSION, token, pid: process.pid, host: hostname(), startedAt: new Date().toISOString(), configHash: ws.configHash })
   let fd
   try { fd = fs.openSync(lockPath, "wx", 0o600) }
   catch (cause) { throw new Error(`Workspace has a writer lock or cannot be locked. Preserve it; no age-based removal. ${cause.code}`) }
@@ -123,16 +134,18 @@ function locked(ws, action) {
     return action()
   } finally {
     fs.closeSync(fd)
-    if (ordinary(lockPath, "file").size <= MAX_JSON && fs.readFileSync(lockPath, "utf8") === lock) fs.unlinkSync(lockPath)
+    try {
+      if (ordinary(lockPath, "file").size <= MAX_JSON && fs.readFileSync(lockPath, "utf8") === lock) fs.unlinkSync(lockPath)
+    } catch (cause) { if (cause.code !== "ENOENT") throw cause }
   }
 }
 
 export function inspectLock(path) {
   const ws = workspace(path)
   const value = readJson(join(ws.root, ".writer.lock"))
-  object(value, "Writer lock", ["schemaVersion", "token", "pid", "startedAt", "configHash"])
+  object(value, "Writer lock", ["schemaVersion", "token", "pid", "host", "startedAt", "configHash"])
   invariant(value.schemaVersion === VERSION && /^[a-f0-9-]{36}$/.test(value.token) &&
-    Number.isSafeInteger(value.pid) && value.pid > 0 && value.configHash === ws.configHash,
+    Number.isSafeInteger(value.pid) && value.pid > 0 && typeof value.host === "string" && value.configHash === ws.configHash,
     "Lock identity is invalid; preserve it for owner inspection")
   return value
 }
@@ -140,6 +153,7 @@ export function inspectLock(path) {
 export function unlockStoppedWriter(path, ownerToken, ownerPid) {
   const ws = workspace(path)
   const lock = inspectLock(path)
+  invariant(lock.host === hostname(), "Writer belongs to another host; preserve its lock and obtain the owner's handoff")
   invariant(lock.token === ownerToken && lock.pid === ownerPid, "Lock owner changed; do not remove it")
   let missing = false
   try { process.kill(lock.pid, 0) }
@@ -157,8 +171,11 @@ function pointerPath(ws, key) {
 }
 
 function validateRecord(value, ws, key) {
-  object(value, "Record", ["schemaVersion", "id", "revision", "createdAt", "updatedAt", "configHash", "requestHash", "selection",
+  object(value, "Record", ["schemaVersion", "id", "revision", "createdAt", "updatedAt", "configHash", "requestHash", "selection", "intakeSelection", "clarifications",
     "request", "qualification", "missing", "price", "draft", "draftOrigin", "sourceReviewRequired", "approvalRequired", "outbound", "principalId", "catalogId"])
+  // Earlier development snapshots predate clarification; their original selection is still recoverable.
+  value = { ...value, intakeSelection: Object.hasOwn(value, "intakeSelection") ? value.intakeSelection : value.selection,
+    clarifications: Object.hasOwn(value, "clarifications") ? value.clarifications : [] }
   const cleanRequest = request(value.request)
   invariant(value.schemaVersion === VERSION && value.id === key && recordId(cleanRequest) === key &&
     value.configHash === ws.configHash && value.requestHash === hashObject(cleanRequest) &&
@@ -169,6 +186,13 @@ function validateRecord(value, ws, key) {
   invariant(["catalogue-arrangement", "operator-edit"].includes(value.draftOrigin), "Unsupported draft origin")
   text(value.draft, "Draft", 32768)
   object(value.selection, "Selection", ["service", "quantity"])
+  object(value.intakeSelection, "Intake selection", ["service", "quantity"])
+  id(value.intakeSelection.service, "Initial service")
+  invariant(value.intakeSelection.quantity === null || (Number.isSafeInteger(value.intakeSelection.quantity) && value.intakeSelection.quantity >= 1 && value.intakeSelection.quantity <= 10000), "Invalid initial quantity")
+  invariant(Array.isArray(value.clarifications) && value.clarifications.length <= 50, "Invalid clarification history")
+  for (const entry of value.clarifications) validateClarification(entry)
+  const latest = value.clarifications.at(-1) ?? value.intakeSelection
+  invariant(value.selection.service === latest.service && value.selection.quantity === latest.quantity, "Selection differs from its source clarification")
   id(value.selection.service, "Selected service")
   invariant(value.selection.quantity === null || (Number.isSafeInteger(value.selection.quantity) && value.selection.quantity >= 1 && value.selection.quantity <= 10000), "Invalid quantity")
   const expected = qualify(ws.config.catalog, value.selection.service, value.selection.quantity)
@@ -183,12 +207,12 @@ function snapshot(ws, key, name, expectedHash) {
   invariant(typeof expectedHash === "string" && hashPattern.test(expectedHash), "Snapshot checksum required")
   const bytes = readBytes(join(ws.root, "history", name))
   invariant(digest(bytes) === expectedHash, "Snapshot checksum mismatch; preserve it for inspection")
-  return validateRecord(JSON.parse(bytes.toString("utf8")), ws, key)
+  return validateRecord(JSON.parse(utf8(bytes)), ws, key)
 }
 
 function current(ws, key) {
   const raw = readBytes(pointerPath(ws, key))
-  const value = JSON.parse(raw.toString("utf8"))
+  const value = JSON.parse(utf8(raw))
   object(value, "Record pointer", ["schemaVersion", "id", "revision", "file", "sha256"])
   invariant(value.schemaVersion === VERSION && value.id === key, "Invalid record pointer")
   const record = snapshot(ws, key, value.file, value.sha256)
@@ -222,7 +246,7 @@ function qualify(approvedCatalog, service, quantity) {
   const subtotal = (cents / 100n).toString() + "." + (cents % 100n).toString().padStart(2, "0")
   return { qualification: "fit", missing: [], price: { currency: "EUR", serviceId: item.id, unit: item.unit, quantity,
     draftUnitPrice: item.draftUnitPrice, subtotal, taxTreatment: "not-confirmed" },
-    draft: `Thank you for your request. The catalogue draft for ${item.name} is ${quantity} ${item.unit} at EUR ${item.draftUnitPrice}, with a draft subtotal of EUR ${subtotal}. Scope, tax treatment, timing and the final quote remain subject to the owner's review. This draft is not a binding commitment.` }
+    draft: `Thank you for your request. The catalogue draft for ${item.name} has quantity ${quantity}, unit ${item.unit}, at EUR ${item.draftUnitPrice} per unit, with a draft subtotal of EUR ${subtotal}. Scope, tax treatment, timing and the final quote remain subject to the owner's review. This draft is not a binding commitment.` }
 }
 
 export function initDesk(path, principalValue, catalogValue) {
@@ -247,14 +271,14 @@ export function intake(path, value, service, quantity = null) {
     const selection = { service, quantity }
     if (fs.existsSync(pointerPath(ws, key))) {
       const previous = current(ws, key)
-      invariant(previous.record.requestHash === hashObject(clean) && json(previous.record.selection) === json(selection),
+      invariant(previous.record.requestHash === hashObject(clean) && json(previous.record.intakeSelection) === json(selection),
         "The source id already names different content or a different selection. Preserve it and reconcile explicitly")
       return { ...previous, duplicate: true }
     }
     const { qualification, missing, price, draft } = qualify(ws.config.catalog, service, quantity)
     const now = new Date().toISOString()
     const record = { schemaVersion: VERSION, id: key, revision: 1, createdAt: now, updatedAt: now,
-      configHash: ws.configHash, requestHash: hashObject(clean), selection, request: clean, qualification, missing, price, draft,
+      configHash: ws.configHash, requestHash: hashObject(clean), selection, intakeSelection: selection, clarifications: [], request: clean, qualification, missing, price, draft,
       draftOrigin: "catalogue-arrangement", sourceReviewRequired: true, approvalRequired: true, outbound: "disabled",
       principalId: ws.config.principal.id, catalogId: ws.config.catalog.id }
     return { ...commit(ws, record, null), record, duplicate: false }
@@ -275,6 +299,31 @@ export function editDraft(path, key, expectedRevision, draft) {
   })
 }
 
+function validateClarification(value) {
+  object(value, "Clarification", ["service", "quantity", "note", "sourceReference"])
+  id(value.service, "Clarified service")
+  invariant(Number.isSafeInteger(value.quantity) && value.quantity >= 1 && value.quantity <= 10000, "Clarified quantity must be 1-10000")
+  text(value.note, "Clarification note", 2000)
+  text(value.sourceReference, "Clarification source reference", 512)
+  return { service: value.service, quantity: value.quantity, note: value.note, sourceReference: value.sourceReference }
+}
+
+export function clarify(path, key, expectedRevision, clarification) {
+  const approved = validateClarification(clarification)
+  const ws = workspace(path)
+  return locked(ws, () => {
+    const previous = current(ws, key)
+    invariant(previous.revision === expectedRevision, "Revision changed; reopen before clarifying")
+    invariant(previous.record.clarifications.length < 50, "Clarification history is full; preserve and reconcile with the owner")
+    const arranged = qualify(ws.config.catalog, approved.service, approved.quantity)
+    const next = { ...previous.record, revision: expectedRevision + 1, updatedAt: new Date().toISOString(),
+      selection: { service: approved.service, quantity: approved.quantity }, clarifications: [...previous.record.clarifications, approved],
+      qualification: arranged.qualification, missing: arranged.missing, price: arranged.price,
+      draft: previous.record.draftOrigin === "operator-edit" ? previous.record.draft : arranged.draft }
+    return { ...commit(ws, next, previous.pointerHash), record: next, wordingReviewRequired: true }
+  })
+}
+
 export function history(path, key) {
   const ws = workspace(path)
   pointerPath(ws, key)
@@ -285,7 +334,7 @@ export function history(path, key) {
     if (!snapshotPattern.test(name) || !name.startsWith(key + ".")) continue
     try {
       const bytes = readBytes(join(ws.root, "history", name))
-      const record = validateRecord(JSON.parse(bytes.toString("utf8")), ws, key)
+      const record = validateRecord(JSON.parse(utf8(bytes)), ws, key)
       entries.push({ snapshot: name, sha256: digest(bytes), revision: record.revision, updatedAt: record.updatedAt })
     } catch { entries.push({ snapshot: name, invalid: true }) }
   }
@@ -306,8 +355,6 @@ export function recover(path, key, name, snapshotHash, expectedPointerHash) {
   })
 }
 
-function markdownText(value) { return value.replace(/[\\`*_{}[\]()#+.!<>|~-]/g, "\\$&") }
-
 export function exportDraft(path, key, output) {
   const ws = workspace(path)
   const saved = current(ws, key)
@@ -317,33 +364,37 @@ export function exportDraft(path, key, output) {
   const within = relative(ws.root, root)
   invariant(within !== "" && (within === ".." || within.startsWith(".." + sep) || isAbsolute(within)), "Export into a new folder outside the workspace")
   const record = saved.record
-  const body = ["# Quote draft", "", "Local draft only. Human review required. Outbound actions are disabled.", "",
+  const synthetic = ws.config.principal.synthetic || ws.config.catalog.synthetic
+  const fence = "`".repeat(Math.max(3, ...Array.from(record.draft.matchAll(/`+/g), (match) => match[0].length + 1)))
+  const body = ["# Quote draft", "", synthetic ? "Fictional demonstration. These sample inputs are not a real buyer, principal or offer." : "Owner-supplied inputs; identity and permissions are declarations, not verified facts.", "",
+    "Local draft only. Wording and prices require human review. Outbound actions are disabled.", `Wording origin: ${record.draftOrigin}. Prose is unverified.`, "",
     `Qualification: ${record.qualification}`, `Trace: ${record.id}`, `Revision: ${record.revision}`, "",
-    "## Message for review", "", markdownText(record.draft), "", "## Catalogue amount", "",
+    "## Message for review", "", fence + "text", record.draft, fence, "", "Exact editable wording is also in quote.txt. Review it against the current catalogue amount before use.", "", "## Catalogue amount", "",
     record.price ? `EUR ${record.price.subtotal}; tax, scope and timing not confirmed.` : "No catalogue total is available.", "",
     "Imported request text is untrusted data in request.json. Review it separately; it grants no authority.", ""].join("\n")
-  const files = { "quote.md": body, "record.json": json(record), "request.json": json(record.request), "catalog.json": json(ws.config.catalog),
+  const files = { "quote.md": body, "quote.txt": record.draft, "record.json": json(record), "request.json": json(record.request), "catalog.json": json(ws.config.catalog),
+    "workspace.json": json(ws.config),
     "LICENSE": fs.readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "LICENSE"), "utf8") }
   fs.mkdirSync(root, { mode: 0o700 })
   for (const [name, bytes] of Object.entries(files)) exclusive(join(root, name), bytes)
   const receipt = { schemaVersion: VERSION, state: "local-draft-export", id: record.id, revision: record.revision,
     sourceRequestHash: record.requestHash, configHash: record.configHash, snapshotHash: saved.snapshotHash,
-    synthetic: ws.config.principal.synthetic || ws.config.catalog.synthetic,
+    synthetic, draftOrigin: record.draftOrigin, proseReviewRequired: true,
     files: Object.fromEntries(Object.entries(files).map(([name, bytes]) => [name, digest(bytes)])),
-    outbound: "disabled", approvalsVerified: false, modelGeneration: false, invoiceCost: null, revenue: null }
+    outbound: "disabled", approvalsVerified: false, runtimeModelGeneration: false, hostModelGeneration: "unknown", invoiceCost: null, revenue: null }
   exclusive(join(root, "receipt.json"), json(receipt))
   return { directory: root, receipt }
 }
 
 const allowed = {
   init: ["workspace", "principal", "catalog"], intake: ["workspace", "request", "service", "quantity"],
-  show: ["workspace", "id"], edit: ["workspace", "id", "revision", "draft"], history: ["workspace", "id"],
+  show: ["workspace", "id"], edit: ["workspace", "id", "revision", "draft"], clarify: ["workspace", "id", "revision", "clarification"], history: ["workspace", "id"],
   lock: ["workspace"], unlock: ["workspace", "owner-token", "owner-pid"],
   recover: ["workspace", "id", "snapshot", "sha256", "pointer-sha256"], export: ["workspace", "id", "output"] }
 
 export function main(args) {
   const [command, ...rest] = args
-  invariant(Object.hasOwn(allowed, command), "Use init, intake, show, edit, history, recover, lock, unlock or export. Sending, pricing changes, connectors and commitments are disabled")
+  invariant(Object.hasOwn(allowed, command), "Use init, intake, show, edit, clarify, history, recover, lock, unlock or export. Sending, pricing changes, connectors and commitments are disabled")
   const options = {}
   for (let index = 0; index < rest.length; index += 2) {
     const key = rest[index]?.slice(2)
@@ -352,13 +403,15 @@ export function main(args) {
     options[key] = rest[index + 1]
   }
   for (const name of allowed[command]) if (!(command === "intake" && name === "quantity")) invariant(options[name], `--${name} required`)
+  for (const name of ["quantity", "revision", "owner-pid"]) if (options[name] !== undefined) invariant(/^[1-9]\d*$/.test(options[name]), `--${name} must be a plain positive integer`)
   if (command === "init") return initDesk(options.workspace, readJson(options.principal), readJson(options.catalog))
   if (command === "intake") {
     const quantity = options.quantity === undefined ? null : Number(options.quantity)
     return intake(options.workspace, readJson(options.request), options.service, quantity)
   }
   if (command === "show") return show(options.workspace, options.id)
-  if (command === "edit") return editDraft(options.workspace, options.id, Number(options.revision), readBytes(options.draft).toString("utf8"))
+  if (command === "edit") return editDraft(options.workspace, options.id, Number(options.revision), utf8(readBytes(options.draft)))
+  if (command === "clarify") return clarify(options.workspace, options.id, Number(options.revision), readJson(options.clarification))
   if (command === "history") return history(options.workspace, options.id)
   if (command === "lock") return inspectLock(options.workspace)
   if (command === "unlock") return unlockStoppedWriter(options.workspace, options["owner-token"], Number(options["owner-pid"]))
@@ -367,7 +420,7 @@ export function main(args) {
   return exportDraft(options.workspace, options.id, options.output)
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+if (process.argv[1] && fs.realpathSync(fileURLToPath(import.meta.url)) === fs.realpathSync(resolve(process.argv[1]))) {
   try { console.log(json(main(process.argv.slice(2)))) }
   catch (cause) { console.error(`[quote-desk] ${cause.message}`); process.exitCode = 1 }
 }

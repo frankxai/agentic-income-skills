@@ -6,7 +6,7 @@ import { dirname, join, resolve } from "node:path"
 import { spawnSync } from "node:child_process"
 import { fileURLToPath, pathToFileURL } from "node:url"
 import test from "node:test"
-import { initDesk, intake, show, editDraft, history, recover, exportDraft, inspectLock, unlockStoppedWriter, main } from "../scripts/quote-desk.mjs"
+import { initDesk, intake, show, editDraft, clarify, history, recover, exportDraft, inspectLock, unlockStoppedWriter, main } from "../scripts/quote-desk.mjs"
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..")
 const SKILL = join(ROOT, "skills", "quote-desk")
@@ -45,11 +45,14 @@ test("Q01 actual catalogue draft exports a complete editable packet with notices
   const exported = exportDraft(workspace, result.id, join(root, "export"))
   assert.equal(exported.receipt.state, "local-draft-export")
   assert.equal(exported.receipt.approvalsVerified, false)
-  assert.equal(exported.receipt.modelGeneration, false)
-  assert.deepEqual(Object.keys(exported.receipt.files), ["quote.md", "record.json", "request.json", "catalog.json", "LICENSE"])
+  assert.equal(exported.receipt.runtimeModelGeneration, false)
+  assert.equal(exported.receipt.hostModelGeneration, "unknown")
+  assert.deepEqual(Object.keys(exported.receipt.files), ["quote.md", "quote.txt", "record.json", "request.json", "catalog.json", "workspace.json", "LICENSE"])
   for (const [name, expected] of Object.entries(exported.receipt.files)) assert.equal(hash(fs.readFileSync(join(exported.directory, name))), expected)
   assert.match(fs.readFileSync(join(exported.directory, "LICENSE"), "utf8"), /Copyright \(c\) 2026 Frank/)
   assert.equal(JSON.parse(fs.readFileSync(join(exported.directory, "record.json"))).request.summary, sample("Q01").summary)
+  assert.equal(hash(fs.readFileSync(join(exported.directory, "workspace.json"))), exported.receipt.configHash)
+  assert.match(fs.readFileSync(join(exported.directory, "quote.md"), "utf8"), /Fictional demonstration/)
 })
 
 test("Q02 missing hours ask for information without fabricating a total", (t) => {
@@ -59,6 +62,25 @@ test("Q02 missing hours ask for information without fabricating a total", (t) =>
   assert.deepEqual(record.missing, ["scope", "estimated-hours"])
   assert.equal(record.price, null)
   assert.match(record.draft, /confirm the scope and estimated hours/)
+})
+
+test("explicit sourced clarification fills missing hours without inventing another source id or discarding edits", (t) => {
+  const { workspace } = setup(t)
+  const initial = intake(workspace, sample("Q02"), "maintain")
+  const answer = { service: "maintain", quantity: 3, note: "Owner confirms three hours and equipment details.", sourceReference: "reply-to-synthetic-request-002" }
+  const updated = clarify(workspace, initial.id, 1, answer)
+  assert.equal(updated.record.price.subtotal, "240.00")
+  assert.equal(updated.record.requestHash, initial.record.requestHash)
+  assert.equal(updated.id, initial.id)
+  assert.deepEqual(updated.record.clarifications, [answer])
+  editDraft(workspace, initial.id, 2, "An owner sentence which must survive another clarification.")
+  const revised = clarify(workspace, initial.id, 3, { ...answer, quantity: 4, sourceReference: "second-owned-reply" })
+  assert.equal(revised.record.price.subtotal, "320.00")
+  assert.equal(revised.record.draft, "An owner sentence which must survive another clarification.")
+  assert.equal(revised.wordingReviewRequired, true)
+  assert.equal(intake(workspace, sample("Q02"), "maintain").revision, 4)
+  assert.throws(() => clarify(workspace, initial.id, 3, answer), /Revision changed/)
+  assert.equal(history(workspace, initial.id).entries.length, 4)
 })
 
 test("Q03 unsupported services escalate without inventing price or service", (t) => {
@@ -286,4 +308,138 @@ test("nested exports and directory links cannot redirect workspace writes", (t) 
   assert.throws(() => exportDraft(workspace, result.id, join(alias, "redirected export")), /ordinary directory/)
   assert.equal(fs.existsSync(join(workspace, "nested")), false)
   assert.equal(fs.existsSync(join(workspace, "redirected export")), false)
+})
+
+test("symlinked/junction CLI entrypoints execute and return JSON for the bundle and repo wrapper", (t) => {
+  const { root } = setup(t)
+  for (const [name, target] of [["linked repo", ROOT], ["linked skill", SKILL]]) {
+    const alias = join(root, name)
+    fs.symlinkSync(target, alias, process.platform === "win32" ? "junction" : "dir")
+    const examples = name === "linked repo" ? join(ROOT, "skills", "quote-desk", "examples") : join(SKILL, "examples")
+    const child = spawnSync(process.execPath, [join(alias, "scripts", "quote-desk.mjs"), "init", "--workspace", join(root, name + " desk"),
+      "--principal", join(examples, "principal.json"), "--catalog", join(examples, "catalog.json")], { encoding: "utf8", timeout: 10000 })
+    assert.equal(child.status, 0, child.stderr)
+    assert.equal(JSON.parse(child.stdout).outbound, "disabled")
+  }
+})
+
+test("exact wording bytes and Markdown fencing survive CRLF, money, code fences and HTML-shaped text", (t) => {
+  const { root, workspace } = setup(t)
+  const initial = intake(workspace, sample("Q01"), "inspect", 1)
+  const wording = 'EUR 120.00\r\n```\r\n<script>literal text</script>\r\nEnd.'
+  editDraft(workspace, initial.id, 1, wording)
+  const exported = exportDraft(workspace, initial.id, join(root, "exact wording"))
+  assert.equal(fs.readFileSync(join(exported.directory, "quote.txt"), "utf8"), wording)
+  assert.match(fs.readFileSync(join(exported.directory, "quote.md"), "utf8"), /````text/)
+  assert.equal(exported.receipt.files["quote.txt"], hash(Buffer.from(wording)))
+  assert.equal(exported.receipt.draftOrigin, "operator-edit")
+  assert.equal(exported.receipt.proseReviewRequired, true)
+})
+
+test("CLI edit rejects invalid UTF-8/BOM and preserves existing work; CRLF stays exact", (t) => {
+  const { root, workspace } = setup(t)
+  const initial = intake(workspace, sample("Q01"), "inspect", 1)
+  const cli = join(ROOT, "scripts", "quote-desk.mjs")
+  const file = join(root, "wording.txt")
+  for (const bytes of [Buffer.from([0xc3, 0x28]), Buffer.concat([Buffer.from([0xef, 0xbb, 0xbf]), Buffer.from("A valid sentence.")])]) {
+    fs.writeFileSync(file, bytes)
+    const result = spawnSync(process.execPath, [cli, "edit", "--workspace", workspace, "--id", initial.id, "--revision", "1", "--draft", file], { encoding: "utf8", timeout: 10000 })
+    assert.equal(result.status, 1)
+    assert.equal(show(workspace, initial.id).revision, 1)
+    assert.deepEqual(fs.readFileSync(file), bytes)
+  }
+  fs.writeFileSync(file, "Line one\r\nLine two\r\n")
+  const result = spawnSync(process.execPath, [cli, "edit", "--workspace", workspace, "--id", initial.id, "--revision", "1", "--draft", file], { encoding: "utf8", timeout: 10000 })
+  assert.equal(result.status, 0, result.stderr)
+  assert.equal(show(workspace, initial.id).record.draft, "Line one\r\nLine two\r\n")
+  assert.throws(() => editDraft(workspace, initial.id, 2, "Spoof\u202eamount"), /directional-override/)
+})
+
+test("missing-pointer recovery and CLI history/lock commands preserve identity and deny foreign hosts", (t) => {
+  const { root, workspace } = setup(t)
+  const initial = intake(workspace, sample("Q01"), "inspect", 1)
+  fs.unlinkSync(join(workspace, "records", initial.id + ".json"))
+  const cli = join(ROOT, "scripts", "quote-desk.mjs")
+  const result = spawnSync(process.execPath, [cli, "recover", "--workspace", workspace, "--id", initial.id, "--snapshot", initial.snapshot,
+    "--sha256", initial.snapshotHash, "--pointer-sha256", "missing"], { encoding: "utf8", timeout: 10000 })
+  assert.equal(result.status, 0, result.stderr)
+  assert.equal(JSON.parse(result.stdout).revision, 2)
+  const listed = spawnSync(process.execPath, [cli, "history", "--workspace", workspace, "--id", initial.id], { encoding: "utf8", timeout: 10000 })
+  assert.equal(listed.status, 0)
+  assert.equal(JSON.parse(listed.stdout).entries.length, 2)
+  const lock = { schemaVersion: "1.0.0", token: "12345678-1234-1234-1234-123456789abc", pid: process.pid, host: "another-machine",
+    startedAt: new Date().toISOString(), configHash: initial.record.configHash }
+  fs.writeFileSync(join(workspace, ".writer.lock"), JSON.stringify(lock))
+  assert.throws(() => unlockStoppedWriter(workspace, lock.token, lock.pid), /another host/)
+  const inspected = spawnSync(process.execPath, [cli, "lock", "--workspace", workspace], { encoding: "utf8", timeout: 10000 })
+  assert.equal(inspected.status, 0)
+  assert.equal(JSON.parse(inspected.stdout).host, "another-machine")
+  assert.ok(fs.existsSync(join(workspace, ".writer.lock")))
+  for (const bad of ["0x10", "1e2", "1.0", " 7 "]) assert.throws(() => main(["intake", "--workspace", workspace, "--request", join(SKILL, "examples", "request.json"), "--service", "inspect", "--quantity", bad]), /plain positive integer/)
+  assert.equal(fs.existsSync(join(root, "outside")), false)
+})
+
+test("CLI clarification keeps the original trace and exact source while recomputing only pinned amounts", (t) => {
+  const { root, workspace } = setup(t)
+  const initial = intake(workspace, sample("Q02"), "maintain")
+  const answer = { service: "maintain", quantity: 3, note: "Owner confirms three hours.", sourceReference: "permissioned-reply-002" }
+  const file = join(root, "clarification.json")
+  fs.writeFileSync(file, JSON.stringify(answer))
+  const cli = join(ROOT, "scripts", "quote-desk.mjs")
+  const result = spawnSync(process.execPath, [cli, "clarify", "--workspace", workspace, "--id", initial.id, "--revision", "1", "--clarification", file], { encoding: "utf8", timeout: 10000 })
+  assert.equal(result.status, 0, result.stderr)
+  const updated = JSON.parse(result.stdout)
+  assert.equal(updated.id, initial.id)
+  assert.equal(updated.record.requestHash, initial.record.requestHash)
+  assert.equal(updated.record.price.subtotal, "240.00")
+  assert.equal(updated.revision, 2)
+  fs.writeFileSync(file, JSON.stringify({ ...answer, draftUnitPrice: "0.00" }))
+  const denied = spawnSync(process.execPath, [cli, "clarify", "--workspace", workspace, "--id", initial.id, "--revision", "2", "--clarification", file], { encoding: "utf8", timeout: 10000 })
+  assert.equal(denied.status, 1)
+  assert.equal(show(workspace, initial.id).revision, 2)
+})
+
+test("partial init/export and malformed locks preserve bytes and permit a fresh sibling retry", (t) => {
+  const { root, workspace } = setup(t)
+  const initial = intake(workspace, sample("Q01"), "inspect", 1)
+  const before = show(workspace, initial.id)
+  const output = join(root, "partial export")
+  const incompleteDesk = join(root, "partial desk")
+  const originalWrite = fs.writeFileSync
+  let writes = 0
+  fs.writeFileSync = (...args) => {
+    if (++writes === 2) throw new Error("Simulated interrupted export write")
+    return originalWrite(...args)
+  }
+  try { assert.throws(() => exportDraft(workspace, initial.id, output), /interrupted export/) }
+  finally { fs.writeFileSync = originalWrite }
+  assert.equal(fs.existsSync(join(output, "receipt.json")), false)
+  const preserved = fs.readFileSync(join(output, "quote.md"))
+  assert.throws(() => exportDraft(workspace, initial.id, output), /EEXIST/)
+  assert.deepEqual(fs.readFileSync(join(output, "quote.md")), preserved)
+  assert.deepEqual(show(workspace, initial.id), before)
+  assert.equal(exportDraft(workspace, initial.id, join(root, "complete retry")).receipt.state, "local-draft-export")
+  fs.writeFileSync = () => { throw new Error("Simulated interrupted init write") }
+  try { assert.throws(() => initDesk(incompleteDesk, principal, catalog), /interrupted init/) }
+  finally { fs.writeFileSync = originalWrite }
+  assert.equal(fs.statSync(join(incompleteDesk, "workspace.json")).size, 0)
+  assert.throws(() => initDesk(incompleteDesk, principal, catalog), /EEXIST/)
+  initDesk(join(root, "fresh desk retry"), principal, catalog)
+  for (const bytes of ["", '{"pid":']) {
+    fs.writeFileSync(join(workspace, ".writer.lock"), bytes)
+    assert.throws(() => inspectLock(workspace), /Cannot read/)
+    assert.throws(() => unlockStoppedWriter(workspace, "12345678-1234-1234-1234-123456789abc", 123), /Cannot read/)
+    assert.throws(() => editDraft(workspace, initial.id, 1, "Preserve malformed lock"), /writer lock/)
+    assert.equal(fs.readFileSync(join(workspace, ".writer.lock"), "utf8"), bytes)
+  }
+})
+
+test("local request subset accepts Message-IDs and timezone timestamps but rejects impossible or incomplete dates", (t) => {
+  const { workspace } = setup(t)
+  const input = { ...sample("Q01"), requestId: "<request.001@synthetic.invalid>", receivedAt: "2026-10-02T15:00:00+02:00" }
+  assert.equal(intake(workspace, input, "inspect", 1).record.request.requestId, input.requestId)
+  for (const receivedAt of ["2026-02-30T00:00:00Z", "2026-10-02T15:00:00", "2026-10-02T15:00Z", "2026-10-02T24:00:00Z", "2026-13-01T00:00:00Z"]) {
+    assert.throws(() => intake(workspace, { ...input, receivedAt }, "inspect", 1), /valid calendar date-time/)
+  }
+  assert.throws(() => intake(workspace, { ...input, summary: "a         " }, "inspect", 1), /substantive characters/)
 })
