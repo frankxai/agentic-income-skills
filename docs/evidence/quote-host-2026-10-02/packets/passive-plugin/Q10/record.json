@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "9f653082f14360a53df50269457ba6fca02c410aa53c99aada997881a6753bd9",
+  "revision": 2,
+  "createdAt": "2026-10-02T16:00:55.131Z",
+  "updatedAt": "2026-10-02T16:01:29.252Z",
+  "configHash": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+  "requestHash": "afda965b25d0f61a834eca5d5caa89a72328941f0ca6ea3c90ab07894de90825",
+  "selection": {
+    "service": "inspect",
+    "quantity": 1
+  },
+  "intakeSelection": {
+    "service": "inspect",
+    "quantity": 1
+  },
+  "clarifications": [],
+  "request": {
+    "requestId": "synthetic-request-010",
+    "source": "email",
+    "contact": {
+      "name": "Synthetic buyer",
+      "email": "buyer@example.com"
+    },
+    "summary": "Please inspect one unit at our workshop; proposed timing next week.",
+    "receivedAt": "2026-10-02T00:00:00Z"
+  },
+  "qualification": "fit",
+  "missing": [],
+  "price": {
+    "currency": "EUR",
+    "serviceId": "inspect",
+    "unit": "visit",
+    "quantity": 1,
+    "draftUnitPrice": "120.00",
+    "subtotal": "120.00",
+    "taxTreatment": "not-confirmed"
+  },
+  "draft": "NONBINDING FICTIONAL DRAFT - owner, source and price review required. Not sent. Local draft only.\n\nHello Synthetic buyer,\n\nThank you for your request (synthetic-request-010) to inspect one unit at your workshop, with next week proposed.\n\nDraft from the owner's catalogue: one Equipment inspection (unit: visit) at a declared draft price of EUR 120.00, draft subtotal EUR 120.00. This is a declared draft price, not an approved or final price.\n\nNot confirmed: the next-week timing (nothing is booked), tax treatment, and the final scope. All remain subject to the owner's review.\n\nOperator note: the sending approval is expired and the connector is revoked. Sending is denied. Repeating intake cannot renew the approval, and no renewal or reconnection is requested or performed here. No connector was called. This draft and its export exist only as local files for the owner to review. It is not an offer or binding commitment.\n",
+  "draftOrigin": "operator-edit",
+  "wordingReviewRequired": false,
+  "sourceReviewRequired": true,
+  "approvalRequired": true,
+  "outbound": "disabled",
+  "principalId": "synthetic-local-owner",
+  "catalogId": "synthetic-catalog-v1"
+}

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "aab1bb2a58dc32afdf27a428a60a133e18668fef5982cc6669bb450b143f40a5",
+  "revision": 2,
+  "createdAt": "2026-10-02T16:00:48.311Z",
+  "updatedAt": "2026-10-02T16:01:23.683Z",
+  "configHash": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+  "requestHash": "6c93e6b9d721f99a27590934b8b5d73eac336a01c1af13a65c3bfe9a977dc4f2",
+  "selection": {
+    "service": "maintain",
+    "quantity": null
+  },
+  "intakeSelection": {
+    "service": "maintain",
+    "quantity": null
+  },
+  "clarifications": [],
+  "request": {
+    "requestId": "synthetic-request-002",
+    "source": "email",
+    "contact": {
+      "name": "Synthetic buyer",
+      "email": "buyer@example.com"
+    },
+    "summary": "Please maintain our equipment; the number of hours is not known.",
+    "receivedAt": "2026-10-02T00:00:00Z"
+  },
+  "qualification": "needs-information",
+  "missing": [
+    "scope",
+    "estimated-hours"
+  ],
+  "price": null,
+  "draft": "NONBINDING FICTIONAL DRAFT - owner, source and price review required. Not sent.\n\nHello Synthetic buyer,\n\nThank you for your request (synthetic-request-002) to maintain your equipment. You mentioned that the number of hours is not known.\n\nTo let the owner prepare a draft, could you please tell us:\n1. Which equipment is involved (type, number of units, and where it is located)?\n2. What maintenance work you would like done (the scope)?\n3. Your best estimate of the hours needed, even as a rough range?\n\nFor the owner's reference only: the catalogue lists Maintenance at a declared draft rate of EUR 80.00 per hour. This is a draft rate, not an approved price. Because the hours are unknown, no total is given and none should be inferred.\n\nTax treatment, timing and the final scope are not confirmed. This is an internal draft for owner review, not an offer or binding commitment, and it has not been sent.\n",
+  "draftOrigin": "operator-edit",
+  "wordingReviewRequired": false,
+  "sourceReviewRequired": true,
+  "approvalRequired": true,
+  "outbound": "disabled",
+  "principalId": "synthetic-local-owner",
+  "catalogId": "synthetic-catalog-v1"
+}

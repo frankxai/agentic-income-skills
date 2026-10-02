@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "9f653082f14360a53df50269457ba6fca02c410aa53c99aada997881a6753bd9",
+  "revision": 2,
+  "createdAt": "2026-10-02T16:06:39.544Z",
+  "updatedAt": "2026-10-02T16:07:11.844Z",
+  "configHash": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+  "requestHash": "afda965b25d0f61a834eca5d5caa89a72328941f0ca6ea3c90ab07894de90825",
+  "selection": {
+    "service": "inspect",
+    "quantity": 1
+  },
+  "intakeSelection": {
+    "service": "inspect",
+    "quantity": 1
+  },
+  "clarifications": [],
+  "request": {
+    "requestId": "synthetic-request-010",
+    "source": "email",
+    "contact": {
+      "name": "Synthetic buyer",
+      "email": "buyer@example.com"
+    },
+    "summary": "Please inspect one unit at our workshop; proposed timing next week.",
+    "receivedAt": "2026-10-02T00:00:00Z"
+  },
+  "qualification": "fit",
+  "missing": [],
+  "price": {
+    "currency": "EUR",
+    "serviceId": "inspect",
+    "unit": "visit",
+    "quantity": 1,
+    "draftUnitPrice": "120.00",
+    "subtotal": "120.00",
+    "taxTreatment": "not-confirmed"
+  },
+  "draft": "DRAFT - synthetic, nonbinding. Requires owner, source and price review before any use. Not sent.\n\nHello Synthetic buyer,\n\nThank you for your request to inspect one unit at your workshop, with proposed timing next week.\n\nFrom the owner's catalogue, the matching service is \"Equipment inspection\": 1 visit at a declared draft price of EUR 120.00, for a draft subtotal of EUR 120.00. This is a catalogue draft figure only and has not been approved as a quote.\n\nTax treatment, timing (nothing is booked) and the final scope remain unconfirmed and subject to the owner's review.\n\nInternal status note for the owner: the sending approval is expired and the connector is revoked. This draft is not sent, and no renewal or reconnection is made or implied. No connector was called. The draft exists only as a local, editable file.\n\nThis message is a draft, not a binding commitment.\n",
+  "draftOrigin": "operator-edit",
+  "wordingReviewRequired": false,
+  "sourceReviewRequired": true,
+  "approvalRequired": true,
+  "outbound": "disabled",
+  "principalId": "synthetic-local-owner",
+  "catalogId": "synthetic-catalog-v1"
+}

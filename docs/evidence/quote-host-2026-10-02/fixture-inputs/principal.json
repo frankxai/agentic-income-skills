@@ -1,0 +1,7 @@
+{
+  "id": "synthetic-local-owner",
+  "name": "Example local owner",
+  "localDraftingAllowed": true,
+  "sourceUseAllowed": true,
+  "synthetic": true
+}

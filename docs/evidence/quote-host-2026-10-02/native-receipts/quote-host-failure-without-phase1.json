@@ -1,0 +1,62 @@
+{
+  "is_error": false,
+  "terminal_reason": "completed",
+  "subtype": "success",
+  "num_turns": 37,
+  "total_cost_usd": 0.2439388,
+  "usage": {
+    "input_tokens": 12,
+    "cache_creation_input_tokens": 35179,
+    "cache_read_input_tokens": 98044,
+    "output_tokens": 8359,
+    "output_tokens_details": {
+      "thinking_tokens": 716
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 35179,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 1334,
+        "cache_read_input_tokens": 31503,
+        "cache_creation_input_tokens": 6689,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 6689
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 12,
+      "outputTokens": 8359,
+      "cacheReadInputTokens": 98044,
+      "cacheCreationInputTokens": 35179,
+      "webSearchRequests": 0,
+      "costUSD": 0.2439388,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 716,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "schema": "starlight.redacted_native_usage_projection.v1",
+  "native_result_sha256": "a37619dd6a6a538775be9a0cd757633f010ecb9527cb036ac9fe4ab3644b6f5b",
+  "source_revision": "ceab96e34d1e83f4f51b4a853f678bec92721cef",
+  "scope": "Exact selected fields from the retained native result. Session/transport identifiers, full native stream and response are omitted. Provider-reported list metadata, not independently reconciled cash invoice.",
+  "workflow_result": "incomplete: Write(path) ignored; nine intake records only"
+}

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "07b8ba832485411b99af70bac9894a68e09c14e398a14e0d2ae1d13350e377c7",
+  "revision": 2,
+  "createdAt": "2026-10-02T16:00:43.943Z",
+  "updatedAt": "2026-10-02T16:01:22.898Z",
+  "configHash": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+  "requestHash": "13d9a2c4abe4590558b05f7ab6337bfe761d76bd412254a2203ca142960006c4",
+  "selection": {
+    "service": "inspect",
+    "quantity": 1
+  },
+  "intakeSelection": {
+    "service": "inspect",
+    "quantity": 1
+  },
+  "clarifications": [],
+  "request": {
+    "requestId": "synthetic-request-001",
+    "source": "email",
+    "contact": {
+      "name": "Synthetic buyer",
+      "email": "buyer@example.com"
+    },
+    "summary": "Please inspect one unit at our workshop; proposed timing next week.",
+    "receivedAt": "2026-10-02T00:00:00Z"
+  },
+  "qualification": "fit",
+  "missing": [],
+  "price": {
+    "currency": "EUR",
+    "serviceId": "inspect",
+    "unit": "visit",
+    "quantity": 1,
+    "draftUnitPrice": "120.00",
+    "subtotal": "120.00",
+    "taxTreatment": "not-confirmed"
+  },
+  "draft": "NONBINDING FICTIONAL DRAFT - owner, source and price review required. Not sent.\n\nHello Synthetic buyer,\n\nThank you for your request (synthetic-request-001) to inspect one unit at your workshop, with next week proposed.\n\nDraft from the owner's catalogue: one Equipment inspection (unit: visit) at a declared draft price of EUR 120.00, for a draft subtotal of EUR 120.00. This catalogue amount is a declared draft price only. It is not an approved or final price.\n\nWhat is not yet decided:\n- The proposed next-week timing is only your suggestion. No date or time slot is booked or promised, and the owner has not confirmed availability.\n- Tax treatment is not confirmed.\n- The final scope (for example what the inspection covers at your workshop) is not confirmed and remains subject to the owner's review.\n\nThis is an internal draft for the owner to review against the original request and the catalogue. It is not an offer, not a binding commitment, and has not been sent.\n",
+  "draftOrigin": "operator-edit",
+  "wordingReviewRequired": false,
+  "sourceReviewRequired": true,
+  "approvalRequired": true,
+  "outbound": "disabled",
+  "principalId": "synthetic-local-owner",
+  "catalogId": "synthetic-catalog-v1"
+}

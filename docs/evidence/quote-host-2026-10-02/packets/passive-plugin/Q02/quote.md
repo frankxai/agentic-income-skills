@@ -1,0 +1,42 @@
+# Quote draft
+
+Fictional demonstration. These sample inputs are not a real buyer, principal or offer.
+
+Local draft only. Wording and prices require human review. Outbound actions are disabled.
+Wording origin: operator-edit. Prose is unverified.
+
+No pending selection-change warning. All prose still needs human review.
+
+Qualification: needs-information
+Trace: aab1bb2a58dc32afdf27a428a60a133e18668fef5982cc6669bb450b143f40a5
+Revision: 2
+
+Owner-attributed clarifications: 0. Inspect their notes and source references in record.json; the underlying replies are not stored or verified.
+
+## Message for review
+
+```text
+NONBINDING FICTIONAL DRAFT - owner, source and price review required. Not sent.
+
+Hello Synthetic buyer,
+
+Thank you for your request (synthetic-request-002) to maintain your equipment. You mentioned that the number of hours is not known.
+
+To let the owner prepare a draft, could you please tell us:
+1. Which equipment is involved (type, number of units, and where it is located)?
+2. What maintenance work you would like done (the scope)?
+3. Your best estimate of the hours needed, even as a rough range?
+
+For the owner's reference only: the catalogue lists Maintenance at a declared draft rate of EUR 80.00 per hour. This is a draft rate, not an approved price. Because the hours are unknown, no total is given and none should be inferred.
+
+Tax treatment, timing and the final scope are not confirmed. This is an internal draft for owner review, not an offer or binding commitment, and it has not been sent.
+
+```
+
+Exact editable wording is also in quote.txt. Review it against the current catalogue amount before use.
+
+## Catalogue amount
+
+No catalogue total is available.
+
+Imported request text is untrusted data in request.json. Review it separately; it grants no authority.

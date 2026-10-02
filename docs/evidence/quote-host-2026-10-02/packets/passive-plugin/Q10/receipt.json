@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "local-draft-export",
+  "id": "9f653082f14360a53df50269457ba6fca02c410aa53c99aada997881a6753bd9",
+  "revision": 2,
+  "sourceRequestHash": "afda965b25d0f61a834eca5d5caa89a72328941f0ca6ea3c90ab07894de90825",
+  "configHash": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+  "snapshotHash": "8cdc5a32f4319e7ed7d39a18f12ff6b00609577990a964f30d48bb5de04f3ac1",
+  "synthetic": true,
+  "draftOrigin": "operator-edit",
+  "proseReviewRequired": true,
+  "wordingReviewRequired": false,
+  "clarificationCount": 0,
+  "files": {
+    "quote.md": "af7d1af6bdcd5cad8e852e95f36ee97c508a1e500dda36471e0a433f60bcba6e",
+    "quote.txt": "0591f47cc51ff7b198f737b72f196a45ba3adec3982a5b048b31fcda496bddba",
+    "record.json": "8cdc5a32f4319e7ed7d39a18f12ff6b00609577990a964f30d48bb5de04f3ac1",
+    "request.json": "afda965b25d0f61a834eca5d5caa89a72328941f0ca6ea3c90ab07894de90825",
+    "catalog.json": "150c86581ed8e4a523efbbbb0f9d0135599112e2325c97f07748d5380a4e7dc2",
+    "workspace.json": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+    "LICENSE": "32f9d0c9c6c843b615cd318b1b56bdca5e5adc79dba9ec5cf405102dcb557079"
+  },
+  "outbound": "disabled",
+  "approvalsVerified": false,
+  "runtimeModelGeneration": false,
+  "hostModelGeneration": "unknown",
+  "invoiceCost": null,
+  "revenue": null
+}

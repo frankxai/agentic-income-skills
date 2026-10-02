@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "aab1bb2a58dc32afdf27a428a60a133e18668fef5982cc6669bb450b143f40a5",
+  "revision": 2,
+  "createdAt": "2026-10-02T16:06:37.104Z",
+  "updatedAt": "2026-10-02T16:07:06.153Z",
+  "configHash": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+  "requestHash": "6c93e6b9d721f99a27590934b8b5d73eac336a01c1af13a65c3bfe9a977dc4f2",
+  "selection": {
+    "service": "maintain",
+    "quantity": null
+  },
+  "intakeSelection": {
+    "service": "maintain",
+    "quantity": null
+  },
+  "clarifications": [],
+  "request": {
+    "requestId": "synthetic-request-002",
+    "source": "email",
+    "contact": {
+      "name": "Synthetic buyer",
+      "email": "buyer@example.com"
+    },
+    "summary": "Please maintain our equipment; the number of hours is not known.",
+    "receivedAt": "2026-10-02T00:00:00Z"
+  },
+  "qualification": "needs-information",
+  "missing": [
+    "scope",
+    "estimated-hours"
+  ],
+  "price": null,
+  "draft": "DRAFT - synthetic, nonbinding. Requires owner, source and price review before any use. Not sent.\n\nHello Synthetic buyer,\n\nThank you for your request to maintain your equipment. You mentioned that the number of hours is not known.\n\nTo prepare a draft, the owner needs two things from you:\n1. Scope: which equipment is involved, and what maintenance you would like done.\n2. Estimated hours: your best estimate of the hours needed, if you have one.\n\nFor reference, the owner's catalogue lists \"Maintenance\" at a declared draft rate of EUR 80.00 per hour. This is a draft rate only and has not been approved by the owner. No total is given, because the hours are unknown.\n\nTax treatment, timing and the final quote have not been confirmed. This message is a draft for the owner to review and edit; it is not a binding commitment, booking or offer.\n",
+  "draftOrigin": "operator-edit",
+  "wordingReviewRequired": false,
+  "sourceReviewRequired": true,
+  "approvalRequired": true,
+  "outbound": "disabled",
+  "principalId": "synthetic-local-owner",
+  "catalogId": "synthetic-catalog-v1"
+}

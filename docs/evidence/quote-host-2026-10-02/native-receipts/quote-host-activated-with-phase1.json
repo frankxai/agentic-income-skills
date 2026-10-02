@@ -1,0 +1,62 @@
+{
+  "is_error": false,
+  "terminal_reason": "completed",
+  "subtype": "success",
+  "num_turns": 85,
+  "total_cost_usd": 0.6159482000000001,
+  "usage": {
+    "input_tokens": 24,
+    "cache_creation_input_tokens": 89212,
+    "cache_read_input_tokens": 467161,
+    "output_tokens": 16562,
+    "output_tokens_details": {
+      "thinking_tokens": 807
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 89212,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 1176,
+        "cache_read_input_tokens": 90521,
+        "cache_creation_input_tokens": 3308,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 3308
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 24,
+      "outputTokens": 16562,
+      "cacheReadInputTokens": 467161,
+      "cacheCreationInputTokens": 89212,
+      "webSearchRequests": 0,
+      "costUSD": 0.6159482000000001,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 807,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "schema": "starlight.redacted_native_usage_projection.v1",
+  "native_result_sha256": "ebedfba38bc3b7d9fca07f28f07da124505cd2609d57647d28e04d5e77d0d3a4",
+  "source_revision": "ceab96e34d1e83f4f51b4a853f678bec92721cef",
+  "scope": "Exact selected fields from the retained native result. Session/transport identifiers, full native stream and response are omitted. Provider-reported list metadata, not independently reconciled cash invoice.",
+  "workflow_result": "completed; lead checks plus prose inspection retained"
+}

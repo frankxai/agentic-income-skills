@@ -1,0 +1,62 @@
+{
+  "is_error": false,
+  "terminal_reason": "completed",
+  "subtype": "success",
+  "num_turns": 8,
+  "total_cost_usd": 0.10862900000000002,
+  "usage": {
+    "input_tokens": 8,
+    "cache_creation_input_tokens": 20788,
+    "cache_read_input_tokens": 49005,
+    "output_tokens": 1566,
+    "output_tokens_details": {
+      "thinking_tokens": 366
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 20788,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 920,
+        "cache_read_input_tokens": 24921,
+        "cache_creation_input_tokens": 484,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 484
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 8,
+      "outputTokens": 1566,
+      "cacheReadInputTokens": 49005,
+      "cacheCreationInputTokens": 20788,
+      "webSearchRequests": 0,
+      "costUSD": 0.10862900000000002,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 366,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "schema": "starlight.redacted_native_usage_projection.v1",
+  "native_result_sha256": "2d374f05ee6d7abea18bbd9c7266154b68e32068933aa32cee4e72f15fa9c5dc",
+  "source_revision": "ceab96e34d1e83f4f51b4a853f678bec92721cef",
+  "scope": "Exact selected fields from the retained native result. Session/transport identifiers, full native stream and response are omitted. Provider-reported list metadata, not independently reconciled cash invoice.",
+  "workflow_result": "incomplete: compound show/echo command denied; saved Q09 preserved without export"
+}

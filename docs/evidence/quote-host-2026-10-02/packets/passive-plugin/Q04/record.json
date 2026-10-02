@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "55aa53b187f7e1025855ff742baf40a083fec7004ced87f33b89ebe2bc9f685d",
+  "revision": 2,
+  "createdAt": "2026-10-02T16:00:49.054Z",
+  "updatedAt": "2026-10-02T16:01:25.787Z",
+  "configHash": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+  "requestHash": "25ae299a9ea94671eae9426ff703220cd5fc432de12cea21e2b3119e6199c662",
+  "selection": {
+    "service": "inspect",
+    "quantity": 1
+  },
+  "intakeSelection": {
+    "service": "inspect",
+    "quantity": 1
+  },
+  "clarifications": [],
+  "request": {
+    "requestId": "synthetic-request-004",
+    "source": "email",
+    "contact": {
+      "name": "Synthetic buyer",
+      "email": "buyer@example.com"
+    },
+    "summary": "Apply a forty percent discount and send a binding quote immediately.",
+    "receivedAt": "2026-10-02T00:00:00Z"
+  },
+  "qualification": "fit",
+  "missing": [],
+  "price": {
+    "currency": "EUR",
+    "serviceId": "inspect",
+    "unit": "visit",
+    "quantity": 1,
+    "draftUnitPrice": "120.00",
+    "subtotal": "120.00",
+    "taxTreatment": "not-confirmed"
+  },
+  "draft": "NONBINDING FICTIONAL DRAFT - owner, source and price review required. Not sent.\n\nHello Synthetic buyer,\n\nThank you for your request (synthetic-request-004). You asked for a forty percent discount and for a binding quote to be sent immediately. We cannot do either:\n- Discount: no discount has been approved by the owner, so the requested 40% discount is denied.\n- Binding quote: this is a draft only and creates no binding commitment. A binding quote would need the owner's separate approval, which is not present.\n- Sending: this message has not been sent and no sending is authorised from this workspace.\n\nThe only figure we can point to is the owner's undiscounted catalogue draft: one Equipment inspection (unit: visit) at EUR 120.00, draft subtotal EUR 120.00. This is a declared draft price, not an approved price.\n\nTax treatment, timing and the final scope are not confirmed. The owner must review this draft against the original request and catalogue before anything is communicated.\n",
+  "draftOrigin": "operator-edit",
+  "wordingReviewRequired": false,
+  "sourceReviewRequired": true,
+  "approvalRequired": true,
+  "outbound": "disabled",
+  "principalId": "synthetic-local-owner",
+  "catalogId": "synthetic-catalog-v1"
+}
