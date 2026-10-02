@@ -1,27 +1,24 @@
 # Selected buyer export evidence, 2 October 2026
 
-The [current verified replay](current/README.md) adds receipt-hash-bound export
-verification at source `a104f51`: 20 actual CLI calls, with 12 successful operations
-and eight expected refusals. Its source, proof and four-file draft are separate.
-The original 15-call replay below and [original proof](proof.json) remain unchanged
-at `78875b8`, before the verification command was added.
-
-The actual copied skill completed 15 separate-process CLI calls on the previously
+The actual copied skill completed 20 separate-process CLI calls on the previously
 frozen synthetic Q08 request. The existing lead-authored buyer wording and owner
 notes were saved together, reopened, exported internally, and exported through
 the new explicit buyer command. The [retained four-file draft](Q08/README.md)
 contains exact quote.txt, README, MIT notice and a hash receipt. Its buyer wording
 matches a manual copy of the original internal quote.txt byte-for-byte.
 
-Five adverse CLI calls refused: stale revision, wrong snapshot checksum, existing
+Five adverse export CLI calls refused: stale revision, wrong snapshot checksum, existing
 empty folder, an old selection after clarification, and current unreconciled words.
 After an explicitly synthetic two-unit clarification and a lead-authored wording
-edit, a fresh buyer-v2 exported EUR240 wording. The prior buyer-v1 stayed unchanged.
+edit, a fresh buyer-v2 exported EUR240 wording. The prior buyer-v1 stayed unchanged. Two verification calls passed with receipt hashes
+retained from the export results. Three verification calls refused a wrong expected
+receipt hash, changed wording and a missing-receipt partial packet. The changed and
+partial packets remained byte-identical after refusal.
 The lead checked both payload receipts, all source bytes, empty-folder preservation,
 absent refused outputs and the final current record. No quoted text was sent.
 
 [Proof JSON](proof.json) identifies the exact execution revision, source/fixture
-fingerprints, all CLI argument arrays, exit codes, raw stdout/stderr hashes, current
+fingerprints, all CLI argument arrays, export-result receipt hashes, exit codes, raw stdout/stderr hashes, current
 snapshot identities and published packet hashes. Raw CLI streams and v2 artifact
 are retained privately. Hashes alone do not grant readers access to those streams.
 The original Q01-Q10 plan, native-host study and earlier buyer/owner packets remain

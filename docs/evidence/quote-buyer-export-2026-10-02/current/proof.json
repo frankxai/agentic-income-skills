@@ -1,0 +1,470 @@
+{
+  "schema": "starlight.quote_buyer_export.v1",
+  "observed_at": "2026-10-02T19:21:33.466462+00:00",
+  "execution_source_revision": "a104f519851339512ca5cec9f443f941232c5714",
+  "source_skill_files_sha256": {
+    "LICENSE": "32f9d0c9c6c843b615cd318b1b56bdca5e5adc79dba9ec5cf405102dcb557079",
+    "SKILL.md": "5843dfff28c2ff3cd6c131d0349907103c2dbf4ff20f1da70a13e10f95feacae",
+    "examples/catalog.json": "6862e18c922d9bfee65c68f92956b3fe051ea86132ecf0d9f08f382e8e550c62",
+    "examples/principal.json": "7bcf8c92a3eb486b5085b2fa341f31a7d46cbb2ad7f038a859df4a157be8e60f",
+    "examples/request.json": "7dffb801441598e243bcf3e6858e1c74194b691fc094dbb282812e94fe868611",
+    "scripts/quote-desk.mjs": "b0262da2d0b7dc1043a5136e6908c0e78fc5e42eefbdb4b8773cf238108b514e"
+  },
+  "frozen_plan_sha256": "2d40023d98461caf1c812f9ad0ea0f6eedc0f03fba7d89de8127ac3313d2de07",
+  "prior_refined_cases_sha256": "5c922788873ea92c403135260ef1f348d1c6169d9f5b514c95763ce8b0c77eac",
+  "case": "Q08",
+  "input_kind": "Previously frozen synthetic request and existing lead-authored buyer/owner wording, plus explicitly synthetic two-unit clarification and revised lead wording. No new native authoring or human cold trial.",
+  "actual_cli_calls": [
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "init",
+        "--workspace",
+        "workspace",
+        "--principal",
+        "source/examples/principal.json",
+        "--catalog",
+        "source/examples/catalog.json"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "c197693d52eee0b51035bc8ea4a0e69015cd6ff991f4add45ed4b938ac3ed738",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returned_revision": null,
+      "returned_snapshot_hash": null,
+      "packet_audience": null,
+      "verification_state": null,
+      "returned_receipt_hash": null
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "intake",
+        "--workspace",
+        "workspace",
+        "--request",
+        "request.json",
+        "--service",
+        "inspect",
+        "--quantity",
+        "1"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "9781f3adc589139242b6b742fc00d6516c9e39274aaf2fef3dd879641541ff06",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returned_revision": 1,
+      "returned_snapshot_hash": "aa8bfda76c4198b69d9788eb6a2bcfd2ee8c07994850e64b410b552f847bb541",
+      "packet_audience": null,
+      "verification_state": null,
+      "returned_receipt_hash": null
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "edit",
+        "--workspace",
+        "workspace",
+        "--id",
+        "456274433f10c2fc6395afbd9f48a7a9bf8a1941f4f1d218bf056a831687d059",
+        "--revision",
+        "1",
+        "--draft",
+        "buyer.txt",
+        "--owner-notes",
+        "owner.txt"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "7059f01e01bb442463cb83bdcbddfe0194acab93fe2b430ed4a61f41669c7454",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returned_revision": 2,
+      "returned_snapshot_hash": "1f4a58093a5ec4dff55147d5ddc4d6586fd7a0d1d20f710d0eadc288d558f73c",
+      "packet_audience": null,
+      "verification_state": null,
+      "returned_receipt_hash": null
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "show",
+        "--workspace",
+        "workspace",
+        "--id",
+        "456274433f10c2fc6395afbd9f48a7a9bf8a1941f4f1d218bf056a831687d059"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "b806e3ca99210a89363df1bc290f573b09deb01e3cdbf76b310732b4a309d45a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returned_revision": 2,
+      "returned_snapshot_hash": "1f4a58093a5ec4dff55147d5ddc4d6586fd7a0d1d20f710d0eadc288d558f73c",
+      "packet_audience": null,
+      "verification_state": null,
+      "returned_receipt_hash": null
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "export",
+        "--workspace",
+        "workspace",
+        "--id",
+        "456274433f10c2fc6395afbd9f48a7a9bf8a1941f4f1d218bf056a831687d059",
+        "--output",
+        "internal-packet"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "f3196d04435a110dd3383020793ed267f72010daf042629ba20f0bdc9cd00e7a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returned_revision": null,
+      "returned_snapshot_hash": null,
+      "packet_audience": "owner-review",
+      "verification_state": null,
+      "returned_receipt_hash": null
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "export-buyer",
+        "--workspace",
+        "workspace",
+        "--id",
+        "456274433f10c2fc6395afbd9f48a7a9bf8a1941f4f1d218bf056a831687d059",
+        "--revision",
+        "2",
+        "--snapshot-sha256",
+        "1f4a58093a5ec4dff55147d5ddc4d6586fd7a0d1d20f710d0eadc288d558f73c",
+        "--output",
+        "buyer-v1"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "9080c63b72a5bf527032328d3678cde3db3adb964d441866d1adb61b1b831a8e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returned_revision": 2,
+      "returned_snapshot_hash": "1f4a58093a5ec4dff55147d5ddc4d6586fd7a0d1d20f710d0eadc288d558f73c",
+      "packet_audience": "buyer-wording-for-human-review",
+      "verification_state": null,
+      "returned_receipt_hash": "f6bcbce17cefde1726efdfea90977b8f4775f9f9a9594f1948cbaef87ac8007b"
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "export-buyer",
+        "--workspace",
+        "workspace",
+        "--id",
+        "456274433f10c2fc6395afbd9f48a7a9bf8a1941f4f1d218bf056a831687d059",
+        "--revision",
+        "1",
+        "--snapshot-sha256",
+        "1f4a58093a5ec4dff55147d5ddc4d6586fd7a0d1d20f710d0eadc288d558f73c",
+        "--output",
+        "stale-revision"
+      ],
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e6ba8df50b072209a85d38caf9b722ff34607645c04e901fab97a2fe472cc411",
+      "error": "[quote-desk] Selected snapshot changed; reopen and review before buyer export"
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "export-buyer",
+        "--workspace",
+        "workspace",
+        "--id",
+        "456274433f10c2fc6395afbd9f48a7a9bf8a1941f4f1d218bf056a831687d059",
+        "--revision",
+        "2",
+        "--snapshot-sha256",
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        "--output",
+        "wrong-hash"
+      ],
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e6ba8df50b072209a85d38caf9b722ff34607645c04e901fab97a2fe472cc411",
+      "error": "[quote-desk] Selected snapshot changed; reopen and review before buyer export"
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "export-buyer",
+        "--workspace",
+        "workspace",
+        "--id",
+        "456274433f10c2fc6395afbd9f48a7a9bf8a1941f4f1d218bf056a831687d059",
+        "--revision",
+        "2",
+        "--snapshot-sha256",
+        "1f4a58093a5ec4dff55147d5ddc4d6586fd7a0d1d20f710d0eadc288d558f73c",
+        "--output",
+        "empty-existing"
+      ],
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "cbcc23b18878bd3f8d48032f1306778b8d2998cb191049acbe0d69cbf39095b6",
+      "error": "[quote-desk] EEXIST: file already exists, mkdir '<task-root>\\empty-existing'"
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "clarify",
+        "--workspace",
+        "workspace",
+        "--id",
+        "456274433f10c2fc6395afbd9f48a7a9bf8a1941f4f1d218bf056a831687d059",
+        "--revision",
+        "2",
+        "--clarification",
+        "clarification.json"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "b69762f8812e1357ba244e33282c38bede1a26a9ec813a116f3c2ea71c15ad84",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returned_revision": 3,
+      "returned_snapshot_hash": "4a24c75594491f1ddd213635301aa4e6ca438a4abe055999bea8155410cf36fb",
+      "packet_audience": null,
+      "verification_state": null,
+      "returned_receipt_hash": null
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "export-buyer",
+        "--workspace",
+        "workspace",
+        "--id",
+        "456274433f10c2fc6395afbd9f48a7a9bf8a1941f4f1d218bf056a831687d059",
+        "--revision",
+        "2",
+        "--snapshot-sha256",
+        "1f4a58093a5ec4dff55147d5ddc4d6586fd7a0d1d20f710d0eadc288d558f73c",
+        "--output",
+        "stale-after-clarification"
+      ],
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e6ba8df50b072209a85d38caf9b722ff34607645c04e901fab97a2fe472cc411",
+      "error": "[quote-desk] Selected snapshot changed; reopen and review before buyer export"
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "export-buyer",
+        "--workspace",
+        "workspace",
+        "--id",
+        "456274433f10c2fc6395afbd9f48a7a9bf8a1941f4f1d218bf056a831687d059",
+        "--revision",
+        "3",
+        "--snapshot-sha256",
+        "4a24c75594491f1ddd213635301aa4e6ca438a4abe055999bea8155410cf36fb",
+        "--output",
+        "unreconciled"
+      ],
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "198a906bc9c00cba781c6f0767131fd76ac26a5e335165245a909a119fe71e6a",
+      "error": "[quote-desk] Buyer wording needs reconciliation; review the current selection and save wording before buyer export"
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "edit",
+        "--workspace",
+        "workspace",
+        "--id",
+        "456274433f10c2fc6395afbd9f48a7a9bf8a1941f4f1d218bf056a831687d059",
+        "--revision",
+        "3",
+        "--draft",
+        "revised-buyer.txt"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "2ed6519f9baa63eda4f2c6a894e91990d36ecda63de8201da09cb2d554072b9b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returned_revision": 4,
+      "returned_snapshot_hash": "2b0af7ebe895892b8e697ed6b01bdf45cca3c0ac0e7875533471ebcdbd55c06a",
+      "packet_audience": null,
+      "verification_state": null,
+      "returned_receipt_hash": null
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "export-buyer",
+        "--workspace",
+        "workspace",
+        "--id",
+        "456274433f10c2fc6395afbd9f48a7a9bf8a1941f4f1d218bf056a831687d059",
+        "--revision",
+        "4",
+        "--snapshot-sha256",
+        "2b0af7ebe895892b8e697ed6b01bdf45cca3c0ac0e7875533471ebcdbd55c06a",
+        "--output",
+        "buyer-v2"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "d4a3e3a83b2e1fbfe99d2fc895f997c1b36ea3194d7a4d649bb55eb561aed5b8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returned_revision": 4,
+      "returned_snapshot_hash": "2b0af7ebe895892b8e697ed6b01bdf45cca3c0ac0e7875533471ebcdbd55c06a",
+      "packet_audience": "buyer-wording-for-human-review",
+      "verification_state": null,
+      "returned_receipt_hash": "96663911fa68a1039dc338929a5ecb05bceab762c47491c6a43f90405e29ce15"
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "show",
+        "--workspace",
+        "workspace",
+        "--id",
+        "456274433f10c2fc6395afbd9f48a7a9bf8a1941f4f1d218bf056a831687d059"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "8fe75963b9cc71cc7d7eab4fc10343c037b60a902b36cd9220cc4c4dee5dc7a7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returned_revision": 4,
+      "returned_snapshot_hash": "2b0af7ebe895892b8e697ed6b01bdf45cca3c0ac0e7875533471ebcdbd55c06a",
+      "packet_audience": null,
+      "verification_state": null,
+      "returned_receipt_hash": null
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "verify-buyer",
+        "--directory",
+        "buyer-v1",
+        "--receipt-sha256",
+        "f6bcbce17cefde1726efdfea90977b8f4775f9f9a9594f1948cbaef87ac8007b"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "a0c31252ee666f20c7c63fa1b47e79481a5d2478c8c5ced969526ea244abb348",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returned_revision": null,
+      "returned_snapshot_hash": null,
+      "packet_audience": null,
+      "verification_state": "buyer-export-integrity-pass",
+      "returned_receipt_hash": "f6bcbce17cefde1726efdfea90977b8f4775f9f9a9594f1948cbaef87ac8007b"
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "verify-buyer",
+        "--directory",
+        "buyer-v2",
+        "--receipt-sha256",
+        "96663911fa68a1039dc338929a5ecb05bceab762c47491c6a43f90405e29ce15"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "6a8955756507168a28a5806e5c93573b528dfd4e06091ca792bd212503cc23d4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returned_revision": null,
+      "returned_snapshot_hash": null,
+      "packet_audience": null,
+      "verification_state": "buyer-export-integrity-pass",
+      "returned_receipt_hash": "96663911fa68a1039dc338929a5ecb05bceab762c47491c6a43f90405e29ce15"
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "verify-buyer",
+        "--directory",
+        "buyer-v1",
+        "--receipt-sha256",
+        "0000000000000000000000000000000000000000000000000000000000000000"
+      ],
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "34d0b744157ec99a1cb5b6258c886519e26e1721af5f44c4ed04af18fe16efc5",
+      "error": "[quote-desk] Receipt checksum mismatch; use the separately retained export hash and preserve this folder"
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "verify-buyer",
+        "--directory",
+        "changed-packet",
+        "--receipt-sha256",
+        "96663911fa68a1039dc338929a5ecb05bceab762c47491c6a43f90405e29ce15"
+      ],
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "d7464e1ed1b262ffc61a2d37deaacf1aeab7cf55ff9477f49daa9ed9c7a4c512",
+      "error": "[quote-desk] Buyer payload checksum mismatch: quote.txt; preserve changed output"
+    },
+    {
+      "command": [
+        "node",
+        "source/scripts/quote-desk.mjs",
+        "verify-buyer",
+        "--directory",
+        "partial-packet",
+        "--receipt-sha256",
+        "96663911fa68a1039dc338929a5ecb05bceab762c47491c6a43f90405e29ce15"
+      ],
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "01e96ceefda7443741e2bd0e1e7fea86fb8f1bc33a25dba3650bd48cfbf34791",
+      "error": "[quote-desk] Buyer folder must contain exactly the four export files; preserve partial or unexpected content"
+    }
+  ],
+  "published_packet_files_sha256": {
+    "LICENSE": "32f9d0c9c6c843b615cd318b1b56bdca5e5adc79dba9ec5cf405102dcb557079",
+    "quote.txt": "eea82a29ea16b1d183cfbcbeafdb3f61ec9f16c7e99b6ca8d4d4e25c386d4ab1",
+    "README.md": "92f91c502876b9a720972cc7bc8bebfb918c96f97732a50a7d6bc7ebd88a718b",
+    "receipt.json": "f6bcbce17cefde1726efdfea90977b8f4775f9f9a9594f1948cbaef87ac8007b"
+  },
+  "results": {
+    "manual_copy_and_buyer_v1_wording_byte_equal": true,
+    "v1_preserved_after_clarification_and_v2": true,
+    "stale_hash_revision_and_unreconciled_targets_absent": true,
+    "existing_empty_directory_preserved": true,
+    "current_source_after_v2_matches_selected_snapshot": true,
+    "reconciled_structured_amount": "240.00",
+    "verification": {
+      "v1_and_v2_integrity_pass": true,
+      "wrong_expected_hash_changed_words_and_partial_receipt_refused": true,
+      "changed_and_partial_packets_preserved": true,
+      "v1_receipt_hash_from_export": "f6bcbce17cefde1726efdfea90977b8f4775f9f9a9594f1948cbaef87ac8007b",
+      "v2_receipt_hash_from_export": "96663911fa68a1039dc338929a5ecb05bceab762c47491c6a43f90405e29ce15"
+    },
+    "v2_wording_sha256": "fd25e14251fca29977090233f732626f9afb055efbd27479e88de7913299f311",
+    "v2_packet_files_sha256": {
+      "LICENSE": "32f9d0c9c6c843b615cd318b1b56bdca5e5adc79dba9ec5cf405102dcb557079",
+      "quote.txt": "fd25e14251fca29977090233f732626f9afb055efbd27479e88de7913299f311",
+      "README.md": "92f91c502876b9a720972cc7bc8bebfb918c96f97732a50a7d6bc7ebd88a718b",
+      "receipt.json": "96663911fa68a1039dc338929a5ecb05bceab762c47491c6a43f90405e29ce15"
+    },
+    "source_unchanged_and_own_lock_removed": true
+  },
+  "comparison": {
+    "alternative": "Manual copy of exact quote.txt from the same internal owner-review packet",
+    "same_wording_sha256": "eea82a29ea16b1d183cfbcbeafdb3f61ec9f16c7e99b6ca8d4d4e25c386d4ab1",
+    "wording_result": "Parity; no authored-content advantage",
+    "runtime_difference": "Explicit current revision/hash guard, pending-wording refusal, cooperating-writer lock, four-file export with receipt, separate owner payload omitted",
+    "human_time_or_repair_measurement": null,
+    "outside_user_acceptance": null,
+    "paid_advantage": null
+  },
+  "scope": "Actual separate-process CLI use of copied accepted skill. Test fault injection, cold/domain/Dots/merchant/rights and money acceptance remain separate; raw stdout/stderr retained privately, fingerprints do not make them independently readable. No send, source/config migration or model API calls."
+}
