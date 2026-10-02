@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "local-buyer-wording-draft",
+  "packetAudience": "buyer-wording-for-human-review",
+  "buyerWordingFile": "quote.txt",
+  "synthetic": true,
+  "draftOrigin": "operator-edit",
+  "proseReviewRequired": true,
+  "wordingReviewRequired": false,
+  "files": {
+    "quote.txt": "eea82a29ea16b1d183cfbcbeafdb3f61ec9f16c7e99b6ca8d4d4e25c386d4ab1",
+    "README.md": "332fc10a51a3ec0ccf9c8e22ed9d25a19ba6c73ee57e6d44f74610ed59de4d0e",
+    "LICENSE": "32f9d0c9c6c843b615cd318b1b56bdca5e5adc79dba9ec5cf405102dcb557079"
+  },
+  "outbound": "disabled",
+  "approvalsVerified": false,
+  "runtimeModelGeneration": false,
+  "hostModelGeneration": "unknown"
+}
