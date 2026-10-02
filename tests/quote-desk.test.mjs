@@ -4,9 +4,9 @@ import { createHash } from "node:crypto"
 import { tmpdir } from "node:os"
 import { dirname, join, resolve } from "node:path"
 import { spawnSync } from "node:child_process"
-import { fileURLToPath } from "node:url"
+import { fileURLToPath, pathToFileURL } from "node:url"
 import test from "node:test"
-import { initDesk, intake, show, editDraft, history, recover, exportDraft, main } from "../scripts/quote-desk.mjs"
+import { initDesk, intake, show, editDraft, history, recover, exportDraft, inspectLock, unlockStoppedWriter, main } from "../scripts/quote-desk.mjs"
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..")
 const SKILL = join(ROOT, "skills", "quote-desk")
@@ -192,6 +192,28 @@ test("corrupt pointer is preserved and explicit recovery checks both hashes", (t
   assert.equal(restored.revision, 2)
   const backup = fs.readdirSync(join(workspace, "history")).find((name) => name.endsWith(".saved"))
   assert.equal(fs.readFileSync(join(workspace, "history", backup), "utf8"), corrupt)
+})
+
+test("an actual stopped writer leaves its lock and edit; only its exact stopped PID/token can unlock recovery", (t) => {
+  const { workspace } = setup(t)
+  const initial = intake(workspace, sample("Q01"), "inspect", 1)
+  const runtime = pathToFileURL(join(ROOT, "scripts", "quote-desk.mjs")).href
+  const program = `import fs from 'node:fs'; import {editDraft} from ${JSON.stringify(runtime)}; fs.renameSync=()=>process.exit(86); editDraft(${JSON.stringify(workspace)},${JSON.stringify(initial.id)},1,'An abrupt-stop edit preserved before commit.');`
+  const child = spawnSync(process.execPath, ["--input-type=module", "-e", program], { encoding: "utf8", timeout: 10000 })
+  assert.equal(child.status, 86, child.stderr)
+  const lock = inspectLock(workspace)
+  assert.equal(lock.pid, child.pid)
+  assert.throws(() => editDraft(workspace, initial.id, 1, "Do not discard the stopped edit"), /writer lock/)
+  assert.throws(() => unlockStoppedWriter(workspace, "0".repeat(36), lock.pid), /Lock owner changed/)
+  assert.equal(show(workspace, initial.id).revision, 1)
+  unlockStoppedWriter(workspace, lock.token, lock.pid)
+  const candidates = history(workspace, initial.id)
+  const saved = candidates.entries.find((entry) => entry.revision === 2)
+  recover(workspace, initial.id, saved.snapshot, saved.sha256, candidates.pointerHash)
+  assert.equal(show(workspace, initial.id).record.draft, "An abrupt-stop edit preserved before commit.")
+  fs.writeFileSync(join(workspace, ".writer.lock"), JSON.stringify({ ...lock, pid: process.pid }))
+  assert.throws(() => unlockStoppedWriter(workspace, lock.token, process.pid), /PID is still present/)
+  assert.equal(inspectLock(workspace).pid, process.pid)
 })
 
 test("catalogue integrity and snapshot tampering are detected before editing or export", (t) => {

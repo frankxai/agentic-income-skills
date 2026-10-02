@@ -113,17 +113,42 @@ function workspace(path) {
 function locked(ws, action) {
   const lockPath = join(ws.root, ".writer.lock")
   const token = randomUUID()
+  const lock = json({ schemaVersion: VERSION, token, pid: process.pid, startedAt: new Date().toISOString(), configHash: ws.configHash })
   let fd
   try { fd = fs.openSync(lockPath, "wx", 0o600) }
   catch (cause) { throw new Error(`Workspace has a writer lock or cannot be locked. Preserve it; no age-based removal. ${cause.code}`) }
   try {
-    fs.writeFileSync(fd, token)
+    fs.writeFileSync(fd, lock)
     fs.fsyncSync(fd)
     return action()
   } finally {
     fs.closeSync(fd)
-    if (ordinary(lockPath, "file").size === token.length && fs.readFileSync(lockPath, "utf8") === token) fs.unlinkSync(lockPath)
+    if (ordinary(lockPath, "file").size <= MAX_JSON && fs.readFileSync(lockPath, "utf8") === lock) fs.unlinkSync(lockPath)
   }
+}
+
+export function inspectLock(path) {
+  const ws = workspace(path)
+  const value = readJson(join(ws.root, ".writer.lock"))
+  object(value, "Writer lock", ["schemaVersion", "token", "pid", "startedAt", "configHash"])
+  invariant(value.schemaVersion === VERSION && /^[a-f0-9-]{36}$/.test(value.token) &&
+    Number.isSafeInteger(value.pid) && value.pid > 0 && value.configHash === ws.configHash,
+    "Lock identity is invalid; preserve it for owner inspection")
+  return value
+}
+
+export function unlockStoppedWriter(path, ownerToken, ownerPid) {
+  const ws = workspace(path)
+  const lock = inspectLock(path)
+  invariant(lock.token === ownerToken && lock.pid === ownerPid, "Lock owner changed; do not remove it")
+  let missing = false
+  try { process.kill(lock.pid, 0) }
+  catch (cause) { if (cause.code === "ESRCH") missing = true; else throw cause }
+  invariant(missing, "Writer PID is still present or reused; preserve its lock")
+  const lockPath = join(ws.root, ".writer.lock")
+  invariant(hashObject(inspectLock(path)) === hashObject(lock), "Lock changed; do not remove it")
+  fs.unlinkSync(lockPath)
+  return { workspace: ws.root, releasedStoppedOwnerPid: ownerPid, recordFilesChanged: false }
 }
 
 function pointerPath(ws, key) {
@@ -313,11 +338,12 @@ export function exportDraft(path, key, output) {
 const allowed = {
   init: ["workspace", "principal", "catalog"], intake: ["workspace", "request", "service", "quantity"],
   show: ["workspace", "id"], edit: ["workspace", "id", "revision", "draft"], history: ["workspace", "id"],
+  lock: ["workspace"], unlock: ["workspace", "owner-token", "owner-pid"],
   recover: ["workspace", "id", "snapshot", "sha256", "pointer-sha256"], export: ["workspace", "id", "output"] }
 
 export function main(args) {
   const [command, ...rest] = args
-  invariant(Object.hasOwn(allowed, command), "Use init, intake, show, edit, history, recover or export. Sending, pricing changes, connectors and commitments are disabled")
+  invariant(Object.hasOwn(allowed, command), "Use init, intake, show, edit, history, recover, lock, unlock or export. Sending, pricing changes, connectors and commitments are disabled")
   const options = {}
   for (let index = 0; index < rest.length; index += 2) {
     const key = rest[index]?.slice(2)
@@ -334,6 +360,8 @@ export function main(args) {
   if (command === "show") return show(options.workspace, options.id)
   if (command === "edit") return editDraft(options.workspace, options.id, Number(options.revision), readBytes(options.draft).toString("utf8"))
   if (command === "history") return history(options.workspace, options.id)
+  if (command === "lock") return inspectLock(options.workspace)
+  if (command === "unlock") return unlockStoppedWriter(options.workspace, options["owner-token"], Number(options["owner-pid"]))
   if (command === "recover") return recover(options.workspace, options.id, options.snapshot, options.sha256,
     options["pointer-sha256"] === "missing" ? null : options["pointer-sha256"])
   return exportDraft(options.workspace, options.id, options.output)

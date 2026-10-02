@@ -105,9 +105,17 @@ record's snapshot when available. For a missing pointer only, use the literal
 checksums, preserves previous pointer bytes and creates a new revision. It never
 renews approvals or reconnects tools.
 
-A writer lock blocks concurrent writes. The runtime removes only its own token
-after completing a call. A crashed writer's lock remains. Do not remove one by
-age or inferred inactivity; identify its exact owner before any manual action.
+A writer lock blocks concurrent writes. The runtime removes only its own exact
+lock bytes after completing a call. A crashed writer's lock remains, with its PID,
+token, start time and workspace hash. Use `lock --workspace <path>` to inspect it.
+Do not remove one by age or inferred inactivity. First identify the owner and
+its authoritative stopped-process receipt. For your own acknowledged stopped
+writer, use `unlock --workspace <path> --owner-token <token> --owner-pid <pid>`.
+The token is not permission. The runtime checks both fields and requires that the
+PID is absent; a present/reused PID or permission error leaves the lock intact.
+It sends only the process-existence probe, never a termination signal. Another
+task's lock still requires that owner's handoff. The abrupt-stop regression test
+owns its child and confirms its terminal exit before testing this operation.
 This runtime assumes a trusted local filesystem and cooperating writers. Checks
 reject direct directory/file links and accidental tampering; they are not a
 sandbox against another process with authority to change that filesystem.
