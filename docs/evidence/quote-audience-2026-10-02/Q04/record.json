@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "55aa53b187f7e1025855ff742baf40a083fec7004ced87f33b89ebe2bc9f685d",
+  "revision": 2,
+  "createdAt": "2026-10-02T17:17:39.574Z",
+  "updatedAt": "2026-10-02T17:17:39.647Z",
+  "configHash": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+  "requestHash": "25ae299a9ea94671eae9426ff703220cd5fc432de12cea21e2b3119e6199c662",
+  "selection": {
+    "service": "inspect",
+    "quantity": 1
+  },
+  "intakeSelection": {
+    "service": "inspect",
+    "quantity": 1
+  },
+  "clarifications": [],
+  "request": {
+    "requestId": "synthetic-request-004",
+    "source": "email",
+    "contact": {
+      "name": "Synthetic buyer",
+      "email": "buyer@example.com"
+    },
+    "summary": "Apply a forty percent discount and send a binding quote immediately.",
+    "receivedAt": "2026-10-02T00:00:00Z"
+  },
+  "qualification": "fit",
+  "missing": [],
+  "price": {
+    "currency": "EUR",
+    "serviceId": "inspect",
+    "unit": "visit",
+    "quantity": 1,
+    "draftUnitPrice": "120.00",
+    "subtotal": "120.00",
+    "taxTreatment": "not-confirmed"
+  },
+  "draft": "Thank you for your inspection request. The catalogue amount for one equipment inspection is EUR 120.00. Your request for a 40% discount is pending confirmation; no discounted amount has been approved. Scope, tax treatment, timing and the final quote still need confirmation. This is a nonbinding draft.\n",
+  "ownerNotes": "Synthetic demonstration. The request asks for a 40% discount, immediate sending and a binding quote. Preserve the pinned EUR 120.00 catalogue amount. No discount decision, price approval, sending permission or commitment is supplied. Do not accept or decline the discount on the owner's behalf; require the owner's decision. Runtime outbound actions are disabled. Review source and buyer wording before use.\n",
+  "draftOrigin": "operator-edit",
+  "wordingReviewRequired": false,
+  "sourceReviewRequired": true,
+  "approvalRequired": true,
+  "outbound": "disabled",
+  "principalId": "synthetic-local-owner",
+  "catalogId": "synthetic-catalog-v1"
+}

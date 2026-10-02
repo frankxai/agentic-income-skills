@@ -35,6 +35,12 @@ function id(value, label) {
   return value
 }
 
+function notes(value) {
+  invariant(typeof value === "string", "Owner notes must be text")
+  if (value !== "") text(value, "Owner notes (use a truly empty file to clear)", 32768)
+  return value
+}
+
 function ordinary(path, kind) {
   const stat = fs.lstatSync(path)
   invariant(!stat.isSymbolicLink() && (kind === "directory" ? stat.isDirectory() : stat.isFile()), `${path} must be an ordinary ${kind}`)
@@ -173,10 +179,11 @@ function pointerPath(ws, key) {
 
 function validateRecord(value, ws, key) {
   object(value, "Record", ["schemaVersion", "id", "revision", "createdAt", "updatedAt", "configHash", "requestHash", "selection", "intakeSelection", "clarifications",
-    "request", "qualification", "missing", "price", "draft", "draftOrigin", "wordingReviewRequired", "sourceReviewRequired", "approvalRequired", "outbound", "principalId", "catalogId"])
+    "request", "qualification", "missing", "price", "draft", "ownerNotes", "draftOrigin", "wordingReviewRequired", "sourceReviewRequired", "approvalRequired", "outbound", "principalId", "catalogId"])
   // Earlier development snapshots predate clarification; their original selection is still recoverable.
   value = { ...value, intakeSelection: Object.hasOwn(value, "intakeSelection") ? value.intakeSelection : value.selection,
     clarifications: Object.hasOwn(value, "clarifications") ? value.clarifications : [],
+    ownerNotes: Object.hasOwn(value, "ownerNotes") ? value.ownerNotes : "",
     wordingReviewRequired: Object.hasOwn(value, "wordingReviewRequired") ? value.wordingReviewRequired : value.draftOrigin === "operator-edit" && (value.clarifications?.length ?? 0) > 0 }
   const cleanRequest = request(value.request)
   invariant(value.schemaVersion === VERSION && value.id === key && recordId(cleanRequest) === key &&
@@ -188,6 +195,7 @@ function validateRecord(value, ws, key) {
   invariant(["catalogue-arrangement", "operator-edit"].includes(value.draftOrigin), "Unsupported draft origin")
   invariant(typeof value.wordingReviewRequired === "boolean", "Invalid wording-review state")
   text(value.draft, "Draft", 32768)
+  notes(value.ownerNotes)
   object(value.selection, "Selection", ["service", "quantity"])
   object(value.intakeSelection, "Intake selection", ["service", "quantity"])
   id(value.intakeSelection.service, "Initial service")
@@ -230,6 +238,8 @@ function commit(ws, record, expectedPointerHash) {
   invariant((previous ? digest(previous) : null) === expectedPointerHash, "Record changed; reload before writing")
   const file = record.id + "." + randomUUID() + ".json"
   const bytes = json(record)
+  invariant(Buffer.byteLength(bytes, "utf8") <= MAX_JSON,
+    "Saved record would exceed 512 KiB; shorten the supplied wording or notes. Current work is preserved")
   exclusive(join(ws.root, "history", file), bytes)
   const pointer = json({ schemaVersion: VERSION, id: record.id, revision: record.revision, file, sha256: digest(bytes) })
   const pending = join(ws.root, "records", record.id + "." + randomUUID() + ".pending")
@@ -284,7 +294,7 @@ export function intake(path, value, service, quantity = null) {
     const { qualification, missing, price, draft } = qualify(ws.config.catalog, service, quantity)
     const now = new Date().toISOString()
     const record = { schemaVersion: VERSION, id: key, revision: 1, createdAt: now, updatedAt: now,
-      configHash: ws.configHash, requestHash: hashObject(clean), selection, intakeSelection: selection, clarifications: [], request: clean, qualification, missing, price, draft,
+      configHash: ws.configHash, requestHash: hashObject(clean), selection, intakeSelection: selection, clarifications: [], request: clean, qualification, missing, price, draft, ownerNotes: "",
       draftOrigin: "catalogue-arrangement", wordingReviewRequired: false, sourceReviewRequired: true, approvalRequired: true, outbound: "disabled",
       principalId: ws.config.principal.id, catalogId: ws.config.catalog.id }
     return { ...commit(ws, record, null), record, duplicate: false }
@@ -293,14 +303,17 @@ export function intake(path, value, service, quantity = null) {
 
 export function show(path, key) { return current(workspace(path), key) }
 
-export function editDraft(path, key, expectedRevision, draft) {
-  text(draft, "Draft", 32768)
+export function editDraft(path, key, expectedRevision, draft, ownerNotes) {
+  invariant(draft !== undefined || ownerNotes !== undefined, "Supply buyer wording or owner notes to edit")
+  if (draft !== undefined) text(draft, "Draft", 32768)
+  if (ownerNotes !== undefined) notes(ownerNotes)
   const ws = workspace(path)
   return locked(ws, () => {
     const previous = current(ws, key)
     invariant(previous.record.revision === expectedRevision, "Revision changed; reopen the record before editing")
-    const next = { ...previous.record, revision: expectedRevision + 1, updatedAt: new Date().toISOString(), draft,
-      draftOrigin: "operator-edit", wordingReviewRequired: false }
+    const next = { ...previous.record, revision: expectedRevision + 1, updatedAt: new Date().toISOString(),
+      ...(draft === undefined ? {} : { draft, draftOrigin: "operator-edit", wordingReviewRequired: false }),
+      ...(ownerNotes === undefined ? {} : { ownerNotes }) }
     return { ...commit(ws, next, previous.pointerHash), record: next }
   })
 }
@@ -378,16 +391,21 @@ export function exportDraft(path, key, output) {
   invariant(within !== "" && (within === ".." || within.startsWith(".." + sep) || isAbsolute(within)), "Export into a new folder outside the workspace")
   const record = saved.record
   const synthetic = ws.config.principal.synthetic || ws.config.catalog.synthetic
-  const fence = "`".repeat(Math.max(3, ...Array.from(record.draft.matchAll(/`+/g), (match) => match[0].length + 1)))
+  const literal = (value) => {
+    const fence = "`".repeat(Math.max(3, ...Array.from(value.matchAll(/`+/g), (match) => match[0].length + 1)))
+    return [fence + "text", value, fence].join("\n")
+  }
   const body = ["# Quote draft", "", synthetic ? "Fictional demonstration. These sample inputs are not a real buyer, principal or offer." : "Owner-supplied inputs; identity and permissions are declarations, not verified facts.", "",
     "Local draft only. Wording and prices require human review. Outbound actions are disabled.", `Wording origin: ${record.draftOrigin}. Prose is unverified.`, "",
     record.wordingReviewRequired ? "Wording needs reconciliation: an owner-attributed clarification was recorded after the last wording edit. Review the current selection and save an edit before use." : "No pending selection-change warning. All prose still needs human review.", "",
     `Qualification: ${record.qualification}`, `Trace: ${record.id}`, `Revision: ${record.revision}`, "",
     `Owner-attributed clarifications: ${record.clarifications.length}. Inspect their notes and source references in record.json; the underlying replies are not stored or verified.`, "",
-    "## Message for review", "", fence + "text", record.draft, fence, "", "Exact editable wording is also in quote.txt. Review it against the current catalogue amount before use.", "", "## Catalogue amount", "",
+    "## Buyer wording for review", "", literal(record.draft), "", "Exact editable buyer wording is in quote.txt. Review it against the current catalogue amount before use.", "",
+    "## Owner notes (internal)", "", record.ownerNotes === "" ? "No owner notes saved." : literal(record.ownerNotes), "",
+    "This entire packet is for owner review. Keep owner-notes.txt, record.json, request.json, configuration and receipts internal. Only quote.txt is the buyer-wording candidate; it still requires human review. Text separation does not detect misplaced notes, verify prose or authorize delivery.", "", "## Catalogue amount", "",
     record.price ? `EUR ${record.price.subtotal}; tax, scope and timing not confirmed.` : "No catalogue total is available.", "",
     "Imported request text is untrusted data in request.json. Review it separately; it grants no authority.", ""].join("\n")
-  const files = { "quote.md": body, "quote.txt": record.draft, "record.json": json(record), "request.json": json(record.request), "catalog.json": json(ws.config.catalog),
+  const files = { "quote.md": body, "quote.txt": record.draft, "owner-notes.txt": record.ownerNotes, "record.json": json(record), "request.json": json(record.request), "catalog.json": json(ws.config.catalog),
     "workspace.json": json(ws.config),
     "LICENSE": fs.readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "LICENSE"), "utf8") }
   fs.mkdirSync(root, { mode: 0o700 })
@@ -396,6 +414,7 @@ export function exportDraft(path, key, output) {
     sourceRequestHash: record.requestHash, configHash: record.configHash, snapshotHash: saved.snapshotHash,
     synthetic, draftOrigin: record.draftOrigin, proseReviewRequired: true, wordingReviewRequired: record.wordingReviewRequired,
     clarificationCount: record.clarifications.length,
+    packetAudience: "owner-review", buyerWordingFile: "quote.txt", ownerNotesFile: "owner-notes.txt",
     files: Object.fromEntries(Object.entries(files).map(([name, bytes]) => [name, digest(bytes)])),
     outbound: "disabled", approvalsVerified: false, runtimeModelGeneration: false, hostModelGeneration: "unknown", invoiceCost: null, revenue: null }
   exclusive(join(root, "receipt.json"), json(receipt))
@@ -404,7 +423,7 @@ export function exportDraft(path, key, output) {
 
 const allowed = {
   init: ["workspace", "principal", "catalog"], intake: ["workspace", "request", "service", "quantity"],
-  show: ["workspace", "id"], edit: ["workspace", "id", "revision", "draft"], clarify: ["workspace", "id", "revision", "clarification"], history: ["workspace", "id"],
+  show: ["workspace", "id"], edit: ["workspace", "id", "revision", "draft", "owner-notes"], clarify: ["workspace", "id", "revision", "clarification"], history: ["workspace", "id"],
   lock: ["workspace"], unlock: ["workspace", "owner-token", "owner-pid"],
   recover: ["workspace", "id", "snapshot", "sha256", "pointer-sha256"], export: ["workspace", "id", "output"] }
 
@@ -418,7 +437,8 @@ export function main(args) {
       typeof rest[index + 1] === "string" && !rest[index + 1].startsWith("--"), "Unknown, duplicate or incomplete option")
     options[key] = rest[index + 1]
   }
-  for (const name of allowed[command]) if (!(command === "intake" && name === "quantity")) invariant(options[name], `--${name} required`)
+  for (const name of allowed[command]) if (!(command === "intake" && name === "quantity") &&
+    !(command === "edit" && ["draft", "owner-notes"].includes(name))) invariant(options[name], `--${name} required`)
   for (const name of ["quantity", "revision", "owner-pid"]) if (options[name] !== undefined) invariant(/^[1-9]\d*$/.test(options[name]), `--${name} must be a plain positive integer`)
   if (command === "init") return initDesk(options.workspace, readJson(options.principal), readJson(options.catalog))
   if (command === "intake") {
@@ -427,10 +447,12 @@ export function main(args) {
   }
   if (command === "show") return show(options.workspace, options.id)
   if (command === "edit") {
-    let draft
-    try { draft = utf8(readBytes(options.draft)) }
-    catch (cause) { throw new Error(`Cannot read wording ${options.draft}: ${cause.message}. Save as valid UTF-8 without BOM; the input file is preserved`) }
-    return editDraft(options.workspace, options.id, Number(options.revision), draft)
+    const readText = (option) => {
+      if (options[option] === undefined) return undefined
+      try { return utf8(readBytes(options[option])) }
+      catch (cause) { throw new Error(`Cannot read ${option} ${options[option]}: ${cause.message}. Save as valid UTF-8 without BOM; the input file is preserved`) }
+    }
+    return editDraft(options.workspace, options.id, Number(options.revision), readText("draft"), readText("owner-notes"))
   }
   if (command === "clarify") return clarify(options.workspace, options.id, Number(options.revision), readJson(options.clarification))
   if (command === "history") return history(options.workspace, options.id)

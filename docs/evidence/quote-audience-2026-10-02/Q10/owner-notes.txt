@@ -1,0 +1,1 @@
+Synthetic demonstration. The scenario declares expired approval and a revoked connector; no live status check was performed. Repeating intake cannot renew approval or reconnect an account. Preserve local edits and allow owner-review export only. No send, connector call or delivery is available or claimed. Review source, amount and buyer wording before use.

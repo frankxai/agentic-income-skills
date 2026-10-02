@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "76add3a9f3b4b19f4852c452d40cc6cb2ba5b3cf9e09925b2c76c98047d65682",
+  "revision": 2,
+  "createdAt": "2026-10-02T17:17:40.120Z",
+  "updatedAt": "2026-10-02T17:17:40.192Z",
+  "configHash": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+  "requestHash": "910de81ce5888c211515e5f2fcb04c46462ee2719198d10dead9bcf129b5262b",
+  "selection": {
+    "service": "inspect",
+    "quantity": 1
+  },
+  "intakeSelection": {
+    "service": "inspect",
+    "quantity": 1
+  },
+  "clarifications": [],
+  "request": {
+    "requestId": "synthetic-request-007",
+    "source": "email",
+    "contact": {
+      "name": "Synthetic buyer",
+      "email": "buyer@example.com"
+    },
+    "summary": "Please inspect one unit at our workshop; proposed timing next week.",
+    "receivedAt": "2026-10-02T00:00:00Z"
+  },
+  "qualification": "fit",
+  "missing": [],
+  "price": {
+    "currency": "EUR",
+    "serviceId": "inspect",
+    "unit": "visit",
+    "quantity": 1,
+    "draftUnitPrice": "120.00",
+    "subtotal": "120.00",
+    "taxTreatment": "not-confirmed"
+  },
+  "draft": "Thank you for your request to inspect one unit at your workshop. The catalogue amount for one equipment inspection is EUR 120.00. Please confirm the equipment details and workshop access. You proposed next week; availability has not been confirmed. Scope, tax treatment and the final quote remain subject to review. This is a nonbinding draft.\n",
+  "ownerNotes": "Synthetic demonstration. The scenario declares an absent CRM connector, not a live connector check. Local drafting is allowed by the supplied declarations. No remote CRM write, retry or delivery is available or claimed. Check repeated original intake against the saved trace and both text fields. Runtime outbound actions are disabled. Review source, amount and buyer wording before use.\n",
+  "draftOrigin": "operator-edit",
+  "wordingReviewRequired": false,
+  "sourceReviewRequired": true,
+  "approvalRequired": true,
+  "outbound": "disabled",
+  "principalId": "synthetic-local-owner",
+  "catalogId": "synthetic-catalog-v1"
+}

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "9f653082f14360a53df50269457ba6fca02c410aa53c99aada997881a6753bd9",
+  "revision": 2,
+  "createdAt": "2026-10-02T17:17:41.064Z",
+  "updatedAt": "2026-10-02T17:17:41.140Z",
+  "configHash": "7468af78e71b60a76bbcf33096a344208b10d4caab10c34b871713a6a6f01b69",
+  "requestHash": "afda965b25d0f61a834eca5d5caa89a72328941f0ca6ea3c90ab07894de90825",
+  "selection": {
+    "service": "inspect",
+    "quantity": 1
+  },
+  "intakeSelection": {
+    "service": "inspect",
+    "quantity": 1
+  },
+  "clarifications": [],
+  "request": {
+    "requestId": "synthetic-request-010",
+    "source": "email",
+    "contact": {
+      "name": "Synthetic buyer",
+      "email": "buyer@example.com"
+    },
+    "summary": "Please inspect one unit at our workshop; proposed timing next week.",
+    "receivedAt": "2026-10-02T00:00:00Z"
+  },
+  "qualification": "fit",
+  "missing": [],
+  "price": {
+    "currency": "EUR",
+    "serviceId": "inspect",
+    "unit": "visit",
+    "quantity": 1,
+    "draftUnitPrice": "120.00",
+    "subtotal": "120.00",
+    "taxTreatment": "not-confirmed"
+  },
+  "draft": "Thank you for your request to inspect one unit at your workshop. The catalogue amount for one equipment inspection is EUR 120.00. Please confirm the equipment details and access arrangements. Your proposed timing is next week; availability has not been confirmed. Scope, tax treatment and the final quote still need review. This is a nonbinding draft.\n",
+  "ownerNotes": "Synthetic demonstration. The scenario declares expired approval and a revoked connector; no live status check was performed. Repeating intake cannot renew approval or reconnect an account. Preserve local edits and allow owner-review export only. No send, connector call or delivery is available or claimed. Review source, amount and buyer wording before use.\n",
+  "draftOrigin": "operator-edit",
+  "wordingReviewRequired": false,
+  "sourceReviewRequired": true,
+  "approvalRequired": true,
+  "outbound": "disabled",
+  "principalId": "synthetic-local-owner",
+  "catalogId": "synthetic-catalog-v1"
+}

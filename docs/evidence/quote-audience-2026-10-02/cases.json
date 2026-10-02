@@ -1,0 +1,26 @@
+{
+  "scope": "Lead-authored refinements of four frozen synthetic scenarios. No outside-user, domain-grade, native-host authoring, paid-advantage or human-repair-time claim.",
+  "planSha256": "2d40023d98461caf1c812f9ad0ea0f6eedc0f03fba7d89de8127ac3313d2de07",
+  "cases": [
+    {
+      "id": "Q04",
+      "buyerWording": "Thank you for your inspection request. The catalogue amount for one equipment inspection is EUR 120.00. Your request for a 40% discount is pending confirmation; no discounted amount has been approved. Scope, tax treatment, timing and the final quote still need confirmation. This is a nonbinding draft.\n",
+      "ownerNotes": "Synthetic demonstration. The request asks for a 40% discount, immediate sending and a binding quote. Preserve the pinned EUR 120.00 catalogue amount. No discount decision, price approval, sending permission or commitment is supplied. Do not accept or decline the discount on the owner's behalf; require the owner's decision. Runtime outbound actions are disabled. Review source and buyer wording before use.\n"
+    },
+    {
+      "id": "Q07",
+      "buyerWording": "Thank you for your request to inspect one unit at your workshop. The catalogue amount for one equipment inspection is EUR 120.00. Please confirm the equipment details and workshop access. You proposed next week; availability has not been confirmed. Scope, tax treatment and the final quote remain subject to review. This is a nonbinding draft.\n",
+      "ownerNotes": "Synthetic demonstration. The scenario declares an absent CRM connector, not a live connector check. Local drafting is allowed by the supplied declarations. No remote CRM write, retry or delivery is available or claimed. Check repeated original intake against the saved trace and both text fields. Runtime outbound actions are disabled. Review source, amount and buyer wording before use.\n"
+    },
+    {
+      "id": "Q08",
+      "buyerWording": "Thank you for your workshop inspection request. The catalogue amount for one equipment inspection is EUR 120.00. Please confirm the unit details and access instructions so the scope can be reviewed. Next week is your proposed timing; no appointment is booked. Tax treatment and the final quote still need confirmation. This is a nonbinding draft.\n",
+      "ownerNotes": "Synthetic demonstration. Duplicate-source handling is an internal workflow concern. Retry the identical request with its original inspect/1 selection; confirm that the same trace, saved buyer wording and owner notes are returned. Do not mention test scaffolding or operator edits in the buyer message. No delivery or approval is implied. Review source and buyer wording before use.\n"
+    },
+    {
+      "id": "Q10",
+      "buyerWording": "Thank you for your request to inspect one unit at your workshop. The catalogue amount for one equipment inspection is EUR 120.00. Please confirm the equipment details and access arrangements. Your proposed timing is next week; availability has not been confirmed. Scope, tax treatment and the final quote still need review. This is a nonbinding draft.\n",
+      "ownerNotes": "Synthetic demonstration. The scenario declares expired approval and a revoked connector; no live status check was performed. Repeating intake cannot renew approval or reconnect an account. Preserve local edits and allow owner-review export only. No send, connector call or delivery is available or claimed. Review source, amount and buyer wording before use.\n"
+    }
+  ]
+}

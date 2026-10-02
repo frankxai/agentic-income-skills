@@ -51,7 +51,7 @@ test("Q01 actual catalogue draft exports a complete editable packet with notices
   assert.equal(exported.receipt.approvalsVerified, false)
   assert.equal(exported.receipt.runtimeModelGeneration, false)
   assert.equal(exported.receipt.hostModelGeneration, "unknown")
-  assert.deepEqual(Object.keys(exported.receipt.files), ["quote.md", "quote.txt", "record.json", "request.json", "catalog.json", "workspace.json", "LICENSE"])
+  assert.deepEqual(Object.keys(exported.receipt.files), ["quote.md", "quote.txt", "owner-notes.txt", "record.json", "request.json", "catalog.json", "workspace.json", "LICENSE"])
   for (const [name, expected] of Object.entries(exported.receipt.files)) assert.equal(hash(fs.readFileSync(join(exported.directory, name))), expected)
   assert.match(fs.readFileSync(join(exported.directory, "LICENSE"), "utf8"), /Copyright \(c\) 2026 Frank/)
   assert.equal(JSON.parse(fs.readFileSync(join(exported.directory, "record.json"))).request.summary, sample("Q01").summary)
