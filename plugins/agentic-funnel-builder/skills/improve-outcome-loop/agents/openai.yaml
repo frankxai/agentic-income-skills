@@ -1,0 +1,4 @@
+interface:
+  display_name: "Improve Outcome Loop"
+  short_description: "Improve activation, delivery and economics"
+  default_prompt: "Use $improve-outcome-loop to turn my product evidence into a concrete decision."

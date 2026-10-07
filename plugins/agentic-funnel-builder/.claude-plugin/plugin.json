@@ -1,0 +1,13 @@
+{
+  "name": "agentic-funnel-builder",
+  "version": "0.1.0",
+  "description": "Product evidence, funnel planning, fulfillment review and economics with portable skills and a local advisory MCP server.",
+  "author": {
+    "name": "FrankX",
+    "url": "https://github.com/frankxai"
+  },
+  "repository": "https://github.com/frankxai/agentic-income-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

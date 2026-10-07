@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "agentic-funnel-builder": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/src/server.mjs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Verify Funnel Delivery"
+  short_description: "Check the promise through paid fulfillment"
+  default_prompt: "Use $verify-funnel-delivery to turn my product evidence into a concrete decision."

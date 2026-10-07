@@ -1,0 +1,4 @@
+interface:
+  display_name: "Engineer Value Product"
+  short_description: "Build useful products from buyer evidence"
+  default_prompt: "Use $engineer-value-product to turn my product evidence into a concrete decision."

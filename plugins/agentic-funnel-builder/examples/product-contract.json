@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "afb/v0.1",
+  "id": "research-to-product-demo",
+  "basis": {
+    "kind": "standalone",
+    "ref": "synthetic-example"
+  },
+  "owner": "Fictional product owner",
+  "buyer": {
+    "segment": "Independent research analysts",
+    "job": "Produce a sourced comparison for a client",
+    "currentAlternative": "Manual bookmarks and an unversioned spreadsheet"
+  },
+  "product": {
+    "kind": "research",
+    "name": "Research Evidence Kit",
+    "promise": "Produce a traceable comparison with explicit uncertainty",
+    "artifactVersion": "0.1.0",
+    "artifactRefs": [
+      "examples/research-kit-scope.md"
+    ],
+    "status": "prototype",
+    "acceptance": [
+      {
+        "id": "traceable-claims",
+        "description": "Each factual comparison claim links to a source and observation date",
+        "grader": "human",
+        "required": true
+      },
+      {
+        "id": "reproduce-example",
+        "description": "A fresh user completes the example using included instructions",
+        "grader": "human",
+        "required": true
+      }
+    ]
+  },
+  "evidence": [
+    {
+      "id": "synthetic-demo",
+      "summary": "Synthetic fixture; no customer validation",
+      "sourceRef": "examples/research-kit-scope.md",
+      "observedAt": "2026-09-09T00:00:00Z",
+      "level": "hypothesis",
+      "synthetic": true
+    }
+  ],
+  "claims": [],
+  "offer": {
+    "priceMinor": 14900,
+    "currency": "EUR",
+    "priceStatus": "proposed",
+    "includes": [
+      "Evidence ledger template",
+      "Comparison workflow",
+      "Acceptance rubric"
+    ],
+    "exclusions": [
+      "Revenue guarantee",
+      "Private subscriptions"
+    ],
+    "termsRef": null,
+    "refundPolicyRef": null
+  },
+  "delivery": {
+    "payment": "unconfigured",
+    "fulfillment": "unconfigured",
+    "supportRef": null
+  },
+  "evaluations": [],
+  "funnel": {
+    "kind": "demo",
+    "primaryCta": "buy",
+    "channel": "Public tutorial with a working example"
+  },
+  "authority": {
+    "publish": "review-required",
+    "broadcast": "review-required",
+    "maxRunCostMinor": 1000
+  }
+}
