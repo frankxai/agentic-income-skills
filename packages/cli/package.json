@@ -1,0 +1,43 @@
+{
+  "name": "@agentic-income/cli",
+  "version": "0.1.0",
+  "description": "Unified CLI cockpit and Model Context Protocol (MCP) server for autonomous agentic monetization.",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "agentic-income": "dist/bin.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@agentic-income/core": "^0.1.0",
+    "@agentic-income/catalog": "^0.1.0",
+    "@agentic-income/redirect": "^0.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "agentic-income",
+    "mcp",
+    "cli",
+    "ai-monetization",
+    "affiliate-audit",
+    "economic-agents"
+  ],
+  "author": "Frank Riemer <frank@frankx.ai>"
+}
