@@ -41,14 +41,15 @@ export class RedirectEngine {
 
     let targetUrl = program.ourLink || program.signupUrl;
     let isAffiliate = Boolean(program.ourLink);
+    let linkProgram: AffiliateProgram = program;
 
     // If no direct program or dead-end, route to top alternative
     if (!program.hasProgram || program.status === "dead-end" || program.status === "closed") {
       const alts = CatalogEngine.findAlternatives(program.tool).recommendedAlternatives;
       if (alts.length > 0) {
-        const topAlt = alts[0];
-        targetUrl = topAlt.ourLink || topAlt.signupUrl;
-        isAffiliate = Boolean(topAlt.ourLink);
+        linkProgram = alts[0];
+        targetUrl = linkProgram.ourLink || linkProgram.signupUrl;
+        isAffiliate = Boolean(linkProgram.ourLink);
       }
     }
 
@@ -56,14 +57,19 @@ export class RedirectEngine {
       targetUrl = options.fallbackUrl || "https://agenticincome.org";
     }
 
+    const preserveIssued = Boolean(
+      linkProgram.preserveIssuedQuery && linkProgram.ourLink && targetUrl === linkProgram.ourLink
+    );
+
     try {
       const parsed = new URL(targetUrl);
-      if (!parsed.searchParams.has("utm_source")) parsed.searchParams.set("utm_source", utmSource);
-      if (!parsed.searchParams.has("utm_medium")) parsed.searchParams.set("utm_medium", utmMedium);
-      if (!parsed.searchParams.has("utm_campaign")) parsed.searchParams.set("utm_campaign", utmCampaign);
-      if (options.subId) parsed.searchParams.set("subid", options.subId);
-      if (options.agentId) parsed.searchParams.set("agent_id", options.agentId);
-
+      if (!preserveIssued) {
+        if (!parsed.searchParams.has("utm_source")) parsed.searchParams.set("utm_source", utmSource);
+        if (!parsed.searchParams.has("utm_medium")) parsed.searchParams.set("utm_medium", utmMedium);
+        if (!parsed.searchParams.has("utm_campaign")) parsed.searchParams.set("utm_campaign", utmCampaign);
+        if (options.subId) parsed.searchParams.set("subid", options.subId);
+        if (options.agentId) parsed.searchParams.set("agent_id", options.agentId);
+      }
       targetUrl = parsed.toString();
     } catch {
       // url parse failed, retain raw
@@ -76,7 +82,7 @@ export class RedirectEngine {
       isAffiliate,
       headers: {
         Location: targetUrl,
-        "Cache-Control": "private, max-age=300",
+        "Cache-Control": preserveIssued ? "no-store, private" : "private, max-age=300",
         "X-Agentic-Income-Attribution": isAffiliate ? "monetized" : "direct"
       }
     };
