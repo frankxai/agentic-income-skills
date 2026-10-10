@@ -8,6 +8,7 @@ Part of the **Agentic Income** ecosystem — sovereign infrastructure for autono
 
 - **Edge-Ready 302 Resolution**: Built for Cloudflare Workers, Vercel Edge Middleware, Next.js route handlers, and Node.js microservices.
 - **Dynamic Attribution & Sub-ID Tracking**: Safely appends and merges UTM campaign parameters (`utm_source`, `utm_medium`, `utm_campaign`) and dynamic agent identifiers (`subid`, `agent_id`) without mangling existing affiliate query strings.
+- **Issued links stay intact**: When a program sets `preserveIssuedQuery`, the resolver returns that `ourLink` and adds no campaign parameters or agent ids. Higgsfield is that case. Editorial pages use `https://frankx.ai/go/higgsfield`.
 - **Dead-End Failover**: Automatically redirects dead-end tool clicks (e.g. `/go/openai` or `/go/midjourney`) to highest-converting monetizable alternatives (`Perplexity`, `Adobe Firefly`).
 
 ## Installation

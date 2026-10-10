@@ -18,6 +18,8 @@ export interface AffiliateProgram {
   network?: string;
   signupUrl?: string;
   ourLink?: string | null;
+  /** Owner-issued referral. Resolver must keep the query and add nothing. */
+  preserveIssuedQuery?: boolean;
   status: "active" | "verify" | "dead-end" | "closed";
   note: string;
 }
