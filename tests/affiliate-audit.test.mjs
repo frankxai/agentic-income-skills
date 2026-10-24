@@ -43,16 +43,16 @@ test("affiliate-audit with traffic ranks appropriately", () => {
     mkdirSync(dataDir)
     writeFileSync(join(dataDir, "programs.json"), JSON.stringify({
       programs: [
-        { tool: "HighPriTool", hasProgram: true, status: "active", aliases: ["HighPriTool"], priority: 1, commission: "20%", signupUrl: "https://example.com" },
-        { tool: "LowPriTool", hasProgram: true, status: "active", aliases: ["LowPriTool"], priority: 2, commission: "10%", signupUrl: "https://example2.com" }
+        { tool: "TieToolA", hasProgram: true, status: "active", aliases: ["TieToolA"], priority: 1, commission: "20%", signupUrl: "https://example.com" },
+        { tool: "TieToolB", hasProgram: true, status: "active", aliases: ["TieToolB"], priority: 1, commission: "10%", signupUrl: "https://example2.com" }
       ],
       disclosure: "Test disclosure"
     }))
 
     const contentDir = join(tempDir, "content")
     mkdirSync(contentDir)
-    writeFileSync(join(contentDir, "post-high.md"), "This mentions HighPriTool and LowPriTool.")
-    writeFileSync(join(contentDir, "post-low.md"), "This mentions LowPriTool.")
+    writeFileSync(join(contentDir, "post-high.md"), "This mentions TieToolA and TieToolB.")
+    writeFileSync(join(contentDir, "post-low.md"), "This mentions TieToolB.")
 
     const trafficPath = join(tempDir, "traffic.json")
     writeFileSync(trafficPath, JSON.stringify({
@@ -70,23 +70,28 @@ test("affiliate-audit with traffic ranks appropriately", () => {
     })
 
     assert.match(result, /post-high/)
-    assert.match(result, /HighPriTool, LowPriTool/)
+    assert.match(result, /TieToolA, TieToolB/)
 
-    // Assert visitor totals and program/post ordering (as requested by reviewer)
+    // Assert visitor totals and program/post ordering
     // post-high has 1000 visitors, post-low has 100.
-    // LowPriTool is in both (1100), HighPriTool is in high (1000).
+    // TieToolB is in both (1100 total visitors), TieToolA is in high (1000 total visitors).
+    assert.match(result, /1100/)
+    assert.match(result, /1000/)
+
     const lines = result.split('\n')
     const postHighIdx = lines.findIndex(l => l.includes('`post-high`'))
     const postLowIdx = lines.findIndex(l => l.includes('`post-low`'))
 
+    assert.ok(postHighIdx >= 0 && postLowIdx >= 0, "Both posts must exist in output")
     // Check that post-high comes before post-low because it has more visitors (1000 vs 100)
     assert.ok(postHighIdx < postLowIdx, "post-high should be ranked above post-low")
 
-    const lowPriToolJoinIdx = lines.findIndex(l => l.includes('| LowPriTool |'))
-    const highPriToolJoinIdx = lines.findIndex(l => l.includes('| HighPriTool |'))
+    const toolBJoinIdx = lines.findIndex(l => l.includes('| TieToolB |'))
+    const toolAJoinIdx = lines.findIndex(l => l.includes('| TieToolA |'))
 
-    // Check that HighPriTool comes before LowPriTool because it has higher priority (1 vs 2)
-    assert.ok(highPriToolJoinIdx < lowPriToolJoinIdx, "HighPriTool should be ranked above LowPriTool in join programs")
+    assert.ok(toolBJoinIdx >= 0 && toolAJoinIdx >= 0, "Both tools must exist in output")
+    // Check that TieToolB comes before TieToolA because it has more traffic (1100 vs 1000), even though priority is equal
+    assert.ok(toolBJoinIdx < toolAJoinIdx, "TieToolB should be ranked above TieToolA in join programs due to higher traffic")
   } finally {
     rmSync(tempDir, { recursive: true, force: true })
   }
