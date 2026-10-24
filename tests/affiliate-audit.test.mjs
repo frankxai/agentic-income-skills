@@ -75,6 +75,10 @@ test("audit script applies traffic json and ranks by traffic when provided", () 
     const post1Index = result.stdout.indexOf("`post1`")
     const post3Index = result.stdout.indexOf("`post3`")
 
+    assert.notEqual(post1Index, -1, "post1 must be present in output")
+    assert.notEqual(post2Index, -1, "post2 must be present in output")
+    assert.notEqual(post3Index, -1, "post3 must be present in output")
+
     assert.ok(post2Index < post1Index, "post2 (highest traffic) should rank before post1")
     assert.ok(post1Index < post3Index, "post1 (medium traffic) should rank before post3 (lowest traffic)")
   } finally {
