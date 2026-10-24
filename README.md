@@ -81,7 +81,7 @@ review packet with exact wording, inspectable configuration, checksums and the
 complete MIT licence. Node.js 20 or newer is sufficient for this runtime; no npm
 install, account or connector is required.
 
-Run `node scripts/quote-desk.mjs` from this checkout or copy the complete skill
+Run `npm run quote:desk` from this checkout or copy the complete skill
 directory. The intended remote command is `npx skills add frankxai/agentic-income-skills --skill quote-desk`;
 that installer path has not been verified for this skill. Follow
 [the end-to-end commands and recovery guide](docs/quote-desk.md).

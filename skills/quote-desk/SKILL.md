@@ -35,9 +35,9 @@ reopen with empty notes without rewriting their original bytes. Each saved recor
 must fit 512 KiB in UTF-8; large multibyte texts and clarification histories can
 reach that bound before either individual text limit. A refused edit preserves work.
 
-1. Run `node scripts/quote-desk.mjs init --workspace <fresh-path> --principal <owner-file> --catalog <approved-file>`.
+1. Run `npm run quote:desk -- init --workspace <fresh-path> --principal <owner-file> --catalog <approved-file>`.
 2. The owner chooses a catalogue service and known integer quantity. Run
-   `node scripts/quote-desk.mjs intake --workspace <path> --request <request-file> --service <id> --quantity <integer>`.
+   `npm run quote:desk -- intake --workspace <path> --request <request-file> --service <id> --quantity <integer>`.
    Omit quantity if unknown. Do not infer hours or quantities from vague prose.
 3. Read the returned qualification, missing fields, catalogue amount and trace.
    Unsupported services escalate. Missing quantities require clarification.
@@ -52,7 +52,7 @@ reach that bound before either individual text limit. A refused edit preserves w
    control characters and directional-override characters are refused. Ordinary
    Unicode and CRLF wording remain exact.
 4. Save buyer wording and a separate UTF-8 owner-notes file atomically with
-   `node scripts/quote-desk.mjs edit --workspace <path> --id <trace> --revision <current-number> --draft <buyer-text-file> --owner-notes <owner-text-file>`.
+   `npm run quote:desk -- edit --workspace <path> --id <trace> --revision <current-number> --draft <buyer-text-file> --owner-notes <owner-text-file>`.
    Use `--draft` alone to preserve current notes, or `--owner-notes` alone to
    update notes without changing buyer wording or clearing a selection-change
    warning. An empty owner-notes file explicitly clears notes; buyer wording
@@ -60,8 +60,8 @@ reach that bound before either individual text limit. A refused edit preserves w
    This changes wording only. The stored catalogue amount and authority remain
    fixed by this wording edit. Human review must also inspect the prose; the runtime cannot verify its
    semantic accuracy. A stale revision must be reopened and reconciled.
-5. Reopen with `node scripts/quote-desk.mjs show --workspace <path> --id <trace>`.
-   Export with `node scripts/quote-desk.mjs export --workspace <path> --id <trace> --output <fresh-directory>`.
+5. Reopen with `npm run quote:desk -- show --workspace <path> --id <trace>`.
+   Export with `npm run quote:desk -- export --workspace <path> --id <trace> --output <fresh-directory>`.
    Inspect quote.md, exact buyer wording in quote.txt, internal owner-notes.txt,
    record.json, request.json,
    catalog.json, full principal/catalogue configuration in workspace.json and receipt.json.
@@ -75,7 +75,7 @@ export metadata, first reopen and inspect the current record. Copy its exact
 `revision` and `snapshotHash` into:
 
 ```text
-node scripts/quote-desk.mjs export-buyer --workspace <path> --id <trace> --revision <current-number> --snapshot-sha256 <snapshotHash> --output <fresh-directory>
+npm run quote:desk -- export-buyer --workspace <path> --id <trace> --revision <current-number> --snapshot-sha256 <snapshotHash> --output <fresh-directory>
 ```
 
 This requires saved operator wording and no pending selection-change warning.
@@ -92,7 +92,7 @@ material; no semantic filtering or sending occurs. Retain `receiptHash` from the
 owner's export command separately from this folder. Run:
 
 ```text
-node scripts/quote-desk.mjs verify-buyer --directory <export-directory> --receipt-sha256 <retained-receiptHash>
+npm run quote:desk -- verify-buyer --directory <export-directory> --receipt-sha256 <retained-receiptHash>
 ```
 
 The verifier hashes the same bounded receipt bytes it parses, checks the four-file
@@ -107,7 +107,7 @@ reviewed quote.txt remains a capable alternative; no paid advantage is establish
 When the owner supplies missing scope or corrects the selected service/quantity,
 create a UTF-8 JSON clarification file with exactly `service`, integer `quantity`,
 plain-text `note` and `sourceReference` to the permissioned reply. Use
-`node scripts/quote-desk.mjs clarify --workspace <path> --id <trace> --revision <current-number> --clarification <reply-file>`.
+`npm run quote:desk -- clarify --workspace <path> --id <trace> --revision <current-number> --clarification <reply-file>`.
 Use supplied quantities only. This preserves the original request/trace, saves the
 clarification and recomputes the draft amount from the pinned catalogue. It cannot
 override catalogue prices. Review preserved operator wording against the new
@@ -135,18 +135,18 @@ recover. History marks the snapshot selected by a readable pointer; missing or
 corrupt pointers do not establish a current candidate.
 
 For corruption or a deliberately selected rollback, inspect
-`node scripts/quote-desk.mjs history --workspace <path> --id <trace>`.
+`npm run quote:desk -- history --workspace <path> --id <trace>`.
 Show the owner the candidate snapshot, checksum and current pointer hash. Recover
 only the explicitly chosen snapshot with
-`node scripts/quote-desk.mjs recover --workspace <path> --id <trace> --snapshot <filename> --sha256 <snapshot-hash> --pointer-sha256 <current-hash>`.
+`npm run quote:desk -- recover --workspace <path> --id <trace> --snapshot <filename> --sha256 <snapshot-hash> --pointer-sha256 <current-hash>`.
 Use `missing` only when history reports a missing pointer. Recovery backs up the
 previous pointer and creates a new revision. It does not grant approvals.
 
 A writer lock stops another write. Inspect it using
-`node scripts/quote-desk.mjs lock --workspace <path>`. Never remove it by age or
+`npm run quote:desk -- lock --workspace <path>`. Never remove it by age or
 silence. The token is not permission: first identify the exact owner and its
 authoritative stopped-process receipt. For your own acknowledged stopped writer,
-`node scripts/quote-desk.mjs unlock --workspace <path> --owner-token <token> --owner-pid <pid>`
+`npm run quote:desk -- unlock --workspace <path> --owner-token <token> --owner-pid <pid>`
 also refuses a foreign host or a PID that is still present, reused or cannot be
 checked. Use only an owner-controlled local disk with cooperating writers in one
 OS and one PID namespace. Never share the workspace across Windows/WSL or
