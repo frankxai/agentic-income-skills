@@ -40,25 +40,43 @@ test("audit script detects monetizable mentions based on content", () => {
   }
 })
 
-test("audit script applies traffic json when provided", () => {
+test("audit script applies traffic json and ranks by traffic when provided", () => {
   const tempDir = mkdtempSync(join(tmpdir(), "affiliate-audit-test-"))
   try {
     const contentDir = join(tempDir, "content")
     mkdirSync(contentDir)
 
-    const samplePost = join(contentDir, "post1.md")
-    writeFileSync(samplePost, "Systeme.io is great.", "utf8")
+    const samplePost1 = join(contentDir, "post1.md")
+    writeFileSync(samplePost1, "Systeme.io is great.", "utf8")
+
+    const samplePost2 = join(contentDir, "post2.md")
+    writeFileSync(samplePost2, "I prefer using Canva for images.", "utf8")
+
+    const samplePost3 = join(contentDir, "post3.md")
+    writeFileSync(samplePost3, "Using Topaz Labs.", "utf8")
 
     const trafficJsonPath = join(tempDir, "traffic.json")
     writeFileSync(trafficJsonPath, JSON.stringify({
       pages: [
-        { path: "/post1", visitors: 4200 }
+        { path: "/post1", visitors: 4200 },
+        { path: "/post2", visitors: 8500 },
+        { path: "/post3", visitors: 1500 }
       ]
     }), "utf8")
 
     const result = spawnSync(process.execPath, [CLI_PATH, "--content=" + contentDir, "--traffic=" + trafficJsonPath], { encoding: "utf8" })
     assert.equal(result.status, 0)
-    assert.match(result.stdout, /4200/) // Checking if traffic amount was rendered in the MD table
+    assert.match(result.stdout, /4200/)
+    assert.match(result.stdout, /8500/)
+    assert.match(result.stdout, /1500/)
+
+    // Check that post2 (8500) appears before post1 (4200) and post3 (1500) in the Posts table
+    const post2Index = result.stdout.indexOf("`post2`")
+    const post1Index = result.stdout.indexOf("`post1`")
+    const post3Index = result.stdout.indexOf("`post3`")
+
+    assert.ok(post2Index < post1Index, "post2 (highest traffic) should rank before post1")
+    assert.ok(post1Index < post3Index, "post1 (medium traffic) should rank before post3 (lowest traffic)")
   } finally {
     rmSync(tempDir, { recursive: true, force: true })
   }
