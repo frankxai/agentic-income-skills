@@ -3,7 +3,9 @@ import { readFileSync } from "node:fs"
 import { dirname, join } from "node:path"
 import test from "node:test"
 import { fileURLToPath } from "node:url"
-import { validateIncomeSystem } from "../scripts/validate-income-system.mjs"
+import { validateIncomeSystem, validateFile } from "../scripts/validate-income-system.mjs"
+import { spawnSync } from "node:child_process"
+import { writeFileSync, unlinkSync } from "node:fs"
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..")
 const fixture = JSON.parse(
@@ -67,6 +69,90 @@ test("a document missing the budget reports schema errors instead of throwing", 
   const result = validateIncomeSystem(document)
   assert.equal(result.valid, false)
   assert.ok(result.errors.some((error) => error.code === "schema"))
+})
+
+test("validateFile outputs valid result for a correct document", () => {
+  const validPath = join(ROOT, "examples", "request-to-quote-desk", "income-system.json")
+
+  const originalLog = console.log
+  let logOutput = ""
+  console.log = (message) => { logOutput += message }
+
+  try {
+    const result = validateFile(validPath)
+    assert.equal(result.valid, true)
+    assert.match(logOutput, /\[income-system\] valid:/)
+  } finally {
+    console.log = originalLog
+  }
+})
+
+test("CLI execution uses validateFile on the provided path or defaults to the reference system", () => {
+  const cliPath = join(ROOT, "scripts", "validate-income-system.mjs")
+
+  // Test default path
+  const defaultResult = spawnSync(process.execPath, [cliPath], { encoding: "utf8" })
+  assert.equal(defaultResult.status, 0)
+  assert.match(defaultResult.stdout, /\[income-system\] valid:/)
+
+  // Test provided valid path
+  const validPath = join(ROOT, "examples", "request-to-quote-desk", "income-system.json")
+  const validResult = spawnSync(process.execPath, [cliPath, validPath], { encoding: "utf8" })
+  assert.equal(validResult.status, 0)
+  assert.match(validResult.stdout, /\[income-system\] valid:/)
+
+  // Test provided invalid document path
+  const invalidDoc = structuredClone(fixture)
+  delete invalidDoc.spec.authority.budget
+  const tempPath = join(ROOT, "tests", "temp-cli-invalid-system.json")
+  writeFileSync(tempPath, JSON.stringify(invalidDoc))
+
+  try {
+    const invalidResult = spawnSync(process.execPath, [cliPath, tempPath], { encoding: "utf8" })
+    assert.equal(invalidResult.status, 1)
+    assert.match(invalidResult.stderr, /\[income-system\] invalid:/)
+    assert.match(invalidResult.stderr, /schema/)
+  } finally {
+    unlinkSync(tempPath)
+  }
+
+  // Test file missing error
+  const missingResult = spawnSync(process.execPath, [cliPath, "non-existent-file.json"], { encoding: "utf8" })
+  assert.equal(missingResult.status, 1)
+  assert.match(missingResult.stderr, /\[income-system\] ENOENT/)
+})
+
+test("validateFile outputs invalid result for a malformed document", () => {
+  const invalidDoc = structuredClone(fixture)
+  delete invalidDoc.spec.authority.budget
+
+  const tempPath = join(ROOT, "tests", "temp-invalid-system.json")
+  writeFileSync(tempPath, JSON.stringify(invalidDoc))
+
+  const originalError = console.error
+  let errorOutput = ""
+  console.error = (message) => { errorOutput += message + "\n" }
+
+  try {
+    const result = validateFile(tempPath)
+    assert.equal(result.valid, false)
+    assert.match(errorOutput, /\[income-system\] invalid:/)
+    assert.match(errorOutput, /schema/)
+  } finally {
+    console.error = originalError
+    unlinkSync(tempPath)
+  }
+})
+
+test("a required denied action must be present", () => {
+  const document = structuredClone(fixture)
+  document.spec.authority.deniedActions = document.spec.authority.deniedActions.filter(
+    (action) => action !== "sign-contract"
+  )
+
+  const result = validateIncomeSystem(document)
+  assert.equal(result.valid, false)
+  assert.ok(result.errors.some((error) => error.code === "missing-denial"))
 })
 
 test("wrong-typed policy fields report schema errors instead of throwing", () => {
