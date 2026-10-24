@@ -71,6 +71,22 @@ test("affiliate-audit with traffic ranks appropriately", () => {
 
     assert.match(result, /post-high/)
     assert.match(result, /HighPriTool, LowPriTool/)
+
+    // Assert visitor totals and program/post ordering (as requested by reviewer)
+    // post-high has 1000 visitors, post-low has 100.
+    // LowPriTool is in both (1100), HighPriTool is in high (1000).
+    const lines = result.split('\n')
+    const postHighIdx = lines.findIndex(l => l.includes('`post-high`'))
+    const postLowIdx = lines.findIndex(l => l.includes('`post-low`'))
+
+    // Check that post-high comes before post-low because it has more visitors (1000 vs 100)
+    assert.ok(postHighIdx < postLowIdx, "post-high should be ranked above post-low")
+
+    const lowPriToolJoinIdx = lines.findIndex(l => l.includes('| LowPriTool |'))
+    const highPriToolJoinIdx = lines.findIndex(l => l.includes('| HighPriTool |'))
+
+    // Check that HighPriTool comes before LowPriTool because it has higher priority (1 vs 2)
+    assert.ok(highPriToolJoinIdx < lowPriToolJoinIdx, "HighPriTool should be ranked above LowPriTool in join programs")
   } finally {
     rmSync(tempDir, { recursive: true, force: true })
   }

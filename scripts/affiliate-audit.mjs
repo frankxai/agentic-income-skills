@@ -10,8 +10,8 @@
 // --traffic  optional JSON { pages:[{path,visitors}] } to rank gaps by traffic
 // --write    also write AUDIT.md next to the catalog
 
-import { readFileSync, writeFileSync, readdirSync, existsSync, statSync } from 'node:fs'
-import { join, dirname, relative } from 'node:path'
+import { readFileSync, writeFileSync, readdirSync, existsSync, statSync, realpathSync } from 'node:fs'
+import { join, dirname, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 export function audit(options = {}) {
@@ -71,7 +71,7 @@ export function audit(options = {}) {
   return md
 }
 
-if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+if (process.argv[1] && realpathSync(fileURLToPath(import.meta.url)) === realpathSync(resolve(process.argv[1]))) {
   const arg = (k, d) => process.argv.find((a) => a.startsWith(`--${k}=`))?.split('=')[1] ?? d
   const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
   audit({
