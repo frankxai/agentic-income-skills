@@ -5,7 +5,8 @@ import test from "node:test"
 import { fileURLToPath } from "node:url"
 import { validateIncomeSystem, validateFile } from "../scripts/validate-income-system.mjs"
 import { spawnSync } from "node:child_process"
-import { writeFileSync, unlinkSync } from "node:fs"
+import { writeFileSync, mkdtempSync, rmSync } from "node:fs"
+import { tmpdir } from "node:os"
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..")
 const fixture = JSON.parse(
@@ -104,7 +105,9 @@ test("CLI execution uses validateFile on the provided path or defaults to the re
   // Test provided invalid document path
   const invalidDoc = structuredClone(fixture)
   delete invalidDoc.spec.authority.budget
-  const tempPath = join(ROOT, "tests", "temp-cli-invalid-system.json")
+
+  const tempDir = mkdtempSync(join(tmpdir(), "income-system-cli-test-"))
+  const tempPath = join(tempDir, "income-system.json")
   writeFileSync(tempPath, JSON.stringify(invalidDoc))
 
   try {
@@ -113,7 +116,7 @@ test("CLI execution uses validateFile on the provided path or defaults to the re
     assert.match(invalidResult.stderr, /\[income-system\] invalid:/)
     assert.match(invalidResult.stderr, /schema/)
   } finally {
-    unlinkSync(tempPath)
+    rmSync(tempDir, { recursive: true, force: true })
   }
 
   // Test file missing error
@@ -126,7 +129,8 @@ test("validateFile outputs invalid result for a malformed document", () => {
   const invalidDoc = structuredClone(fixture)
   delete invalidDoc.spec.authority.budget
 
-  const tempPath = join(ROOT, "tests", "temp-invalid-system.json")
+  const tempDir = mkdtempSync(join(tmpdir(), "income-system-fn-test-"))
+  const tempPath = join(tempDir, "income-system.json")
   writeFileSync(tempPath, JSON.stringify(invalidDoc))
 
   const originalError = console.error
@@ -140,7 +144,7 @@ test("validateFile outputs invalid result for a malformed document", () => {
     assert.match(errorOutput, /schema/)
   } finally {
     console.error = originalError
-    unlinkSync(tempPath)
+    rmSync(tempDir, { recursive: true, force: true })
   }
 })
 
