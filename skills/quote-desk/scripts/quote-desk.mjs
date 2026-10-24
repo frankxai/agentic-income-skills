@@ -54,7 +54,7 @@ function readBytes(path) {
   return bytes
 }
 
-export function readJson(path) {
+function readJson(path) {
   try { return JSON.parse(utf8(readBytes(path))) }
   catch (cause) { throw new Error(`Cannot read ${path}: ${cause.message}`) }
 }
