@@ -1,72 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif">
-  <title id="title">Agentic Income Skills operating map</title>
-  <desc id="desc">Extracts the income thesis and affiliate audit loop into standalone skills.</desc>
-  <defs>
-    <linearGradient id="shade" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="#02040a" stop-opacity="0.86"/>
-      <stop offset="45%" stop-color="#02040a" stop-opacity="0.38"/>
-      <stop offset="100%" stop-color="#02040a" stop-opacity="0.82"/>
-    </linearGradient>
-    <linearGradient id="topFade" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0%" stop-color="#02040a" stop-opacity="0.88"/>
-      <stop offset="100%" stop-color="#02040a" stop-opacity="0"/>
-    </linearGradient>
-    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#000000" flood-opacity="0.42"/>
-    </filter>
-  </defs>
-  <rect width="1280" height="720" fill="#05070d"/>
-  <image href="visual-suite/backplates/website-growth-loop.png" x="0" y="0" width="1280" height="720" preserveAspectRatio="xMidYMid slice" opacity="0.88"/>
-  <rect width="1280" height="720" fill="url(#shade)"/>
-  <rect x="28" y="28" width="1224" height="664" rx="32" fill="none" stroke="rgba(255,255,255,0.18)"/>
-  <text x="56" y="82" font-size="15" font-weight="900" fill="#14b8a6" letter-spacing="3">L4 / HOW THIS REPO WORKS</text>
-  <text x="56" y="152" font-size="54" font-weight="900" fill="#f8fafc" opacity="1"><tspan x="56" dy="0">Agentic Income Skills</tspan></text>
-  <text x="58" y="236" font-size="22" font-weight="650" fill="#d7e2f3" opacity="1"><tspan x="58" dy="0">Extracts the income thesis and affiliate audit loop into standalone</tspan><tspan x="58" dy="27.5">skills.</tspan></text>
-  <g>
-    <rect x="856" y="76" width="340" height="220" rx="24" fill="rgba(3,7,18,0.72)" stroke="rgba(255,255,255,0.18)"/>
-    <text x="884" y="116" font-size="13" font-weight="900" fill="#14b8a6" letter-spacing="2">OUTPUTS</text>
-    <g>
-      <circle cx="895" cy="154" r="6" fill="#14b8a6"/>
-      <text x="914" y="161" font-size="20" font-weight="750" fill="#f8fafc">Income skill pack</text>
-    </g><g>
-      <circle cx="895" cy="202" r="6" fill="#14b8a6"/>
-      <text x="914" y="209" font-size="20" font-weight="750" fill="#f8fafc">Audit patterns</text>
-    </g><g>
-      <circle cx="895" cy="250" r="6" fill="#14b8a6"/>
-      <text x="914" y="257" font-size="20" font-weight="750" fill="#f8fafc">Reusable prompts</text>
-    </g>
-  </g>
-  <line x1="70" y1="360" x2="1188" y2="360" stroke="#14b8a6" stroke-width="2" opacity="0.65"/>
-  <g>
-    <rect x="54" y="390" width="222" height="178" rx="18" fill="rgba(5,8,14,0.74)" stroke="rgba(255,255,255,0.18)"/>
-    <rect x="54" y="390" width="5" height="178" rx="2.5" fill="#14b8a6"/>
-    <text x="76" y="421" font-size="13" font-weight="900" fill="#14b8a6">01</text>
-    <text x="76" y="451" font-size="21" font-weight="850" fill="#f8fafc" opacity="1"><tspan x="76" dy="0">Load thesis</tspan></text>
-    <text x="76" y="473" font-size="14" font-weight="500" fill="#b6c2d6" opacity="1"><tspan x="76" dy="0">Start from source truth.</tspan></text>
-  </g><g>
-    <rect x="294" y="390" width="222" height="178" rx="18" fill="rgba(5,8,14,0.74)" stroke="rgba(255,255,255,0.18)"/>
-    <rect x="294" y="390" width="5" height="178" rx="2.5" fill="#14b8a6"/>
-    <text x="316" y="421" font-size="13" font-weight="900" fill="#14b8a6">02</text>
-    <text x="316" y="451" font-size="21" font-weight="850" fill="#f8fafc" opacity="1"><tspan x="316" dy="0">Select use case</tspan></text>
-    <text x="316" y="473" font-size="14" font-weight="500" fill="#b6c2d6" opacity="1"><tspan x="316" dy="0">Create the artifact.</tspan></text>
-  </g><g>
-    <rect x="534" y="390" width="222" height="178" rx="18" fill="rgba(5,8,14,0.74)" stroke="rgba(255,255,255,0.18)"/>
-    <rect x="534" y="390" width="5" height="178" rx="2.5" fill="#14b8a6"/>
-    <text x="556" y="421" font-size="13" font-weight="900" fill="#14b8a6">03</text>
-    <text x="556" y="451" font-size="21" font-weight="850" fill="#f8fafc" opacity="1"><tspan x="556" dy="0">Compare honestly</tspan></text>
-    <text x="556" y="473" font-size="14" font-weight="500" fill="#b6c2d6" opacity="1"><tspan x="556" dy="0">Keep evidence attached.</tspan></text>
-  </g><g>
-    <rect x="774" y="390" width="222" height="178" rx="18" fill="rgba(5,8,14,0.74)" stroke="rgba(255,255,255,0.18)"/>
-    <rect x="774" y="390" width="5" height="178" rx="2.5" fill="#14b8a6"/>
-    <text x="796" y="421" font-size="13" font-weight="900" fill="#14b8a6">04</text>
-    <text x="796" y="451" font-size="21" font-weight="850" fill="#f8fafc" opacity="1"><tspan x="796" dy="0">Audit links</tspan></text>
-    <text x="796" y="473" font-size="14" font-weight="500" fill="#b6c2d6" opacity="1"><tspan x="796" dy="0">Escalate risky actions.</tspan></text>
-  </g><g>
-    <rect x="1014" y="390" width="222" height="178" rx="18" fill="rgba(5,8,14,0.74)" stroke="rgba(255,255,255,0.18)"/>
-    <rect x="1014" y="390" width="5" height="178" rx="2.5" fill="#14b8a6"/>
-    <text x="1036" y="421" font-size="13" font-weight="900" fill="#14b8a6">05</text>
-    <text x="1036" y="451" font-size="21" font-weight="850" fill="#f8fafc" opacity="1"><tspan x="1036" dy="0">Publish receipts</tspan></text>
-    <text x="1036" y="473" font-size="14" font-weight="500" fill="#b6c2d6" opacity="1"><tspan x="1036" dy="0">Ship after checks pass.</tspan></text>
-  </g>
-  <text x="58" y="652" font-size="13" font-weight="800" fill="#8ea3bd">Backplate: Website Growth Loop / exact labels rendered in SVG</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="480" viewBox="0 0 1280 480" role="img" aria-labelledby="title desc">
+<title id="title">From request to reviewable outcome</title><desc id="desc">The principal supplies inputs, the skill drafts, a person reviews the work, and evidence records what happened.</desc>
+<rect width="1280" height="480" fill="#0b1821"/><g font-family="Arial, Helvetica, sans-serif">
+<text x="56" y="72" font-size="15" letter-spacing="3" fill="#85d9bd">THE OUTCOME PACK</text><text x="56" y="132" font-size="43" font-weight="700" fill="#f2f7f5">From request to reviewable outcome</text>
+<text x="56" y="173" font-size="21" fill="#bdd0ca">A practical workflow with a named owner and clear authority.</text>
+<g fill="#172e35" stroke="#527f79"><rect x="56" y="224" width="270" height="150" rx="14"/><rect x="350" y="224" width="270" height="150" rx="14"/><rect x="644" y="224" width="270" height="150" rx="14"/><rect x="938" y="224" width="286" height="150" rx="14"/></g>
+<g fill="#85d9bd" font-size="13" letter-spacing="2"><text x="78" y="254">01 / PRINCIPAL</text><text x="372" y="254">02 / SKILL</text><text x="666" y="254">03 / REVIEW</text><text x="960" y="254">04 / EVIDENCE</text></g>
+<g fill="#f2f7f5" font-size="20" font-weight="700"><text x="78" y="292">Provide inputs</text><text x="372" y="292">Prepare a draft</text><text x="666" y="292">Check the work</text><text x="960" y="292">Record the result</text></g>
+<g fill="#bdd0ca" font-size="15"><text x="78" y="325">Scope and catalogue</text><text x="372" y="325">Traceable local output</text><text x="666" y="325">Human approval</text><text x="960" y="325">Acceptance and cost</text></g>
+<text x="56" y="424" font-size="15" fill="#a8c1bc">The reference quote desk creates drafts; it does not send or approve them.</text>
+</g></svg>
