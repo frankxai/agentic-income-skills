@@ -1,6 +1,6 @@
 <!-- GITHUB_VISUALS_START -->
 <p align="center">
-  <img src="assets/github/header.svg" alt="Agentic Income Skills - Portable operating brain for income systems." width="100%">
+  <img src="assets/github/header.svg" alt="Agentic Income Skills: owner-led agents for useful paid work." width="100%">
 </p>
 
 <details open>
@@ -70,6 +70,8 @@ Then ask an agent:
 
     /agentic-income build a request-to-quote desk for Amsterdam renovation
     businesses, with human approval before pricing or outbound commitments.
+
+The [quote-desk experiment protocol](docs/quote-desk-experiment.md) defines a proposed comparison of single-agent and specialist workflows. It reports no results.
 
 ## Local quote workflow
 
