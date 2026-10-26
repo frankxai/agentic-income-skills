@@ -85,7 +85,7 @@ install, account or connector is required.
 
 Run `npm run quote:desk` from this checkout or copy the complete skill
 directory. The intended remote command is `npx skills add frankxai/agentic-income-skills --skill quote-desk`;
-that installer path has not been verified for this skill. Follow
+a project-local Codex-targeted copy installation and CLI workflow were [verified on 27 October 2026](docs/quote-desk-install-verification.md). Host auto-invocation and other environments remain unverified. Follow
 [the end-to-end commands and recovery guide](docs/quote-desk.md).
 
 Catalogue arrangement is deterministic. A host or operator can improve the draft
