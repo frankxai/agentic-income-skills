@@ -5,7 +5,7 @@
 <text x="56" y="173" font-size="21" fill="#bdd0ca">A practical workflow with a named owner and clear authority.</text>
 <g fill="#172e35" stroke="#527f79"><rect x="56" y="224" width="270" height="150" rx="14"/><rect x="350" y="224" width="270" height="150" rx="14"/><rect x="644" y="224" width="270" height="150" rx="14"/><rect x="938" y="224" width="286" height="150" rx="14"/></g>
 <g fill="#85d9bd" font-size="13" letter-spacing="2"><text x="78" y="254">01 / PRINCIPAL</text><text x="372" y="254">02 / SKILL</text><text x="666" y="254">03 / REVIEW</text><text x="960" y="254">04 / EVIDENCE</text></g>
-<g fill="#f2f7f5" font-size="20" font-weight="700"><text x="78" y="292">Provide inputs</text><text x="372" y="292">Prepare a draft</text><text x="666" y="292">Check the work</text><text x="960" y="292">Record the result</text></g>
-<g fill="#bdd0ca" font-size="15"><text x="78" y="325">Scope and catalogue</text><text x="372" y="325">Traceable local output</text><text x="666" y="325">Human approval</text><text x="960" y="325">Acceptance and cost</text></g>
-<text x="56" y="424" font-size="15" fill="#a8c1bc">The reference quote desk creates drafts; it does not send or approve them.</text>
+<g fill="#f2f7f5" font-size="20" font-weight="700"><text x="78" y="292">Provide inputs</text><text x="372" y="292">Prepare a draft</text><text x="666" y="292">Check the work</text><text x="960" y="292">Owner records</text></g>
+<g fill="#bdd0ca" font-size="15"><text x="78" y="325">Scope and catalogue</text><text x="372" y="325">Traceable local output</text><text x="666" y="325">Human approval</text><text x="960" y="325">Review and costs</text></g>
+<text x="56" y="424" font-size="15" fill="#a8c1bc">The quote desk creates drafts; acceptance and costs require separate records.</text>
 </g></svg>
