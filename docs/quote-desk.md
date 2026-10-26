@@ -18,9 +18,11 @@ under an existing parent folder. The following run deliberately uses fictional
 sample inputs. Replace all three with explicitly permissioned owner inputs for
 actual work; never substitute examples for missing permission or prices.
 
+If using a copied standalone skill directory instead of the repository, replace `npm run quote:desk --` with `node scripts/quote-desk.mjs` in the following commands.
+
 ```sh
-node scripts/quote-desk.mjs init --workspace "../local quote desk" --principal skills/quote-desk/examples/principal.json --catalog skills/quote-desk/examples/catalog.json
-node scripts/quote-desk.mjs intake --workspace "../local quote desk" --request skills/quote-desk/examples/request.json --service inspect --quantity 1
+npm run quote:desk -- init --workspace "../local quote desk" --principal skills/quote-desk/examples/principal.json --catalog skills/quote-desk/examples/catalog.json
+npm run quote:desk -- intake --workspace "../local quote desk" --request skills/quote-desk/examples/request.json --service inspect --quantity 1
 ```
 
 The result includes `id`, `revision`, source/configuration hashes, a qualification,
@@ -43,7 +45,7 @@ owner-supplied `clarification.json` containing only these fields:
 ```
 
 ```sh
-node scripts/quote-desk.mjs clarify --workspace "../local quote desk" --id <returned-id> --revision <current-number> --clarification clarification.json
+npm run quote:desk -- clarify --workspace "../local quote desk" --id <returned-id> --revision <current-number> --clarification clarification.json
 ```
 
 Use the actual approved reply; the example above is fictional. Clarification
@@ -67,9 +69,9 @@ Keep both grounded in the supplied source and uncertainty. A discount request aw
 an owner decision; do not accept or decline it on the owner's behalf. Save both and reopen:
 
 ```sh
-node scripts/quote-desk.mjs edit --workspace "../local quote desk" --id <returned-id> --revision <current-number> --draft quote-wording.txt --owner-notes owner-notes.txt
-node scripts/quote-desk.mjs show --workspace "../local quote desk" --id <returned-id>
-node scripts/quote-desk.mjs export --workspace "../local quote desk" --id <returned-id> --output "../quote review packet"
+npm run quote:desk -- edit --workspace "../local quote desk" --id <returned-id> --revision <current-number> --draft quote-wording.txt --owner-notes owner-notes.txt
+npm run quote:desk -- show --workspace "../local quote desk" --id <returned-id>
+npm run quote:desk -- export --workspace "../local quote desk" --id <returned-id> --output "../quote review packet"
 ```
 
 Both texts commit in one revision. `--draft` alone preserves existing notes;
@@ -117,7 +119,7 @@ After authoring and reviewing the words, use `show` to read the current revision
 and `snapshotHash`. An explicit buyer export creates a separate folder:
 
 ```sh
-node scripts/quote-desk.mjs export-buyer --workspace "../local quote desk" --id <returned-id> --revision <current-number> --snapshot-sha256 <snapshotHash> --output "../buyer wording draft"
+npm run quote:desk -- export-buyer --workspace "../local quote desk" --id <returned-id> --revision <current-number> --snapshot-sha256 <snapshotHash> --output "../buyer wording draft"
 ```
 
 The selected revision and hash must match the current saved snapshot. This avoids
@@ -139,7 +141,7 @@ Record `receiptHash` from the owner's export result separately from the folder.
 Verify the received or reopened export with that retained hash:
 
 ```sh
-node scripts/quote-desk.mjs verify-buyer --directory "../buyer wording draft" --receipt-sha256 <retained-receiptHash>
+npm run quote:desk -- verify-buyer --directory "../buyer wording draft" --receipt-sha256 <retained-receiptHash>
 ```
 
 The verifier reads the same bounded receipt bytes for hashing and parsing, checks
@@ -227,8 +229,8 @@ recovery, not cloud sync, encrypted storage or a power-loss guarantee.
 Inspect candidate history before an explicit recovery:
 
 ```sh
-node scripts/quote-desk.mjs history --workspace "../local quote desk" --id <returned-id>
-node scripts/quote-desk.mjs recover --workspace "../local quote desk" --id <returned-id> --snapshot <chosen-filename> --sha256 <chosen-checksum> --pointer-sha256 <current-pointer-checksum>
+npm run quote:desk -- history --workspace "../local quote desk" --id <returned-id>
+npm run quote:desk -- recover --workspace "../local quote desk" --id <returned-id> --snapshot <chosen-filename> --sha256 <chosen-checksum> --pointer-sha256 <current-pointer-checksum>
 ```
 
 History lists valid committed and uncommitted history snapshots; it does not list
