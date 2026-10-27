@@ -1,0 +1,36 @@
+{
+  "name": "@agentic-income/catalog",
+  "version": "0.1.0",
+  "description": "Structured AI tool monetization catalog, dead-end routing, and affiliate alternative mapping.",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./data": "./data/programs.json"
+  },
+  "files": [
+    "dist",
+    "data",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "agentic-income",
+    "ai-tools-catalog",
+    "affiliate-programs",
+    "monetization-routing",
+    "alternatives-engine"
+  ],
+  "author": "Frank Riemer <frank@frankx.ai>"
+}

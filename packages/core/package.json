@@ -1,0 +1,41 @@
+{
+  "name": "@agentic-income/core",
+  "version": "0.1.0",
+  "description": "Core schemas, policy validators, and authority fences for principal-bound economic AI agents.",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./schema": "./schemas/income-system.v1.schema.json"
+  },
+  "files": [
+    "dist",
+    "schemas",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "agentic-income",
+    "ai-agents",
+    "economic-agents",
+    "monetization-protocol",
+    "ftc-compliance",
+    "authority-fences"
+  ],
+  "author": "Frank Riemer <frank@frankx.ai>"
+}
