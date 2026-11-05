@@ -39,5 +39,10 @@
     "affiliate-audit",
     "economic-agents"
   ],
-  "author": "Frank Riemer <frank@frankx.ai>"
+  "author": "Frank Riemer <frank@frankx.ai>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frankxai/agentic-income-skills.git",
+    "directory": "packages/cli"
+  }
 }
