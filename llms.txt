@@ -1,0 +1,38 @@
+# Agentic Income Skills
+
+> Open MIT-licensed skills for building paid-work systems where a human principal owns the service, accounts, approvals, and money. Agents operate inside declared authority. No income is promised.
+
+This pack ships two skills. Both are plain markdown plus a bundled Node runtime where needed.
+
+## Install
+
+```sh
+npx skills add frankxai/agentic-income-skills --skill agentic-income
+```
+
+Swap `--skill agentic-income` for `--skill quote-desk` to install only the second skill.
+
+## Skills
+
+- `agentic-income`: discover -> validate -> build -> sell -> deliver -> prove. Turns a repeated professional workflow into a governed, sellable service with an Outcome Pack contract.
+- `quote-desk`: permissioned local request -> editable draft -> reopen/recover -> inspectable export. Node 20+, no npm dependency, no connector, no account. MIT licence bundled inside the skill.
+
+## MCP server
+
+- Endpoint: https://www.agenticincome.ai/api/mcp
+- Manifest: https://www.agenticincome.ai/.well-known/mcp.json
+- Server `agentic-income` v1.0.0, transport `streamable-http`, capability `tools`.
+
+Thirteen tools: `list_income_models`, `get_income_model`, `search_partner_programs`, `get_partner_program`, `list_products`, `fit_check`, `get_playbook`, `describe_income_graph_schema`, `get_reference_income_graph`, `review_income_graph`, `draft_income_graph`, `draft_income_system_manifest`, `export_income_system_tasks`.
+
+All are read-only or draft/export generators. None writes to the server, charges money, places an order, or predicts revenue. Affiliate links are disclosed in the payload.
+
+## Docs
+
+- [SKILLPACK.md](SKILLPACK.md): pack contract, include/exclude, MCP pair
+- [docs/MCP.md](docs/MCP.md): initialize, example calls, limits, affiliate disclosure
+- [docs/EVIDENCE-CONTRACT.md](docs/EVIDENCE-CONTRACT.md): source tiers, claim fields, no-unsourced-number rule, corrections, draft approval
+
+## Licence
+
+MIT. See [LICENSE](LICENSE).

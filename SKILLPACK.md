@@ -7,10 +7,12 @@
 npx skills add frankxai/agentic-income-skills --skill agentic-income
 ```
 
+Agent entry point: [`llms.txt`](./llms.txt).
+
 ## Include
 
-- `agentic-income` — discover → validate → build → sell → deliver → prove
-- `quote-desk` — permissioned local request → editable draft → reopen/recover → inspectable export. Its Node runtime, examples and MIT licence are bundled inside the skill; no npm dependency or connector is needed. See [the working path](docs/quote-desk.md).
+- `agentic-income` — discover -> validate -> build -> sell -> deliver -> prove
+- `quote-desk` — permissioned local request -> editable draft -> reopen/recover -> inspectable export. Its Node runtime, examples and MIT licence are bundled inside the skill; no npm dependency or connector is needed. See [the working path](docs/quote-desk.md).
 
 ## Compatibility (not this pack)
 
@@ -22,10 +24,28 @@ npx skills add frankxai/agentic-income-skills --skill agentic-income
 - Unrestricted wallet or auto-pay
 - awesome-agentic-income (catalog)
 
-## MCP pair
+## MCP pair (live)
 
-None required. Stripe/Polar are product-site tools, not this skill pack.
+Server `agentic-income`, version `1.0.0`, transport `streamable-http`.
+
+- Endpoint: <https://www.agenticincome.ai/api/mcp>
+- Manifest: <https://www.agenticincome.ai/.well-known/mcp.json>
+
+Thirteen tools, grouped by the job they do:
+
+| Job | Tools |
+| --- | --- |
+| Income models | `list_income_models`, `get_income_model` |
+| Partner programs | `search_partner_programs`, `get_partner_program` |
+| Products | `list_products` |
+| Fit | `fit_check` |
+| Playbook | `get_playbook` |
+| Income graph | `describe_income_graph_schema`, `get_reference_income_graph`, `review_income_graph`, `draft_income_graph`, `draft_income_system_manifest`, `export_income_system_tasks` |
+
+Every tool is read-only or a draft/export generator. None writes to the server, charges money, places an order, or predicts revenue. Affiliate links returned by the catalog tools are disclosed in the payload.
+
+Integration steps and example calls: [docs/MCP.md](docs/MCP.md). The evidence standard behind any published number: [docs/EVIDENCE-CONTRACT.md](docs/EVIDENCE-CONTRACT.md).
 
 ## Maintain
 
-`npm test` and `npm run income:validate`. Improve the brain skill from real Outcome Pack failures. Do not add affiliate/content-pipeline skills here — those go to agenticpassiveincome.
+`npm test` and `npm run income:validate`. Improve the brain skill from real Outcome Pack failures. Do not add affiliate/content-pipeline skills here — those go to agenticpassiveincome. Any public claim follows [docs/EVIDENCE-CONTRACT.md](docs/EVIDENCE-CONTRACT.md).
