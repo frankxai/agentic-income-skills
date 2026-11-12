@@ -31,7 +31,7 @@ Server `agentic-income`, version `1.0.0`, transport `streamable-http`.
 - Endpoint: <https://www.agenticincome.ai/api/mcp>
 - Manifest: <https://www.agenticincome.ai/.well-known/mcp.json>
 
-Thirteen tools, grouped by the job they do:
+Sixteen tools, grouped by the job they do:
 
 | Job | Tools |
 | --- | --- |
@@ -41,8 +41,9 @@ Thirteen tools, grouped by the job they do:
 | Fit | `fit_check` |
 | Playbook | `get_playbook` |
 | Income graph | `describe_income_graph_schema`, `get_reference_income_graph`, `review_income_graph`, `draft_income_graph`, `draft_income_system_manifest`, `export_income_system_tasks` |
+| Economy Vault | `search_digital_economies`, `list_supply_costs`, `calculate_unit_margin` |
 
-Every tool is read-only or a draft/export generator. None writes to the server, charges money, places an order, or predicts revenue. Affiliate links returned by the catalog tools are disclosed in the payload.
+Every tool is read-only or a draft/export generator. None writes to the server, charges money, places an order, or predicts revenue. Affiliate links returned by the catalog tools are disclosed in the payload. Economy Vault queries default to `confirmedOnly: true`, and `calculate_unit_margin` refuses unknown, unpriced or unconfirmed inputs rather than estimating them.
 
 Integration steps and example calls: [docs/MCP.md](docs/MCP.md). The evidence standard behind any published number: [docs/EVIDENCE-CONTRACT.md](docs/EVIDENCE-CONTRACT.md).
 

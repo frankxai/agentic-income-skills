@@ -109,10 +109,19 @@ Tool groups:
 | Fit | `fit_check` |
 | Playbook | `get_playbook` |
 | Income graph | `describe_income_graph_schema`, `get_reference_income_graph`, `review_income_graph`, `draft_income_graph`, `draft_income_system_manifest`, `export_income_system_tasks` |
+| Economy Vault | `search_digital_economies`, `list_supply_costs`, `calculate_unit_margin` |
 
 The income-graph group is a four-step loop: read the schema, read the reference graph,
 review your graph, then draft or export. `export_income_system_tasks` returns tasks for
 a human or agent to execute elsewhere; it does not execute them.
+
+The Economy Vault group is sourced market and supply-cost data, not forecasts.
+`search_digital_economies` queries platform and marketplace rows, `list_supply_costs`
+queries unit costs and transaction fees, and `calculate_unit_margin` computes gross
+margin for a hypothesis selling price from confirmed rows only. Each row carries a source
+URL and a verification verdict; queries default to `confirmedOnly: true`, and the margin
+tool refuses unknown, unpriced or unconfirmed inputs instead of estimating them. It never
+forecasts volume or revenue.
 
 ## What the server will not do
 
