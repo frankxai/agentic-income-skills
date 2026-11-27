@@ -80,6 +80,14 @@ jobs:
             name=$(node -e 'console.log(JSON.parse(require("fs").readFileSync(process.argv[1]))[0].name)' "artifacts/release/$p.pack.json")
             version=$(node -e 'console.log(JSON.parse(require("fs").readFileSync(process.argv[1]))[0].version)' "artifacts/release/$p.pack.json")
             file=$(node -e 'console.log(JSON.parse(require("fs").readFileSync(process.argv[1]))[0].filename)' "artifacts/release/$p.pack.json")
+            # Refuse a tarball whose bytes differ from what npm pack recorded in the verify job.
+            node -e '
+              const fs = require("fs"), crypto = require("crypto");
+              const [packJson, tgz] = process.argv.slice(1);
+              const want = JSON.parse(fs.readFileSync(packJson))[0].integrity;
+              const got = "sha512-" + crypto.createHash("sha512").update(fs.readFileSync(tgz)).digest("base64");
+              if (got !== want) { console.error(`integrity mismatch for ${tgz}`); process.exit(1); }
+            ' "artifacts/release/$p.pack.json" "artifacts/release/$file"
             if npm view "$name@$version" version >/dev/null 2>&1; then
               echo "skip $name@$version: already on the registry"
               continue
